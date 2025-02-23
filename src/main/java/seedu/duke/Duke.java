@@ -13,6 +13,7 @@ public class Duke {
                 + "| |_| | |_| |   <  __/\n"
                 + "|____/ \\__,_|_|\\_\\___|\n";
         System.out.println("Hello from\n" + logo);
+        System.out.println("THIS IS A TEST COMMIT BY MATTHEW XD");
         System.out.println("What is your name?");
 
         Scanner in = new Scanner(System.in);
