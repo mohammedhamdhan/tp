@@ -1,4 +1,4 @@
-package seedu.help_page;
+package seedu.menu;
 import seedu.commands.Commands;
 import seedu.messages.Messages;
 

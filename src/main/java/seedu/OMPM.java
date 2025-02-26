@@ -2,7 +2,7 @@ package seedu;
 import java.util.Scanner;
 import seedu.ui.UI;
 import seedu.messages.Messages;
-import seedu.help_page.HelpPage;
+import seedu.menu.HelpPage;
 
 public class OMPM {
     /**
@@ -12,7 +12,7 @@ public class OMPM {
     private seedu.ui.UI ui;
     private Scanner scanner;
     private seedu.messages.Messages messages;
-    private seedu.help_page.HelpPage helpPage;
+    private seedu.menu.HelpPage helpPage;
 
     public OMPM () {};
 

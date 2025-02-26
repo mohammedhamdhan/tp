@@ -2,7 +2,7 @@ package seedu.ui;
 import java.util.Scanner;
 import seedu.messages.Messages;
 import seedu.commands.Commands;
-import seedu.help_page.HelpPage;
+import seedu.menu.HelpPage;
 
 public class UI {
     private Scanner scanner;
@@ -24,7 +24,7 @@ public class UI {
                 messages.setDivider();
             } else if (input.equalsIgnoreCase(Commands.CATEGORIES)) {
                 messages.setDivider();
-                
+
                 messages.setDivider();
             } else if (input.contains(Commands.EXIT_APP)) {
                 messages.setDivider();
