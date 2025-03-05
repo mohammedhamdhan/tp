@@ -14,7 +14,7 @@ public class HelpPage {
                             + Commands.EXIT_APP + ": " + Commands.getCommandDescription(Commands.EXIT_APP) 
                             + System.lineSeparator();
 
-        System.out.println("COMMANDS: " + System.lineSeparator());
+        System.out.println("COMMANDS:" + System.lineSeparator());
         System.out.println(commandList);
     }
 }
