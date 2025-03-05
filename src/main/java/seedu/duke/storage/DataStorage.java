@@ -14,7 +14,9 @@ public class DataStorage {
     public static void ensureFileExists() {
         File file = new File(DATA_FILE);
         if (!file.exists()) {
-            throw new IllegalStateException(Messages.errorMessageTag() + Messages.missingTaskFileErrorMessage() + file.getAbsolutePath());
+            throw new IllegalStateException(Messages.errorMessageTag()
+                    + Messages.missingTaskFileErrorMessage()
+                    + file.getAbsolutePath());
         }
     }
 
