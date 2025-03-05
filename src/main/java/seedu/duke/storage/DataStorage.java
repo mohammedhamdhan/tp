@@ -9,7 +9,7 @@ import java.util.List;
 import seedu.duke.messages.Messages;
 
 public class DataStorage {
-    public static final String DATA_FILE = "C:\\Users\\user\\tp-1\\src\\main\\java\\seedu\\duke\\storage\\data.txt";
+    public static final String DATA_FILE = "C:\\Users\\user\\tp-1\\data.txt";
 
     public static void ensureFileExists() {
         File file = new File(DATA_FILE);
