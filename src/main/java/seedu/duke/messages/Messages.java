@@ -4,6 +4,10 @@ package seedu.duke.messages;
 
 public class Messages {
 
+    public void inputIndicator() {
+        System.out.print(">");
+    }
+
     public void displayWelcomeMessage() {
         setDivider();
         System.out.println("Welcome to O$P$ expense-tracker! How can I help you?");
@@ -35,5 +39,9 @@ public class Messages {
 
     public static void emptyDataFileMessage() {
         System.out.println("No previous data found.");
+    }
+
+    public static String missingTaskFileErrorMessage() {
+        return "Storage file does not exist: ";
     }
 }

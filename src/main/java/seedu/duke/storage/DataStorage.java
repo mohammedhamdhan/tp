@@ -13,14 +13,11 @@ public class DataStorage {
 
     public static void ensureFileExists() {
         File file = new File(DATA_FILE);
-        try {
-            if (file.createNewFile()) {
-                Messages.createNewFileMessage(file.getAbsolutePath());
-            }
-        } catch (IOException e) {
-            System.out.println(Messages.errorMessageTag() + e.getMessage());
+        if (!file.exists()) {
+            throw new IllegalStateException(Messages.errorMessageTag() + Messages.missingTaskFileErrorMessage() + file.getAbsolutePath());
         }
     }
+
 
     public static List<String> loadData() {
         List<String> data = new ArrayList<>();

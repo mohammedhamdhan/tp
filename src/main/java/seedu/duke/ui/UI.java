@@ -19,6 +19,7 @@ public class UI {
     }
     
     public void handleUserInput() {
+        messages.inputIndicator();
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine().trim();
 
@@ -39,6 +40,7 @@ public class UI {
                 messages.invalidCommandMessage();
                 messages.setDivider();
             }
+            messages.inputIndicator();
         }
         scanner.close();
     }
