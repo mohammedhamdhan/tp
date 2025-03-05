@@ -11,7 +11,7 @@ public class Duke {
 
     public Duke(String fileName) {
         this.storageFilePath = fileName;  
-        DataStorage.ensureFileExists();  
+        DataStorage.ensureFileExists();
     }
 
     public static void main(String[] args) {
