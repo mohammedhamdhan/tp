@@ -33,7 +33,8 @@ public class HelpPage {
         System.out.println("delete");
         System.out.println("  Description: Delete an existing expense");
         System.out.println("  Usage: delete");
-        System.out.println("  You will be shown the list of expenses and prompted to enter the index of the expense to delete");
+        System.out.println("  You will be shown the list of expenses and prompted to enter");
+        System.out.println("  the index of the expense to delete");
         System.out.println();
         
         System.out.println("edit");
