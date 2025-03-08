@@ -22,7 +22,7 @@ public class DataStorage {
         File file = new File(DATA_FILE);
         try {
             if (file.createNewFile()) {
-                Messages.createNewFileMessage(DATA_FILE);
+                // Removed: Messages.createNewFileMessage(DATA_FILE);
             }
         } catch (IOException e) {
             System.out.println(Messages.errorMessageTag() + " Error creating data file: " + e.getMessage());
@@ -42,7 +42,7 @@ public class DataStorage {
                         + expense.getDescription() + SEPARATOR
                         + expense.getAmount() + System.lineSeparator());
             }
-            System.out.println("Expenses saved successfully.");
+            // Removed: System.out.println("Expenses saved successfully.");
             return true;
         } catch (IOException e) {
             System.out.println(Messages.errorMessageTag() + " Error saving expenses: " + e.getMessage());
@@ -60,17 +60,17 @@ public class DataStorage {
         File file = new File(DATA_FILE);
         
         if (!file.exists()) {
-            Messages.createNewFileMessage(DATA_FILE);
+            // Removed: Messages.createNewFileMessage(DATA_FILE);
             return expenses;
         }
         
         try (Scanner scanner = new Scanner(file)) {
             if (!scanner.hasNext()) {
-                Messages.emptyDataFileMessage();
+                // Removed: Messages.emptyDataFileMessage();
                 return expenses;
             }
             
-            Messages.loadDataMessage(DATA_FILE);
+            // Removed: Messages.loadDataMessage(DATA_FILE);
             
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -85,7 +85,7 @@ public class DataStorage {
                 }
             }
             
-            System.out.println("Loaded " + expenses.size() + " expenses.");
+            // Removed: System.out.println("Loaded " + expenses.size() + " expenses.");
         } catch (FileNotFoundException e) {
             System.out.println(Messages.errorMessageTag() + " Error loading expenses: " + e.getMessage());
         }
