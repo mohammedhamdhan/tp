@@ -1,10 +1,9 @@
 package seedu.duke.ui;
 
 import java.util.Scanner;
-
-import seedu.duke.commands.ExpenseCommand;
-import seedu.duke.menu.HelpPage;
 import seedu.duke.messages.Messages;
+import seedu.duke.menu.HelpPage;
+import seedu.duke.commands.ExpenseCommand;
 import seedu.duke.expense.BudgetManager;
 
 public class UI {
@@ -43,6 +42,7 @@ public class UI {
             helpPage.displayCommandList();
             break;
         case "exit":
+            // Save expenses before exiting
             budgetManager.saveAllExpenses();
             messages.displayExitMessage();
             isRunning = false;
@@ -72,5 +72,3 @@ public class UI {
         }
     }
 }
-
-
