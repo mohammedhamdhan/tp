@@ -94,7 +94,5 @@ Enter command: No expenses found.
 
 ________________________________________________________________________________
 
-Enter command: Thank you for using the Expense Manager. Goodbye!
-
-________________________________________________________________________________
-
+Enter command: Expenses saved successfully.
+Thank you for using the Expense Manager. Goodbye!
