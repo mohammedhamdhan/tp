@@ -2,20 +2,38 @@ package seedu.duke;
 
 import java.util.Scanner;
 
-public class Duke {
-    /**
-     * Main entry-point for the java.duke.Duke application.
-     */
-    public static void main(String[] args) {
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("Hello from\n" + logo);
-        System.out.println("What is your name?");
+import seedu.duke.commands.ExpenseCommand;
+import seedu.duke.expense.BudgetManager;
+import seedu.duke.menu.HelpPage;
+import seedu.duke.messages.Messages;
+import seedu.duke.storage.DataStorage;
+import seedu.duke.ui.UI;
 
-        Scanner in = new Scanner(System.in);
-        System.out.println("Hello " + in.nextLine());
+public class Duke {
+    private final String storageFilePath;
+    private BudgetManager budgetManager;
+
+    public Duke(String fileName) {
+        this.storageFilePath = fileName;
+        DataStorage.ensureFileExists();
+        this.budgetManager = new BudgetManager();
+    }
+
+    public static void main(String[] args) {
+        new Duke(DataStorage.DATA_FILE).run();
+    }
+
+    public void run() {
+        Scanner scanner = new Scanner(System.in);
+        Messages messages = new Messages();
+        HelpPage helpPage = new HelpPage();
+        ExpenseCommand expenseCommand = new ExpenseCommand(budgetManager, scanner);
+        UI ui = new UI(scanner, messages, helpPage, storageFilePath, expenseCommand);
+
+        messages.displayWelcomeMessage();
+        messages.setDivider();
+        ui.handleUserInput();
     }
 }
+
+
