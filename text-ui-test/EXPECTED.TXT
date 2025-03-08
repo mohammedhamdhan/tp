@@ -45,4 +45,4 @@ exit
 _______________________________________________________________________________
 
 Enter command: Invalid command. Type 'help' to see available commands.
-Enter command:
+Enter command: No input detected. Exiting program...
