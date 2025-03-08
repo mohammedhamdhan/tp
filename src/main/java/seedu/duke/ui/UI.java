@@ -29,8 +29,21 @@ public class UI {
     public void handleUserInput() {
         while (isRunning) {
             System.out.print("Enter command: ");
-            String userInput = scanner.nextLine();
-            processCommand(userInput);
+            
+            // Check if input exists before reading
+            if (scanner.hasNextLine()) {
+                String userInput = scanner.nextLine();
+                processCommand(userInput);
+            } else {
+                // Handle the case where there is no input available
+                System.out.println("No input detected. Exiting program...");
+                isRunning = false;
+                break;
+            }
+            
+            if (isRunning) {
+                messages.setDivider();
+            }
         }
     }
 
@@ -65,10 +78,6 @@ public class UI {
         default:
             System.out.println("Invalid command. Type 'help' to see available commands.");
             break;
-        }
-        
-        if (isRunning) {
-            messages.setDivider();
         }
     }
 }
