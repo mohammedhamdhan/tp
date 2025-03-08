@@ -1,1 +1,3 @@
 test|brekkie|10.0
+lunch|home|12.0
+dinner|with friends|30.0
