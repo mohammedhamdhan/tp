@@ -1,12 +1,6 @@
 package seedu.duke.messages;
 
-
-
 public class Messages {
-
-    public void inputIndicator() {
-        System.out.print(">");
-    }
 
     public void displayWelcomeMessage() {
         setDivider();
@@ -41,7 +35,11 @@ public class Messages {
         System.out.println("No previous data found.");
     }
 
-    public static String missingTaskFileErrorMessage() {
-        return "Storage file does not exist: ";
+    /**
+     * Displays the exit message when the user exits the program.
+     */
+    public void displayExitMessage() {
+        System.out.println("Thank you for using the Expense Manager. Goodbye!");
     }
 }
+

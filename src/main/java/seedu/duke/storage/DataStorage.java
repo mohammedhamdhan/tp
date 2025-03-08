@@ -1,61 +1,96 @@
 package seedu.duke.storage;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
+import seedu.duke.expense.Expense;
 import seedu.duke.messages.Messages;
 
 public class DataStorage {
-    private String fileName;
+    public static final String DATA_FILE = "expenses.txt";
+    private static final String SEPARATOR = "|";
 
-    public DataStorage(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public void load() throws FileNotFoundException {
-        File file = new File(fileName);
-        if (!file.exists()) {
-            throw new FileNotFoundException("File does not exist: " + file.getAbsolutePath());
-        }
-    }
-
-    public static List<String> loadData(String filePath) {
-        List<String> data = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                data.add(line);
+    /**
+     * Ensures that the data file exists.
+     */
+    public static void ensureFileExists() {
+        File file = new File(DATA_FILE);
+        try {
+            if (file.createNewFile()) {
+                // Removed: Messages.createNewFileMessage(DATA_FILE);
             }
         } catch (IOException e) {
-            System.out.println(Messages.errorMessageTag() + e.getMessage());
+            System.out.println(Messages.errorMessageTag() + " Error creating data file: " + e.getMessage());
         }
-        return data;
     }
 
-    public static void displayStoredData(String filePath) {
-        Messages.loadDataMessage(filePath);
-        List<String> data = loadData(filePath);
-        if (data.isEmpty()) {
-            Messages.emptyDataFileMessage();
-        } else {
-            for (String line : data) {
-                System.out.println(line);
+    /**
+     * Saves expenses to the data file.
+     *
+     * @param expenses the list of expenses to save
+     * @return true if saving was successful, false otherwise
+     */
+    public static boolean saveExpenses(List<Expense> expenses) {
+        try (FileWriter writer = new FileWriter(DATA_FILE)) {
+            for (Expense expense : expenses) {
+                writer.write(expense.getTitle() + SEPARATOR
+                        + expense.getDescription() + SEPARATOR
+                        + expense.getAmount() + System.lineSeparator());
             }
+            // Removed: System.out.println("Expenses saved successfully.");
+            return true;
+        } catch (IOException e) {
+            System.out.println(Messages.errorMessageTag() + " Error saving expenses: " + e.getMessage());
+            return false;
         }
     }
 
-    public void createFileIfAbsent() throws IOException {
-        File file = new File(fileName);
+    /**
+     * Loads expenses from the data file.
+     *
+     * @return the list of loaded expenses
+     */
+    public static List<Expense> loadExpenses() {
+        List<Expense> expenses = new ArrayList<>();
+        File file = new File(DATA_FILE);
+        
         if (!file.exists()) {
-            File parentDir = file.getParentFile();
-            if (parentDir != null && !parentDir.exists()) {
-                parentDir.mkdirs();
-            }
-            file.createNewFile();
+            // Removed: Messages.createNewFileMessage(DATA_FILE);
+            return expenses;
         }
+        
+        try (Scanner scanner = new Scanner(file)) {
+            if (!scanner.hasNext()) {
+                // Removed: Messages.emptyDataFileMessage();
+                return expenses;
+            }
+            
+            // Removed: Messages.loadDataMessage(DATA_FILE);
+            
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split("\\" + SEPARATOR);
+                
+                if (parts.length == 3) {
+                    String title = parts[0];
+                    String description = parts[1];
+                    double amount = Double.parseDouble(parts[2]);
+                    
+                    expenses.add(new Expense(title, description, amount));
+                }
+            }
+            
+            // Removed: System.out.println("Loaded " + expenses.size() + " expenses.");
+        } catch (FileNotFoundException e) {
+            System.out.println(Messages.errorMessageTag() + " Error loading expenses: " + e.getMessage());
+        }
+        
+        return expenses;
     }
 }
+

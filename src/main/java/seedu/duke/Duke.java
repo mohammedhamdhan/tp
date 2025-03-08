@@ -1,42 +1,39 @@
 package seedu.duke;
 
-import java.io.IOException;
 import java.util.Scanner;
-import seedu.duke.ui.UI;
-import seedu.duke.messages.Messages;
+
+import seedu.duke.commands.ExpenseCommand;
+import seedu.duke.expense.BudgetManager;
 import seedu.duke.menu.HelpPage;
+import seedu.duke.messages.Messages;
 import seedu.duke.storage.DataStorage;
+import seedu.duke.ui.UI;
 
 public class Duke {
-    private DataStorage storage;
-    private UI ui;
-    private Scanner scanner;
-    private Messages messages;
-    private HelpPage helpPage;
+    private final String storageFilePath;
+    private BudgetManager budgetManager;
 
     public Duke(String fileName) {
-        storage = new DataStorage(fileName);
-        scanner = new Scanner(System.in);
-        messages = new Messages();
-        helpPage = new HelpPage();
-        ui = new UI(scanner, messages, helpPage, fileName);
-        try {
-            storage.createFileIfAbsent();
-            storage.load();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+        this.storageFilePath = fileName;
+        DataStorage.ensureFileExists();
+        this.budgetManager = new BudgetManager();
     }
 
     public static void main(String[] args) {
-        new Duke("./data/data.txt").run();
+        new Duke(DataStorage.DATA_FILE).run();
     }
 
     public void run() {
+        Scanner scanner = new Scanner(System.in);
+        Messages messages = new Messages();
+        HelpPage helpPage = new HelpPage();
+        ExpenseCommand expenseCommand = new ExpenseCommand(budgetManager, scanner);
+        UI ui = new UI(scanner, messages, helpPage, storageFilePath, expenseCommand);
+
         messages.displayWelcomeMessage();
-        helpPage.displayCommandList();
         messages.setDivider();
         ui.handleUserInput();
     }
 }
+
 
