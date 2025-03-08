@@ -7,10 +7,10 @@ public final class Commands {
 
     public static String getCommandDescription(String command) {
         return switch (command) {
-            case HELP -> "Open a menu of commands";
-            case CATEGORIES -> "Shows all the previously created categories";
-            case EXIT_APP -> "Save all data and exit the program";
-            default -> throw new IllegalArgumentException("ERROR: Invalid command");
+        case HELP -> "Open a menu of commands";
+        case CATEGORIES -> "Shows all the previously created categories";
+        case EXIT_APP -> "Save all data and exit the program";
+        default -> throw new IllegalArgumentException("ERROR: Invalid command");
         };
     }
 }
