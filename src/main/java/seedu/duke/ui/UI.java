@@ -5,6 +5,7 @@ import java.util.Scanner;
 import seedu.duke.commands.ExpenseCommand;
 import seedu.duke.menu.HelpPage;
 import seedu.duke.messages.Messages;
+import seedu.duke.expense.BudgetManager;
 
 public class UI {
     private final Scanner scanner;
@@ -12,6 +13,7 @@ public class UI {
     private final HelpPage helpPage;
     private final String storageFilePath;
     private final ExpenseCommand expenseCommand;
+    private final BudgetManager budgetManager;
     private boolean isRunning;
 
     public UI(Scanner scanner, Messages messages, HelpPage helpPage, String storageFilePath, 
@@ -21,6 +23,7 @@ public class UI {
         this.helpPage = helpPage;
         this.storageFilePath = storageFilePath;
         this.expenseCommand = expenseCommand;
+        this.budgetManager = expenseCommand.getBudgetManager();
         this.isRunning = true;
     }
 
@@ -40,6 +43,7 @@ public class UI {
             helpPage.displayCommandList();
             break;
         case "exit":
+            budgetManager.saveAllExpenses();
             messages.displayExitMessage();
             isRunning = false;
             break;

@@ -3,6 +3,8 @@ package seedu.duke.expense;
 import java.util.ArrayList;
 import java.util.List;
 
+import seedu.duke.storage.DataStorage;
+
 /**
  * Manages a collection of expenses and provides operations on them.
  */
@@ -13,7 +15,7 @@ public class BudgetManager {
      * Constructs a BudgetManager with an empty list of expenses.
      */
     public BudgetManager() {
-        this.expenses = new ArrayList<>();
+        this.expenses = DataStorage.loadExpenses();
     }
 
     /**
@@ -23,6 +25,7 @@ public class BudgetManager {
      */
     public void addExpense(Expense expense) {
         expenses.add(expense);
+        DataStorage.saveExpenses(expenses);
     }
 
     /**
@@ -36,7 +39,9 @@ public class BudgetManager {
         if (index < 0 || index >= expenses.size()) {
             throw new IndexOutOfBoundsException("Invalid expense index: " + index);
         }
-        return expenses.remove(index);
+        Expense deletedExpense = expenses.remove(index);
+        DataStorage.saveExpenses(expenses);
+        return deletedExpense;
     }
 
     /**
@@ -69,6 +74,7 @@ public class BudgetManager {
             expense.setAmount(amount);
         }
         
+        DataStorage.saveExpenses(expenses);
         return expense;
     }
 
@@ -115,5 +121,12 @@ public class BudgetManager {
             throw new IndexOutOfBoundsException("Invalid expense index: " + index);
         }
         return expenses.get(index);
+    }
+    
+    /**
+     * Saves all expenses to storage.
+     */
+    public void saveAllExpenses() {
+        DataStorage.saveExpenses(expenses);
     }
 } 

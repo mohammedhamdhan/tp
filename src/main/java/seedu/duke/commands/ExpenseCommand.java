@@ -165,4 +165,13 @@ public class ExpenseCommand {
         System.out.println("Total number of expenses: " + budgetManager.getExpenseCount());
         System.out.println("Total amount owed: $" + String.format("%.2f", totalBalance));
     }
+
+    /**
+     * Gets the budget manager.
+     *
+     * @return the budget manager
+     */
+    public BudgetManager getBudgetManager() {
+        return budgetManager;
+    }
 } 
