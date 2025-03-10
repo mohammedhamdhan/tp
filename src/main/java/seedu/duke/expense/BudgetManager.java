@@ -98,14 +98,31 @@ public class BudgetManager {
     }
 
     /**
-     * Calculates the total balance (sum of all expense amounts).
+     * Gets the number of unsettled expenses.
+     *
+     * @return the number of unsettled expenses
+     */
+    public int getUnsettledExpenseCount() {
+        int numberOfUnsettledExpenses = 0;
+        for (Expense expense : expenses) {
+            if (!expense.isDone) {
+                numberOfUnsettledExpenses++;
+            }
+        }
+        return numberOfUnsettledExpenses;
+    }
+
+    /**
+     * Calculates the total balance (sum of all unsettled expense amounts).
      *
      * @return the total balance
      */
     public double getTotalBalance() {
         double total = 0;
         for (Expense expense : expenses) {
-            total += expense.getAmount();
+            if(!expense.getDone()) {
+                total += expense.getAmount();
+            }
         }
         return total;
     }
@@ -123,7 +140,35 @@ public class BudgetManager {
         }
         return expenses.get(index);
     }
-    
+
+    /**
+     * Marks an expense at the specified index.
+     *
+     * @param index the index of the expense to mark
+     * @throws IndexOutOfBoundsException if the index is out of range
+     */
+    public void markExpense(int index) throws IndexOutOfBoundsException {
+        if (index < 0 || index >= expenses.size()) {
+            throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
+        }
+        expenses.get(index).setDone(true);
+        saveAllExpenses();
+    }
+
+    /**
+     * Unmarks an expense at the specified index.
+     *
+     * @param index the index of the expense to unmark
+     * @throws IndexOutOfBoundsException if the index is out of range
+     */
+    public void unmarkExpense(int index) throws IndexOutOfBoundsException {
+        if (index < 0 || index >= expenses.size()) {
+            throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
+        }
+        expenses.get(index).setDone(false);
+        saveAllExpenses();
+    }
+
     /**
      * Saves all expenses to storage.
      */

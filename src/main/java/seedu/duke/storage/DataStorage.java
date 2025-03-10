@@ -40,7 +40,8 @@ public class DataStorage {
             for (Expense expense : expenses) {
                 writer.write(expense.getTitle() + SEPARATOR
                         + expense.getDescription() + SEPARATOR
-                        + expense.getAmount() + System.lineSeparator());
+                        + expense.getAmount() + SEPARATOR
+                        + expense.getDone() + System.lineSeparator());
             }
             // Removed: System.out.println("Expenses saved successfully.");
             return true;
@@ -76,12 +77,15 @@ public class DataStorage {
                 String line = scanner.nextLine();
                 String[] parts = line.split("\\" + SEPARATOR);
                 
-                if (parts.length == 3) {
+                if (parts.length == 4) {
                     String title = parts[0];
                     String description = parts[1];
                     double amount = Double.parseDouble(parts[2]);
-                    
-                    expenses.add(new Expense(title, description, amount));
+                    Boolean isDone = true;
+                    if(parts[3].equals("false")) {
+                        isDone = false;
+                    }
+                    expenses.add(new Expense(title, description, amount,isDone));
                 }
             }
             
