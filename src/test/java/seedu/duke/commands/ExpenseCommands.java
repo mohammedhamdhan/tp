@@ -14,7 +14,8 @@ import java.util.Scanner;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ExpenseCommandTest {
     private BudgetManager budgetManager;
