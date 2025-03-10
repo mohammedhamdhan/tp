@@ -105,7 +105,7 @@ public class BudgetManager {
     public int getUnsettledExpenseCount() {
         int numberOfUnsettledExpenses = 0;
         for (Expense expense : expenses) {
-            if (!expense.isDone) {
+            if (!expense.getDone()) {
                 numberOfUnsettledExpenses++;
             }
         }

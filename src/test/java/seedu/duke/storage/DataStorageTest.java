@@ -19,7 +19,7 @@ class DataStorageTest {
 
     @BeforeEach
     void setUp() {
-        DataStorage.DATA_FILE = TEST_DATA_FILE;
+        DataStorage.dataFile = TEST_DATA_FILE;
     }
 
     @AfterEach

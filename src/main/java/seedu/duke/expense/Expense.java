@@ -7,7 +7,7 @@ public class Expense {
     private String title;
     private String description;
     private double amount;
-    Boolean isDone;
+    private Boolean isDone;
 
     /**
      * Constructs an Expense object with the given title, description, and amount.

@@ -12,17 +12,17 @@ import seedu.duke.expense.Expense;
 import seedu.duke.messages.Messages;
 
 public class DataStorage {
-    public static String DATA_FILE = "expenses.txt";
+    public static String dataFile = "expenses.txt";
     private static final String SEPARATOR = "|";
 
     /**
      * Ensures that the data file exists.
      */
     public static void ensureFileExists() {
-        File file = new File(DATA_FILE);
+        File file = new File(dataFile);
         try {
             if (file.createNewFile()) {
-                // Removed: Messages.createNewFileMessage(DATA_FILE);
+                // Removed: Messages.createNewFileMessage(dataFile);
             }
         } catch (IOException e) {
             System.out.println(Messages.errorMessageTag() + " Error creating data file: " + e.getMessage());
@@ -36,7 +36,7 @@ public class DataStorage {
      * @return true if saving was successful, false otherwise
      */
     public static boolean saveExpenses(List<Expense> expenses) {
-        try (FileWriter writer = new FileWriter(DATA_FILE)) {
+        try (FileWriter writer = new FileWriter(dataFile)) {
             for (Expense expense : expenses) {
                 writer.write(expense.getTitle() + SEPARATOR
                         + expense.getDescription() + SEPARATOR
@@ -58,10 +58,10 @@ public class DataStorage {
      */
     public static List<Expense> loadExpenses() {
         List<Expense> expenses = new ArrayList<>();
-        File file = new File(DATA_FILE);
+        File file = new File(dataFile);
         
         if (!file.exists()) {
-            // Removed: Messages.createNewFileMessage(DATA_FILE);
+            // Removed: Messages.createNewFileMessage(dataFile);
             return expenses;
         }
         
@@ -71,7 +71,7 @@ public class DataStorage {
                 return expenses;
             }
             
-            // Removed: Messages.loadDataMessage(DATA_FILE);
+            // Removed: Messages.loadDataMessage(dataFile);
             
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -101,7 +101,7 @@ public class DataStorage {
      * Clears the contents of the data file (for testing purposes).
      */
     public static void resetExpenses() {
-        try (FileWriter writer = new FileWriter(DATA_FILE)) {
+        try (FileWriter writer = new FileWriter(dataFile)) {
             writer.write("");
         } catch (IOException e) {
             System.out.println(Messages.errorMessageTag() + " Error resetting expenses: " + e.getMessage());

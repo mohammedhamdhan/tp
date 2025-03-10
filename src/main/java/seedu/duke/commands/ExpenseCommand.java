@@ -238,8 +238,7 @@ public class ExpenseCommand {
         int indexToMark = Integer.parseInt(expenseNumberToMark) - 1;
         try{
             budgetManager.markExpense(indexToMark);
-        }
-        catch(IndexOutOfBoundsException e){
+        } catch(IndexOutOfBoundsException e){
             System.out.println("Please enter a valid expense number.");
         }
     }
