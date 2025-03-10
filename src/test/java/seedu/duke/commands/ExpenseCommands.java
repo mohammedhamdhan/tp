@@ -6,8 +6,13 @@ import org.junit.jupiter.api.Test;
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.expense.Expense;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.Scanner;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -14,9 +14,9 @@ import java.util.List;
 public class BudgetManagerTest {
 
     private BudgetManager budgetManager;
-    private final static String TEST_TITLE = "Test Expense";
-    private final static String TEST_DESCRIPTION = "Test Description";
-    private final static double TEST_AMOUNT = 100.0;
+    private final String TEST_TITLE = "Test Expense";
+    private final String TEST_DESCRIPTION = "Test Description";
+    private final double TEST_AMOUNT = 100.0;
 
     @BeforeEach
     void setUp() {
