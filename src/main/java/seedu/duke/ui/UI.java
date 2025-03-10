@@ -4,6 +4,7 @@ import java.util.Scanner;
 import seedu.duke.messages.Messages;
 import seedu.duke.menu.HelpPage;
 import seedu.duke.commands.ExpenseCommand;
+import seedu.duke.commands.Commands;
 import seedu.duke.expense.BudgetManager;
 
 public class UI {
@@ -12,23 +13,25 @@ public class UI {
     private final HelpPage helpPage;
     private final String storageFilePath;
     private final ExpenseCommand expenseCommand;
+    private Commands commands;
     private final BudgetManager budgetManager;
     private boolean isRunning;
 
     public UI(Scanner scanner, Messages messages, HelpPage helpPage, String storageFilePath, 
-              ExpenseCommand expenseCommand) {
+              ExpenseCommand expenseCommand, Commands commands) {
         this.scanner = scanner;
         this.messages = messages;
         this.helpPage = helpPage;
         this.storageFilePath = storageFilePath;
         this.expenseCommand = expenseCommand;
+        this.commands = commands;
         this.budgetManager = expenseCommand.getBudgetManager();
         this.isRunning = true;
     }
 
     public void handleUserInput() {
         while (isRunning) {
-            System.out.print("Enter command: ");
+            messages.enterCommandMessage();
             
             // Check if input exists before reading
             if (scanner.hasNextLine()) {
@@ -36,7 +39,7 @@ public class UI {
                 processCommand(userInput);
             } else {
                 // Handle the case where there is no input available
-                System.out.println("No input detected. Exiting program...");
+                messages.emptyInputMessage();
                 isRunning = false;
                 break;
             }
@@ -47,36 +50,36 @@ public class UI {
         }
     }
 
-    private void processCommand(String userInput) {
+    public void processCommand(String userInput) {
         String command = userInput.trim().toLowerCase();
         
         switch (command) {
-        case "help":
+        case Commands.HELP:
             helpPage.displayCommandList();
             break;
-        case "exit":
+        case Commands.EXIT:
             // Save expenses before exiting
             budgetManager.saveAllExpenses();
             messages.displayExitMessage();
             isRunning = false;
             break;
-        case "add":
+        case Commands.ADD:
             expenseCommand.executeAddExpense();
             break;
-        case "list":
+        case Commands.LIST:
             expenseCommand.displayAllExpenses();
             break;
-        case "delete":
+        case Commands.DELETE:
             expenseCommand.executeDeleteExpense();
             break;
-        case "edit":
+        case Commands.EDIT:
             expenseCommand.executeEditExpense();
             break;
-        case "balance":
+        case Commands.BALANCE:
             expenseCommand.showBalanceOverview();
             break;
         default:
-            System.out.println("Invalid command. Type 'help' to see available commands.");
+            messages.exitAppMessage();
             break;
         }
     }

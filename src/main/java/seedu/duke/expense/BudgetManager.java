@@ -2,13 +2,14 @@ package seedu.duke.expense;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import seedu.duke.messages.Messages;
 import seedu.duke.storage.DataStorage;
 
 /**
  * Manages a collection of expenses and provides operations on them.
  */
 public class BudgetManager {
+    Messages messages = new Messages();
     private List<Expense> expenses;
 
     /**
@@ -37,7 +38,7 @@ public class BudgetManager {
      */
     public Expense deleteExpense(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= expenses.size()) {
-            throw new IndexOutOfBoundsException("Invalid expense index: " + index);
+            throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
         }
         Expense deletedExpense = expenses.remove(index);
         DataStorage.saveExpenses(expenses);
@@ -57,7 +58,7 @@ public class BudgetManager {
     public Expense editExpense(int index, String title, String description, double amount) 
             throws IndexOutOfBoundsException {
         if (index < 0 || index >= expenses.size()) {
-            throw new IndexOutOfBoundsException("Invalid expense index: " + index);
+            throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
         }
         
         Expense expense = expenses.get(index);
@@ -118,7 +119,7 @@ public class BudgetManager {
      */
     public Expense getExpense(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= expenses.size()) {
-            throw new IndexOutOfBoundsException("Invalid expense index: " + index);
+            throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
         }
         return expenses.get(index);
     }

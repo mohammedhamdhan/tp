@@ -37,6 +37,8 @@ public class ExpenseCommand {
             
             System.out.println("Enter expense amount:");
             double amount = Double.parseDouble(scanner.nextLine().trim());
+
+            System.out.println("Enter :");
             
             if (amount < 0) {
                 System.out.println("Amount cannot be negative.");

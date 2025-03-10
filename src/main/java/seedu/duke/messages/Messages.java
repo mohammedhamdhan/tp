@@ -7,32 +7,28 @@ public class Messages {
         System.out.println("Welcome to O$P$ expense-tracker! How can I help you?");
     }
 
+    public void enterCommandMessage() {
+        System.out.print("Enter command: ");
+    }
+
+    public void emptyInputMessage() {
+        System.out.println("No input detected. Exiting program...");
+    }
+
     public void setDivider() {
         System.out.println("\n" + "_".repeat(80) + "\n");
-    }
-
-    public void invalidCommandMessage() {
-        System.out.println(errorMessageTag() + "Invalid command");
-    }
-
-    public void exitAppMessage() {
-        System.out.println("Have a nice day!");
-    }
-
-    public static void createNewFileMessage(String filePath) {
-        System.out.println("Storage file created: " + filePath);
     }
 
     public static String errorMessageTag() {
         return "ERROR: ";
     }
 
-    public static void loadDataMessage(String filePath) {
-        System.out.println("Loading data from: " + filePath  + ": \n");
+    public void exitAppMessage() {
+        System.out.println("Invalid command. Type 'help' to see available commands.");
     }
 
-    public static void emptyDataFileMessage() {
-        System.out.println("No previous data found.");
+    public String invalidIndexMessage() {
+        return "Invalid expense index.";
     }
 
     /**
