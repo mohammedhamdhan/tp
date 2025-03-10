@@ -12,7 +12,7 @@ import seedu.duke.expense.Expense;
 import seedu.duke.messages.Messages;
 
 public class DataStorage {
-    public static final String DATA_FILE = "expenses.txt";
+    public static String DATA_FILE = "expenses.txt";
     private static final String SEPARATOR = "|";
 
     /**
@@ -91,6 +91,17 @@ public class DataStorage {
         }
         
         return expenses;
+    }
+
+    /**
+     * Clears the contents of the data file (for testing purposes).
+     */
+    public static void resetExpenses() {
+        try (FileWriter writer = new FileWriter(DATA_FILE)) {
+            writer.write("");
+        } catch (IOException e) {
+            System.out.println(Messages.errorMessageTag() + " Error resetting expenses: " + e.getMessage());
+        }
     }
 }
 

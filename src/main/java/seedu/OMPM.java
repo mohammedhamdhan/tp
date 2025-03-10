@@ -1,7 +1,9 @@
 package seedu;
+
 import java.util.Scanner;
 
 import seedu.duke.commands.ExpenseCommand;
+import seedu.duke.commands.Commands;
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.menu.HelpPage;
 import seedu.duke.messages.Messages;
@@ -16,6 +18,7 @@ public class OMPM {
     private Scanner scanner;
     private seedu.duke.messages.Messages messages;
     private seedu.duke.menu.HelpPage helpPage;
+    private seedu.duke.commands.Commands commands;
 
     public OMPM () {};
 
@@ -27,8 +30,9 @@ public class OMPM {
         scanner = new Scanner(System.in);
         messages = new Messages();
         helpPage = new HelpPage();
-        ui = new UI(scanner, messages, helpPage, "data/expenses.txt", new ExpenseCommand(new BudgetManager(), scanner));
-        
+        commands = new Commands();
+        ui = new UI(scanner, messages, helpPage, "data/expenses.txt", new ExpenseCommand(new BudgetManager(), scanner), commands);
+
         messages.displayWelcomeMessage();
         helpPage.displayCommandList();
         messages.setDivider();
