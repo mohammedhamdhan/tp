@@ -33,6 +33,7 @@ public class Duke {
         UI ui = new UI(scanner, messages, helpPage, storageFilePath, expenseCommand, commands);
 
         messages.displayWelcomeMessage();
+        helpPage.displayCommandList();
         messages.setDivider();
         ui.handleUserInput();
     }
