@@ -5,16 +5,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import seedu.duke.storage.DataStorage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
 public class BudgetManagerTest {
 
     private BudgetManager budgetManager;
-    private static final String TEST_TITLE = "Test Expense";
-    private static final String TEST_DESCRIPTION = "Test Description";
-    private static final double TEST_AMOUNT = 100.0;
+    private final static String TEST_TITLE = "Test Expense";
+    private final static String TEST_DESCRIPTION = "Test Description";
+    private final static double TEST_AMOUNT = 100.0;
 
     @BeforeEach
     void setUp() {
@@ -105,7 +107,10 @@ public class BudgetManagerTest {
 
     @Test
     void testEditExpenseOutOfRange() {
-        assertThrows(IndexOutOfBoundsException.class, () -> budgetManager.editExpense(1, "New Title", "New Description", 200.0));
+        assertThrows(IndexOutOfBoundsException.class,
+                () -> budgetManager.editExpense(1,
+                        "New Title", "New Description",
+                        200.0));
     }
 
     @Test
