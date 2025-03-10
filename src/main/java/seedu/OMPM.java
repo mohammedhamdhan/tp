@@ -2,40 +2,45 @@ package seedu;
 
 import java.util.Scanner;
 import seedu.duke.commands.ExpenseCommand;
+import seedu.duke.commands.FriendsCommands;
 import seedu.duke.expense.BudgetManager;
+import seedu.duke.friends.GroupManager;
 import seedu.duke.menu.HelpPage;
 import seedu.duke.messages.Messages;
 import seedu.duke.ui.UI;
 import seedu.duke.commands.Commands;
 
 public class OMPM {
-    /**
-     * Main entry-point for the O$P$ application.
-     */
 
-    private seedu.duke.ui.UI ui;
+    private UI ui;
     private Scanner scanner;
-    private seedu.duke.messages.Messages messages;
-    private seedu.duke.menu.HelpPage helpPage;
-    private seedu.duke.commands.Commands commands;
+    private Messages messages;
+    private HelpPage helpPage;
+    private Commands commands;
 
-    public OMPM () {};
+    public OMPM () {
+        scanner = new Scanner(System.in);
+        messages = new Messages();
+        helpPage = new HelpPage();
+        commands = new Commands();
+    }
 
     public static void main(String[] args) {
         new OMPM().run();
     }
 
     public void run() {
-        scanner = new Scanner(System.in);
-        messages = new Messages();
-        helpPage = new HelpPage();
-        commands = new Commands();
-        ui = new UI(scanner, messages, helpPage, "data/expenses.txt",
-                new ExpenseCommand(new BudgetManager(), scanner), commands);
+        GroupManager groupManager = new GroupManager();  // Create an instance of GroupManager
+        FriendsCommands friendsCommand = new FriendsCommands(groupManager);
+        ExpenseCommand expenseCommand = new ExpenseCommand(new BudgetManager(), scanner);
 
+        ui = new UI(scanner, messages, helpPage, "data/expenses.txt", expenseCommand, commands, friendsCommand);
+
+        // Display welcome message and command list
         messages.displayWelcomeMessage();
         helpPage.displayCommandList();
         messages.setDivider();
+
         ui.handleUserInput();
     }
 }
