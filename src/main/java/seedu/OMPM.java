@@ -1,12 +1,12 @@
 package seedu;
-
 import java.util.Scanner;
+
 import seedu.duke.commands.ExpenseCommand;
-import seedu.duke.commands.Commands;
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.menu.HelpPage;
 import seedu.duke.messages.Messages;
 import seedu.duke.ui.UI;
+import seedu.duke.commands.Commands;
 
 public class OMPM {
     /**
