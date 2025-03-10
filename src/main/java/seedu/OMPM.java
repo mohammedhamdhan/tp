@@ -1,6 +1,6 @@
 package seedu;
-import java.util.Scanner;
 
+import java.util.Scanner;
 import seedu.duke.commands.ExpenseCommand;
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.menu.HelpPage;
