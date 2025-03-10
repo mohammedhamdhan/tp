@@ -14,9 +14,9 @@ import java.util.List;
 public class BudgetManagerTest {
 
     private BudgetManager budgetManager;
-    private final String TEST_TITLE = "Test Expense";
-    private final String TEST_DESCRIPTION = "Test Description";
-    private final double TEST_AMOUNT = 100.0;
+    private final String testTitle = "Test Expense";
+    private final String testDescription = "Test Description";
+    private final double testAmount = 100.0;
 
     @BeforeEach
     void setUp() {
@@ -31,13 +31,13 @@ public class BudgetManagerTest {
 
     @Test
     void testAddExpense() {
-        Expense expense = new Expense(TEST_TITLE, TEST_DESCRIPTION, TEST_AMOUNT);
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
 
         budgetManager.addExpense(expense);
 
         assertEquals(1, budgetManager.getExpenseCount());
-        assertEquals(TEST_TITLE, budgetManager.getExpense(0).getTitle());
-        assertEquals(TEST_AMOUNT, budgetManager.getExpense(0).getAmount());
+        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
+        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class BudgetManagerTest {
     @Test
     void testEditExpense() {
 
-        Expense expense = new Expense(TEST_TITLE, TEST_DESCRIPTION, TEST_AMOUNT);
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
         budgetManager.addExpense(expense);
 
         Expense editedExpense = budgetManager.editExpense(0, "Updated Title", "Updated Description", 200.0);
@@ -99,7 +99,7 @@ public class BudgetManagerTest {
     @Test
     void testDeleteExpenseOutOfRange() {
 
-        Expense expense = new Expense(TEST_TITLE, TEST_DESCRIPTION, TEST_AMOUNT);
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
         budgetManager.addExpense(expense);
 
         assertThrows(IndexOutOfBoundsException.class, () -> budgetManager.deleteExpense(1));

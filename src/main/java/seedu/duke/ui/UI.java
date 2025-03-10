@@ -78,6 +78,18 @@ public class UI {
         case Commands.BALANCE:
             expenseCommand.showBalanceOverview();
             break;
+        case Commands.MARK:
+            expenseCommand.executeMarkCommand();
+            break;
+        case Commands.UNMARK:
+            expenseCommand.executeUnmarkCommand();
+            break;
+        case Commands.SETTLED_LIST:
+            expenseCommand.displaySettledExpenses();
+            break;
+        case Commands.UNSETTLED_LIST:
+            expenseCommand.displayUnsettledExpenses();
+            break;
         default:
             messages.exitAppMessage();
             break;

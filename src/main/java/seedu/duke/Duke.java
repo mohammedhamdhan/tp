@@ -21,7 +21,7 @@ public class Duke {
     }
 
     public static void main(String[] args) {
-        new Duke(DataStorage.DATA_FILE).run();
+        new Duke(DataStorage.dataFile).run();
     }
 
     public void run() {
