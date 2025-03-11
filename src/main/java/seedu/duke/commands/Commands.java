@@ -8,7 +8,6 @@ public class Commands {
     public static final String DELETE = "delete";
     public static final String EDIT = "edit";
     public static final String BALANCE = "balance";
-    public static final String CREATE_GROUP = "create-group";
 
     public static String getCommandDescription(String command) {
         return "hello";

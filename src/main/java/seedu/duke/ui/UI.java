@@ -4,7 +4,6 @@ import java.util.Scanner;
 import seedu.duke.messages.Messages;
 import seedu.duke.menu.HelpPage;
 import seedu.duke.commands.ExpenseCommand;
-import seedu.duke.commands.FriendsCommands;
 import seedu.duke.commands.Commands;
 import seedu.duke.expense.BudgetManager;
 
@@ -14,13 +13,12 @@ public class UI {
     private final HelpPage helpPage;
     private final String storageFilePath;
     private final ExpenseCommand expenseCommand;
-    private final FriendsCommands friendsCommand;
     private Commands commands;
     private final BudgetManager budgetManager;
     private boolean isRunning;
 
-    public UI(Scanner scanner, Messages messages, HelpPage helpPage, String storageFilePath,
-              ExpenseCommand expenseCommand, Commands commands, FriendsCommands friendsCommand) {
+    public UI(Scanner scanner, Messages messages, HelpPage helpPage, String storageFilePath, 
+              ExpenseCommand expenseCommand, Commands commands) {
         this.scanner = scanner;
         this.messages = messages;
         this.helpPage = helpPage;
@@ -28,10 +26,8 @@ public class UI {
         this.expenseCommand = expenseCommand;
         this.commands = commands;
         this.budgetManager = expenseCommand.getBudgetManager();
-        this.friendsCommand = friendsCommand; // Initialize friendsCommand here
         this.isRunning = true;
     }
-
 
     public void handleUserInput() {
         while (isRunning) {
@@ -81,9 +77,6 @@ public class UI {
             break;
         case Commands.BALANCE:
             expenseCommand.showBalanceOverview();
-            break;
-        case Commands.CREATE_GROUP:
-            friendsCommand.createGroup();
             break;
         default:
             messages.exitAppMessage();
