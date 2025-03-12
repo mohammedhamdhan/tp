@@ -13,6 +13,7 @@ import seedu.duke.ui.UI;
 /**
  * Main class of application
  */
+
 public class Duke {
     private final String storageFilePath;
     private final BudgetManager budgetManager;
