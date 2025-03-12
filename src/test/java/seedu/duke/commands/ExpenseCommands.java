@@ -101,7 +101,5 @@ class ExpenseCommandTest {
         assertTrue(actualOutput.contains(expectedMessage),
                 "Expected message to contain: " + expectedMessage + "\nBut found: " + actualOutput);
     }
-
-
 }
 //@@author
