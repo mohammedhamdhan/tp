@@ -228,7 +228,7 @@ exit
 
 ________________________________________________________________________________
 
-Enter command: Invalid command. Type 'help' to see available commands.
+Enter command: Thank you for using the Expense Manager. Goodbye!
 
 ________________________________________________________________________________
 
