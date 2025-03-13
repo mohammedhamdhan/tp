@@ -17,6 +17,7 @@ import java.io.ByteArrayInputStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+//@@author matthewyeo1
 class ExpenseCommandTest {
     private BudgetManager budgetManager;
     private ExpenseCommand expenseCommand;
@@ -100,6 +101,5 @@ class ExpenseCommandTest {
         assertTrue(actualOutput.contains(expectedMessage),
                 "Expected message to contain: " + expectedMessage + "\nBut found: " + actualOutput);
     }
-
-
 }
+//@@author

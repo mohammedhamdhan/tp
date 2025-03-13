@@ -95,7 +95,7 @@ public class UI {
             expenseCommand.displayUnsettledExpenses();
             break;
         default:
-            messages.exitAppMessage();
+            messages.displayExitMessage();
             break;
         }
     }
