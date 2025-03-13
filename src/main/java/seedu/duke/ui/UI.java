@@ -97,6 +97,9 @@ public class UI {
         case Commands.CREATE_GROUP:
             friendsCommand.createGroup();
             break;
+        case Commands.VIEW_GROUP:
+            friendsCommand.viewGroup();
+            break;
         default:
             messages.exitAppMessage();
             break;

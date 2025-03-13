@@ -55,7 +55,8 @@ public class GroupStorage {
                 // When a friend is encountered, add it to the current group
                 else if (parts.length == 2 && currentGroup != null) {
                     // Create a Friend object using group and friend name
-                    currentGroup.addFriend(new Friend(parts[0], parts[1]));  // Group name and Friend name
+                    currentGroup.addFriend(new Friend(parts[1], parts[0]));  // Correct order
+                    // Group name and Friend name
                 }
             }
         } catch (FileNotFoundException e) {
