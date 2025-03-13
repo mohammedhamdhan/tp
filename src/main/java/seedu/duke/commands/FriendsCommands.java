@@ -31,13 +31,4 @@ public class FriendsCommands {
         System.out.println("Group created successfully!");
     }
 
-    public void viewGroup(String groupName) {
-        if (groupManager.groupExists(groupName)) {
-            System.out.println("Group: " + groupName);
-            groupManager.viewGroupMembers(groupName);
-        } else {
-            System.out.println("Group not found.");
-        }
-    }
-
 }

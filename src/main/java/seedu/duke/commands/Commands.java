@@ -12,6 +12,7 @@ public class Commands {
     public static final String UNSETTLED_LIST = "list-unsettled";
     public static final String MARK = "mark";
     public static final String UNMARK = "unmark";
+    public static final String CREATE_GROUP = "create-group";
 
 
     public static String getCommandDescription(String command) {

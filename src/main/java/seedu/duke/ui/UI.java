@@ -94,6 +94,9 @@ public class UI {
         case Commands.UNSETTLED_LIST:
             expenseCommand.displayUnsettledExpenses();
             break;
+        case Commands.CREATE_GROUP:
+            friendsCommand.createGroup();
+            break;
         default:
             messages.exitAppMessage();
             break;

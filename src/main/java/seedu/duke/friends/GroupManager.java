@@ -24,39 +24,6 @@ public class GroupManager {
         groups.add(newGroup);
     }
 
-    // Remove a friend from a group
-    public void removeFriendFromGroup(String groupName, String friendName) {
-        for (Group group : groups) {
-            if (group.getName().equals(groupName)) {
-                group.getFriends().removeIf(friend -> friend.getName().equals(friendName));
-                return;
-            }
-        }
-    }
-
-    // Check if a group exists
-    public boolean groupExists(String groupName) {
-        for (Group group : groups) {
-            if (group.getName().equals(groupName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // View all members of a group
-    public void viewGroupMembers(String groupName) {
-        for (Group group : groups) {
-            if (group.getName().equals(groupName)) {
-                for (Friend friend : group.getFriends()) {
-                    System.out.println("- " + friend.getName() );
-                }
-                return;
-            }
-        }
-        System.out.println("Group not found.");
-    }
-
     // Save the updated list of groups
     public void saveGroups() {
         GroupStorage.saveGroups(groups);
