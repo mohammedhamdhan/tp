@@ -1,8 +1,11 @@
 package seedu.duke.commands;
 
+import seedu.duke.friends.Group;
 import seedu.duke.friends.GroupManager;
 import seedu.duke.friends.Friend;
 import seedu.duke.storage.GroupStorage;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class FriendsCommands {
@@ -40,6 +43,65 @@ public class FriendsCommands {
             groupManager.viewGroupMembers(groupName);
         } else {
             System.out.println("Group not found.");
+        }
+    }
+
+    public void viewAllGroups() {
+        for (Group group : groupManager.getGroups()) {
+            System.out.println(group);
+        }
+    }
+
+    public void addMember() {
+        System.out.print("Enter the name of the member to add: ");
+        String name = scanner.nextLine().trim();
+
+        System.out.print("Enter the group name: ");
+        String groupName = scanner.nextLine().trim();
+
+        if (groupManager.groupExists(groupName)) {
+            groupManager.addFriendToGroup(groupName, new Friend(name, groupName));
+            groupManager.saveGroups();  // Save the updated group data
+            System.out.println(name + " has been added to " + groupName);
+        } else {
+            System.out.print("Group does not exist. Would you like to create this group first? (yes/no): ");
+            String response = scanner.nextLine().trim().toLowerCase();
+
+            if (response.equals("yes")) {
+                groupManager.addFriendToGroup(groupName, new Friend(name, groupName));  // Directly add the friend
+                groupManager.saveGroups();  // Save the new group and member
+                System.out.println("Group " + groupName + " has been created and " + name + " has been added.");
+            } else {
+                System.out.println("Operation cancelled. " + name + " was not added.");
+            }
+        }
+    }
+
+    public void removeMember() {
+        System.out.print("Enter the name of the member to remove: ");
+        String memberName = scanner.nextLine().trim();
+
+        System.out.print("Enter the group name from which to remove " + memberName + ": ");
+        String groupName = scanner.nextLine().trim();
+
+        if (!groupManager.groupExists(groupName)) {
+            System.out.println("Group does not exist.");
+            return;
+        }
+
+        boolean removed = false;
+        for (Group group : groupManager.getGroups()) {
+            if (group.getName().equals(groupName)) {
+                removed = group.removeFriend(memberName);
+                break;
+            }
+        }
+
+        if (removed) {
+            groupManager.saveGroups();  // Save the updated group data
+            System.out.println(memberName + " has been removed from " + groupName);
+        } else {
+            System.out.println(memberName + " is not in " + groupName);
         }
     }
 

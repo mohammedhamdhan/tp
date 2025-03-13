@@ -2,6 +2,8 @@ package seedu.duke.friends;
 
 import seedu.duke.storage.GroupStorage;
 import java.util.List;
+import java.util.ArrayList;
+
 
 public class GroupManager {
     private List<Group> groups;
@@ -45,6 +47,15 @@ public class GroupManager {
             }
         }
         System.out.println("Group not found.");
+    }
+
+    public List<Friend> getGroupMembers(String groupName) {
+        for (Group group : groups) {
+            if (group.getName().equals(groupName)) {
+                return group.getFriends();
+            }
+        }
+        return new ArrayList<>(); // Return an empty list if the group doesn't exist
     }
 
     // Save the updated list of groups

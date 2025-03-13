@@ -16,9 +16,15 @@ public class Group {
         friends.add(friend);
     }
 
+    // In Group.java
     public boolean removeFriend(String friendName) {
-        friends.remove(friendName);
-        return true;
+        for (Friend friend : friends) {
+            if (friend.getName().equals(friendName)) {
+                friends.remove(friend);
+                return true; // Successfully removed
+            }
+        }
+        return false; // Friend not found
     }
 
     public List<Friend> getFriends() {
@@ -28,4 +34,19 @@ public class Group {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        String result = "Group Name: " + name + "\nMembers:\n";
+
+        if (friends.isEmpty()) {
+            result += "No members in this group.";
+        } else {
+            for (Friend friend : friends) {
+                result += "- " + friend.getName() + "\n";
+            }
+        }
+        return result;
+    }
+
 }

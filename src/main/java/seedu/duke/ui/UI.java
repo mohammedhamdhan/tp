@@ -100,6 +100,15 @@ public class UI {
         case Commands.VIEW_GROUP:
             friendsCommand.viewGroup();
             break;
+        case Commands.ADD_MEMBER:
+            friendsCommand.addMember();
+            break;
+        case Commands.REMOVE_MEMBER:
+            friendsCommand.removeMember();
+            break;
+        case Commands.VIEW_ALL_GROUPS:
+                friendsCommand.viewAllGroups();
+            break;
         default:
             messages.exitAppMessage();
             break;
