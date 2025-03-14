@@ -107,7 +107,7 @@ public class UI {
             friendsCommand.removeMember();
             break;
         case Commands.VIEW_ALL_GROUPS:
-                friendsCommand.viewAllGroups();
+            friendsCommand.viewAllGroups();
             break;
         default:
             messages.exitAppMessage();

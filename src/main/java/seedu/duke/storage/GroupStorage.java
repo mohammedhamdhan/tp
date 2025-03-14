@@ -51,9 +51,7 @@ public class GroupStorage {
                 if (parts.length == 2 && parts[0].equals(GROUP_HEADER)) {
                     currentGroup = new Group(parts[1]);  // Group name is after [GROUP]|
                     groups.add(currentGroup);  // Add the group to the list
-                }
-                // When a friend is encountered, add it to the current group
-                else if (parts.length == 2 && currentGroup != null) {
+                } else if (parts.length == 2 && currentGroup != null) { // When a friend is encountered, add it to the current group
                     // Create a Friend object using group and friend name
                     currentGroup.addFriend(new Friend(parts[1], parts[0]));  // Correct order
                     // Group name and Friend name

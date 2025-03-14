@@ -3,11 +3,10 @@ package seedu.duke.commands;
 import seedu.duke.friends.Group;
 import seedu.duke.friends.GroupManager;
 import seedu.duke.friends.Friend;
-import seedu.duke.storage.GroupStorage;
 
-import java.util.List;
 import java.util.Scanner;
 
+//@@author nandhananm7
 public class FriendsCommands {
     private GroupManager groupManager;
     private Scanner scanner;
@@ -26,7 +25,9 @@ public class FriendsCommands {
         while (true) {
             System.out.print("Enter name: ");
             String name = scanner.nextLine();
-            if (name.equalsIgnoreCase("done")) break;  // Exit when 'done' is entered
+            if (name.equalsIgnoreCase("done")) {
+                break;  // Exit when 'done' is entered
+            }
             groupManager.addFriendToGroup(groupName, new Friend(name, groupName));
         }
 
@@ -106,3 +107,4 @@ public class FriendsCommands {
     }
 
 }
+//@@author

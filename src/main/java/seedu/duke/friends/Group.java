@@ -3,6 +3,7 @@ package seedu.duke.friends;
 import java.util.ArrayList;
 import java.util.List;
 
+//@@author nandhananm7
 public class Group {
     private String name;
     private List<Friend> friends;
@@ -50,3 +51,4 @@ public class Group {
     }
 
 }
+//@@author

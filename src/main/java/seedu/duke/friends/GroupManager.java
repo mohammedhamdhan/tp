@@ -4,7 +4,7 @@ import seedu.duke.storage.GroupStorage;
 import java.util.List;
 import java.util.ArrayList;
 
-
+//@@author nandhananm7
 public class GroupManager {
     private List<Group> groups;
 
@@ -68,3 +68,4 @@ public class GroupManager {
         return groups;
     }
 }
+//@@author
