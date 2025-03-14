@@ -2,7 +2,9 @@ package seedu.duke.friends;
 
 import seedu.duke.storage.GroupStorage;
 import java.util.List;
+import java.util.ArrayList;
 
+//@@author nandhananm7
 public class GroupManager {
     private List<Group> groups;
 
@@ -22,16 +24,6 @@ public class GroupManager {
         Group newGroup = new Group(groupName);
         newGroup.addFriend(friend);
         groups.add(newGroup);
-    }
-
-    // Remove a friend from a group
-    public void removeFriendFromGroup(String groupName, String friendName) {
-        for (Group group : groups) {
-            if (group.getName().equals(groupName)) {
-                group.getFriends().removeIf(friend -> friend.getName().equals(friendName));
-                return;
-            }
-        }
     }
 
     // Check if a group exists
@@ -57,6 +49,15 @@ public class GroupManager {
         System.out.println("Group not found.");
     }
 
+    public List<Friend> getGroupMembers(String groupName) {
+        for (Group group : groups) {
+            if (group.getName().equals(groupName)) {
+                return group.getFriends();
+            }
+        }
+        return new ArrayList<>(); // Return an empty list if the group doesn't exist
+    }
+
     // Save the updated list of groups
     public void saveGroups() {
         GroupStorage.saveGroups(groups);
@@ -67,3 +68,4 @@ public class GroupManager {
         return groups;
     }
 }
+//@@author

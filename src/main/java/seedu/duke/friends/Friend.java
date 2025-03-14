@@ -1,10 +1,11 @@
 package seedu.duke.friends;
 
+//@@author nandhananm7
 public class Friend {
     private String group;
     private String name;
 
-    public Friend(String group, String name) {
+    public Friend(String name, String group) {
         this.group = group;
         this.name = name;
     }
@@ -17,3 +18,4 @@ public class Friend {
         return name;
     }
 }
+//@@author
