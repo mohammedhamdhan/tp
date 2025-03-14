@@ -57,6 +57,40 @@ balance
   Description: Show the balance overview (total expenses and amount owed)
   Usage: balance
 
+create-group
+  Description: Create a new group and add members to it
+  Usage: create-group
+  You will be prompted to:
+    - Enter group name
+    - Enter members to add one by one
+    - Enter done to create and save the group
+
+view-group
+  Description: view the members of a specific group
+  Usage: view-group
+  You will be prompted to enter:
+    - Enter group name
+
+add-member
+  Description: add a member to an existing group/ create a new group and add
+  Usage: add-member
+  You will be prompted to enter:
+    - Enter name of new member
+    - Enter name group to add to
+        If the group exists, adds to group. Else prompts the user to create a new group first
+
+remove-group
+  Description: remove a member from a group
+  Usage: remove-group
+  You will be prompted to enter:
+    - Enter name of member to remove
+    - Enter group to remove member from
+
+my-groups
+  Description: view the members of a specific group
+  Usage: view-group
+  Shows all the members and groups
+
 exit
   Description: Exit the program
   Usage: exit
@@ -221,6 +255,40 @@ edit
 balance
   Description: Show the balance overview (total expenses and amount owed)
   Usage: balance
+
+create-group
+  Description: Create a new group and add members to it
+  Usage: create-group
+  You will be prompted to:
+    - Enter group name
+    - Enter members to add one by one
+    - Enter done to create and save the group
+
+view-group
+  Description: view the members of a specific group
+  Usage: view-group
+  You will be prompted to enter:
+    - Enter group name
+
+add-member
+  Description: add a member to an existing group/ create a new group and add
+  Usage: add-member
+  You will be prompted to enter:
+    - Enter name of new member
+    - Enter name group to add to
+        If the group exists, adds to group. Else prompts the user to create a new group first
+
+remove-group
+  Description: remove a member from a group
+  Usage: remove-group
+  You will be prompted to enter:
+    - Enter name of member to remove
+    - Enter group to remove member from
+
+my-groups
+  Description: view the members of a specific group
+  Usage: view-group
+  Shows all the members and groups
 
 exit
   Description: Exit the program
