@@ -96,7 +96,8 @@ public class HelpPage {
         System.out.println("  You will be prompted to enter:");
         System.out.println("    - Enter name of new member");
         System.out.println("    - Enter name group to add to");
-        System.out.println("        If the group exists, adds to group. Else prompts the user to create a new group first");
+        System.out.println("        If the group exists, adds to group. " +
+                           "Else prompts the user to create a new group first");
         System.out.println();
 
         System.out.println("remove-group");
