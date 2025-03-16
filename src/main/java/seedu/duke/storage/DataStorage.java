@@ -22,11 +22,14 @@ public class DataStorage {
         File file = new File(dataFile);
         try {
             if (file.createNewFile()) {
-                // Removed: Messages.createNewFileMessage(dataFile);
+                Messages.createNewFileMessage();
             }
         } catch (IOException e) {
             System.out.println(Messages.errorMessageTag() + " Error creating data file: " + e.getMessage());
         }
+        //@@author matthewyeo1
+        assert file.exists() : "Data file should exist after ensuring";
+        //@@author
     }
 
     /**
@@ -36,6 +39,9 @@ public class DataStorage {
      * @return true if saving was successful, false otherwise
      */
     public static boolean saveExpenses(List<Expense> expenses) {
+        //@@author matthewyeo1
+        assert expenses != null : "Expenses list should not be null";
+        //@@author
         try (FileWriter writer = new FileWriter(dataFile)) {
             for (Expense expense : expenses) {
                 writer.write(expense.getTitle() + SEPARATOR
@@ -76,13 +82,13 @@ public class DataStorage {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split("\\" + SEPARATOR);
-                
+
                 if (parts.length == 4) {
                     String title = parts[0];
                     String description = parts[1];
                     double amount = Double.parseDouble(parts[2]);
-                    Boolean isDone = true;
-                    if(parts[3].equals("false")) {
+                    boolean isDone = true;
+                    if (parts[3].equals("false")) {
                         isDone = false;
                     }
                     expenses.add(new Expense(title, description, amount,isDone));
@@ -106,6 +112,9 @@ public class DataStorage {
         } catch (IOException e) {
             System.out.println(Messages.errorMessageTag() + " Error resetting expenses: " + e.getMessage());
         }
+        //@@author matthewyeo1
+        assert new File(dataFile).length() == 0 : "Data file should be empty after reset";
+        //@@author
     }
 }
 

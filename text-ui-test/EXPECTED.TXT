@@ -296,7 +296,7 @@ exit
 
 ________________________________________________________________________________
 
-Enter command: Thank you for using the Expense Manager. Goodbye!
+Enter command: Invalid command.
 
 ________________________________________________________________________________
 

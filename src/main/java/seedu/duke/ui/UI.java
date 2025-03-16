@@ -110,7 +110,7 @@ public class UI {
             friendsCommand.viewAllGroups();
             break;
         default:
-            messages.displayExitMessage();
+            messages.displayInvalidCommandMessage();
             break;
         }
     }

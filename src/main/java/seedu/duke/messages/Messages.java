@@ -33,7 +33,7 @@ public class Messages {
     }
 
     /**
-     * Displays an error message when the user inputs an invalid index.
+     * ERROR tag for various types of errors.
      */
     public static String errorMessageTag() {
         return "ERROR: ";
@@ -51,6 +51,20 @@ public class Messages {
      */
     public void displayExitMessage() {
         System.out.println("Thank you for using the Expense Manager. Goodbye!");
+    }
+
+    /**
+     * Displays an error message when the user inputs an invalid command.
+     */
+    public void displayInvalidCommandMessage() {
+        System.out.println("Invalid command.");
+    }
+
+    /**
+     * Displays message upon data file creation.
+     */
+    public static void createNewFileMessage() {
+        System.out.println("Created a new file!");
     }
 }
 //@@author
