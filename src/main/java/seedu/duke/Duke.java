@@ -1,3 +1,4 @@
+//@@author matthewyeo1
 package seedu.duke;
 
 import java.util.Scanner;
@@ -13,9 +14,8 @@ import seedu.duke.storage.DataStorage;
 import seedu.duke.ui.UI;
 
 /**
- * Main class of application
+ * Main class of application.
  */
-
 public class Duke {
     private final String storageFilePath;
     private final BudgetManager budgetManager;
@@ -47,5 +47,5 @@ public class Duke {
         ui.handleUserInput();
     }
 }
-
+//@@author
 
