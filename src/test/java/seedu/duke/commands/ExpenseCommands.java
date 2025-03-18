@@ -23,6 +23,9 @@ class ExpenseCommandTest {
     private ExpenseCommand expenseCommand;
     private final PrintStream originalOut = System.out;
     private ByteArrayOutputStream outContent;
+    private final String testTitle = "Test Expense";
+    private final String testDescription = "Test Description";
+    private final double testAmount = 100.0;
 
     @BeforeEach
     void setUp() {
@@ -101,5 +104,109 @@ class ExpenseCommandTest {
         assertTrue(actualOutput.contains(expectedMessage),
                 "Expected message to contain: " + expectedMessage + "\nBut found: " + actualOutput);
     }
+    //@@author
+
+    //@@author NandhithaShree
+    @Test
+    void testExecuteMarkCommand() {
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        budgetManager.addExpense(expense);
+        assertEquals(false, expense.getDone());
+
+        provideInput("1\n");
+        expenseCommand.executeMarkCommand();
+        assertEquals(true, expense.getDone());
+
+        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
+        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
+        assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
+    }
+
+    @Test
+    void testExecuteUnmarkCommand() {
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        budgetManager.addExpense(expense);
+        assertEquals(false, expense.getDone());
+
+        provideInput("1\n");
+        expenseCommand.executeMarkCommand();
+        assertEquals(true, expense.getDone());
+
+        provideInput("1");
+        expenseCommand.executeUnmarkCommand();
+        assertEquals(false, expense.getDone());
+
+        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
+        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
+        assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
+    }
+
+    @Test
+    void testExecuteMarkCommandInvalidInputs() {
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        budgetManager.addExpense(expense);
+        assertEquals(false, expense.getDone());
+        provideInput("2\n");
+
+        expenseCommand.executeMarkCommand();
+        String expectedMessage = "Please enter a valid expense number.";
+        String actualOutput = outContent.toString().trim();
+
+        assertTrue(actualOutput.contains(expectedMessage));
+        assertEquals(false, expense.getDone());
+
+        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
+        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
+        assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
+    }
+
+    @Test
+    void testDisplaySettledExpensesZeroSettledExpenses(){
+        provideInput("\n");
+        expenseCommand.displaySettledExpenses();
+        String expectedMessage = "No expenses found.";
+
+        String actualOutput = outContent.toString().trim();
+        assertEquals(expectedMessage, actualOutput);
+    }
+
+    @Test
+    void testDisplaySettledExpensesTwoSettledExpenses(){
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        Expense expense1 = new Expense(testTitle + "1", testDescription + "1", testAmount + 1);
+        Expense expense2= new Expense(testTitle + "2", testDescription + "2", testAmount + 1);
+        budgetManager.addExpense(expense);
+        budgetManager.addExpense(expense1);
+        budgetManager.addExpense(expense2);
+        budgetManager.markExpense(0);
+        budgetManager.markExpense(1);
+
+        expenseCommand.displaySettledExpenses();
+        String expectedMessage = "Expense #1\n" + expense.toString() + "\n" + "\n" + "Expense #2\n" + expense1.toString()
+                + "\n" + "\n" + "List of Settled Expenses:" + "\n" + "You have 2 settled expenses";
+        String actualOutput = outContent.toString().trim();
+        actualOutput = actualOutput.replaceAll("\r\n", "\n");
+        assertEquals(expectedMessage, actualOutput);
+    }
+
+    void testDisplayUnsettledExpensesTwoUnsettledExpenses(){
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        Expense expense1 = new Expense(testTitle + "1", testDescription + "1", testAmount + 1);
+        Expense expense2= new Expense(testTitle + "2", testDescription + "2", testAmount + 1);
+        budgetManager.addExpense(expense);
+        budgetManager.addExpense(expense1);
+        budgetManager.addExpense(expense2);
+        budgetManager.markExpense(3);
+
+        expenseCommand.displayUnsettledExpenses();
+        String expectedMessage = "Expense #1\n" + expense.toString() + "\n" + "\n" + "Expense #2\n" + expense1.toString()
+                + "\n" + "\n" + "List of Unsettled Expenses:" + "\n" + "You have 2 unsettled expenses";
+        String actualOutput = outContent.toString().trim();
+        actualOutput = actualOutput.replaceAll("\r\n", "\n");
+        assertEquals(expectedMessage, actualOutput);
+    }
+    //@@author
 }
-//@@author
+
