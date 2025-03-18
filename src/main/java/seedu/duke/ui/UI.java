@@ -6,6 +6,7 @@ import seedu.duke.menu.HelpPage;
 import seedu.duke.commands.ExpenseCommand;
 import seedu.duke.commands.FriendsCommands;
 import seedu.duke.commands.Commands;
+import seedu.duke.commands.SplitCommand;
 import seedu.duke.expense.BudgetManager;
 
 public class UI {
@@ -15,12 +16,13 @@ public class UI {
     private final String storageFilePath;
     private final ExpenseCommand expenseCommand;
     private final FriendsCommands friendsCommand;
+    private final SplitCommand splitCommand;
     private Commands commands;
     private final BudgetManager budgetManager;
     private boolean isRunning;
 
     public UI(Scanner scanner, Messages messages, HelpPage helpPage, String storageFilePath,
-              ExpenseCommand expenseCommand, Commands commands, FriendsCommands friendsCommand) {
+              ExpenseCommand expenseCommand, Commands commands, FriendsCommands friendsCommand, SplitCommand splitCommand) {
         this.scanner = scanner;
         this.messages = messages;
         this.helpPage = helpPage;
@@ -29,6 +31,7 @@ public class UI {
         this.commands = commands;
         this.budgetManager = expenseCommand.getBudgetManager();
         this.friendsCommand = friendsCommand; // Initialize friendsCommand here
+        this.splitCommand = splitCommand;
         this.isRunning = true;
     }
 
@@ -108,6 +111,9 @@ public class UI {
             break;
         case Commands.VIEW_ALL_GROUPS:
             friendsCommand.viewAllGroups();
+            break;
+        case Commands.SPLIT:
+            splitCommand.executeSplit();
             break;
         default:
             messages.displayInvalidCommandMessage();
