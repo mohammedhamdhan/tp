@@ -37,12 +37,12 @@ public class SplitCommand {
     }
     
     /**
-     * Executes the expense splitting feature.
+     * * Executes the expense splitting feature.
      * The user is first prompted to choose a splitting option:
-     *     [1] Equal split: Select an expense and divide its amount equally among all members of a group.
-     *     [2] Manual split: Select an expense and then, for each member in a specified group,
-     *         assign a flat amount (/a) or a percentage (/p) to determine what they owe.
-     *     [x] Cancel the operation.
+     * [1] Equal split: Select an expense and divide its amount equally among all members of a group.
+     * [2] Manual split: Select an expense and then, for each member in a specified group,
+     * assign a flat amount (/a) or a percentage (/p) to determine what they owe.
+     * [x] Cancel the operation.
      * The computed owed amounts are appended to a file.
      */
     public void executeSplit() {
@@ -68,7 +68,9 @@ public class SplitCommand {
         System.out.println("Available expenses:");
         for (int i = 0; i < expenses.size(); i++) {
             Expense exp = expenses.get(i);
-            System.out.println((i + 1) + ". " + exp.getTitle() + " | Amount: " + String.format("%.2f", exp.getAmount()));
+            System.out.println((i + 1) + ". " + 
+            exp.getTitle() + " | Amount: "+
+            String.format("%.2f", exp.getAmount()));
         }
         System.out.print("Enter expense number to split: ");
         String expenseInput = scanner.nextLine().trim();
@@ -152,7 +154,10 @@ public class SplitCommand {
                             System.out.println("Percentage must be between 0 and 100. Skipping " + member.getName());
                         } else {
                             double amount = totalAmount * (percentage / 100.0);
-                            String assignment = " - " + member.getName() + " owes: " + String.format("%.2f", amount) + "\n";
+
+                            String assignment = " - " + member.getName() + 
+                            " owes: " + 
+                            String.format("%.2f", amount) + "\n";
                             System.out.print(assignment);
                             owesData += assignment;
                         }

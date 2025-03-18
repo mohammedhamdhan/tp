@@ -21,8 +21,14 @@ public class UI {
     private final BudgetManager budgetManager;
     private boolean isRunning;
 
-    public UI(Scanner scanner, Messages messages, HelpPage helpPage, String storageFilePath,
-              ExpenseCommand expenseCommand, Commands commands, FriendsCommands friendsCommand, SplitCommand splitCommand) {
+    public UI(Scanner scanner, 
+            Messages messages, 
+            HelpPage helpPage, 
+            String storageFilePath,
+            ExpenseCommand expenseCommand, 
+            Commands commands, 
+            FriendsCommands friendsCommand, 
+            SplitCommand splitCommand) {
         this.scanner = scanner;
         this.messages = messages;
         this.helpPage = helpPage;
