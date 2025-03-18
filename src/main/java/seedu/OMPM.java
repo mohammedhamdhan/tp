@@ -36,7 +36,14 @@ public class OMPM {
         ExpenseCommand expenseCommand = new ExpenseCommand(new BudgetManager(), scanner);
         SplitCommand splitCommand = new SplitCommand(scanner, groupManager);
 
-        ui = new UI(scanner, messages, helpPage, "data/expenses.txt", expenseCommand, commands, friendsCommand, splitCommand);
+        ui = new UI(scanner, 
+        messages, 
+        helpPage, 
+        "data/expenses.txt", 
+        expenseCommand, 
+        commands, 
+        friendsCommand, 
+        splitCommand);
 
         // Display welcome message and command list
         messages.displayWelcomeMessage();
