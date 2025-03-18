@@ -183,8 +183,8 @@ class ExpenseCommandTest {
         budgetManager.markExpense(1);
 
         expenseCommand.displaySettledExpenses();
-        String expectedMessage = "Expense #1\n" + expense.toString() + "\n" + "\n" + "Expense #2\n" + expense1.toString()
-                + "\n" + "\n" + "List of Settled Expenses:" + "\n" + "You have 2 settled expenses";
+        String expectedMessage = "Expense #1\n" + expense.toString() + "\n\n" + "Expense #2\n" + expense1.toString()
+                + "\n\n" + "List of Settled Expenses:" + "\n" + "You have 2 settled expenses";
         String actualOutput = outContent.toString().trim();
         actualOutput = actualOutput.replaceAll("\r\n", "\n");
         assertEquals(expectedMessage, actualOutput);
@@ -201,8 +201,8 @@ class ExpenseCommandTest {
         budgetManager.markExpense(3);
 
         expenseCommand.displayUnsettledExpenses();
-        String expectedMessage = "Expense #1\n" + expense.toString() + "\n" + "\n" + "Expense #2\n" + expense1.toString()
-                + "\n" + "\n" + "List of Unsettled Expenses:" + "\n" + "You have 2 unsettled expenses";
+        String expectedMessage = "Expense #1\n" + expense.toString() + "\n\n" + "Expense #2\n" + expense1.toString()
+                + "\n\n" + "List of Unsettled Expenses:" + "\n" + "You have 2 unsettled expenses";
         String actualOutput = outContent.toString().trim();
         actualOutput = actualOutput.replaceAll("\r\n", "\n");
         assertEquals(expectedMessage, actualOutput);
