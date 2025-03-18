@@ -117,5 +117,73 @@ public class BudgetManagerTest {
     void testGetExpenseOutOfRange() {
         assertThrows(IndexOutOfBoundsException.class, () -> budgetManager.getExpense(1));
     }
+    //@@author
+
+    //@@author NandhithaShree
+    @Test
+    void testMark(){
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        budgetManager.addExpense(expense);
+        int testIndex = 0;
+
+        budgetManager.markExpense(testIndex);
+        assertEquals(expense.isDone(), true)
+        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
+        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
+    }
+
+    void testUnmark(){
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        budgetManager.addExpense(expense);
+        int testIndex = 0;
+
+        budgetManager.markExpense(testIndex);
+        assertEquals(expense.isDone(), true);
+
+        budgetManager.unmarkExpense(testIndex);
+        assertEquals(expense.isDone(), false);
+        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
+        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
+    }
+
+    void testMarkExpenseOutOfRange(){
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        budgetManager.addExpense(expense);
+
+        assertThrows(IndexOutOfBoundsException.class, () -> budgetManager.markExpense(1));
+    }
+
+    void testUnmarkExpenseOutOfRange(){
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        budgetManager.addExpense(expense);
+
+        assertThrows(IndexOutOfBoundsException.class, () -> budgetManager.unmarkExpense(1));
+    }
+
+    void testgetUnsettledExpensesCountZeroUnsettled(){
+        int numberOfUnsettledExpenses = 0;
+
+        assertEquals(budgetManager.getUnsettledExpenseCount(), numberOfUnsettledExpenses)
+    }
+
+    void testgetUnsettledExpensesCountOneUnsettled(){
+        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        budgetManager.addExpense(expense);
+        int numberOfUnsettledExpenses = 1;
+
+        assertEquals(budgetManager.getUnsettledExpenseCount(), numberOfUnsettledExpenses)
+    }
+
+    void testgetUnsettledExpensesCountMultipleUnsettled(){
+        Expense expense1 = new Expense(testTitle, testDescription, testAmount);
+        Expense expense2 = new Expense(testTitle, testDescription, testAmount);
+        budgetManager.addExpense(expense1);
+        budgetManager.addExpense(expense2);
+        int numberOfUnsettledExpenses = 2;
+
+        assertEquals(budgetManager.getUnsettledExpenseCount(), numberOfUnsettledExpenses)
+    }
+    //@@author
 }
-//@@author
+
+
