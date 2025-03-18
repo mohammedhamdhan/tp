@@ -68,9 +68,9 @@ public class SplitCommand {
         System.out.println("Available expenses:");
         for (int i = 0; i < expenses.size(); i++) {
             Expense exp = expenses.get(i);
-            System.out.println((i + 1) + ". " + 
-            exp.getTitle() + " | Amount: "+
-            String.format("%.2f", exp.getAmount()));
+            System.out.println((i + 1) + ". " +
+                    exp.getTitle() + " | Amount: " +
+                    String.format("%.2f", exp.getAmount()));
         }
         System.out.print("Enter expense number to split: ");
         String expenseInput = scanner.nextLine().trim();
@@ -155,9 +155,9 @@ public class SplitCommand {
                         } else {
                             double amount = totalAmount * (percentage / 100.0);
 
-                            String assignment = " - " + member.getName() + 
-                            " owes: " + 
-                            String.format("%.2f", amount) + "\n";
+                            String assignment = " - " + member.getName() +
+                                    " owes: " +
+                                    String.format("%.2f", amount) + "\n";
                             System.out.print(assignment);
                             owesData += assignment;
                         }
