@@ -50,20 +50,20 @@ public class SplitCommand {
         System.out.println("[2] Manually assign amounts for each member in a group");
         System.out.println("[x]: Cancel");
         System.out.print("Enter option: ");
-        
+
         String option = scanner.nextLine().trim();
         if (option.equalsIgnoreCase("x")) {
             System.out.println("Split cancelled.");
             return;
         }
-        
+
         // Load existing expenses from storage.
         List<Expense> expenses = DataStorage.loadExpenses();
         if (expenses == null || expenses.isEmpty()) {
             System.out.println("No expenses available to split.");
             return;
         }
-        
+
         // Display list of expenses.
         System.out.println("Available expenses:");
         for (int i = 0; i < expenses.size(); i++) {
@@ -85,13 +85,11 @@ public class SplitCommand {
             System.out.println("Invalid number format.");
             return;
         }
-        
+
         Expense selectedExpense = expenses.get(expIndex);
         double totalAmount = selectedExpense.getAmount();
         System.out.println("Selected expense amount: " + String.format("%.2f", totalAmount));
-        
-        String owesData = ""; // Accumulate owed amounts.
-        
+
         if (option.equals("1")) {
             // Equal split option.
             System.out.print("Enter group name for equal split: ");
@@ -107,12 +105,13 @@ public class SplitCommand {
             }
             int numMembers = members.size();
             double share = totalAmount / numMembers;
-            System.out.println("Splitting " + totalAmount + " equally among " + numMembers 
+            System.out.println("Splitting " + totalAmount + " equally among " + numMembers
                     + " members of group \"" + groupName + "\":");
             for (Friend member : members) {
                 String assignment = " - " + member.getName() + " owes: " + String.format("%.2f", share) + "\n";
                 System.out.print(assignment);
-                owesData += assignment;
+                // Save each member's owed amount in real-time.
+                OwesStorage.appendOwes(assignment);
             }
             System.out.println("Updated list of transactions!");
         } else if (option.equals("2")) {
@@ -141,7 +140,8 @@ public class SplitCommand {
                         double amount = Double.parseDouble(amtStr);
                         String assignment = " - " + member.getName() + " owes: " + String.format("%.2f", amount) + "\n";
                         System.out.print(assignment);
-                        owesData += assignment;
+                        // Save each member's owed amount in real-time.
+                        OwesStorage.appendOwes(assignment);
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid amount format. Skipping " + member.getName());
                     }
@@ -159,7 +159,8 @@ public class SplitCommand {
                                     " owes: " +
                                     String.format("%.2f", amount) + "\n";
                             System.out.print(assignment);
-                            owesData += assignment;
+                            // Save each member's owed amount in real-time.
+                            OwesStorage.appendOwes(assignment);
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid percentage format. Skipping " + member.getName());
@@ -172,14 +173,6 @@ public class SplitCommand {
         } else {
             System.out.println("Invalid option. Cancelling split.");
             return;
-        }
-        
-        // Append the owes data to a file.
-        boolean saved = OwesStorage.appendOwes(owesData);
-        if (saved) {
-            System.out.println("Owes data appended to file successfully.");
-        } else {
-            System.out.println("Failed to append owes data to file.");
         }
     }
     

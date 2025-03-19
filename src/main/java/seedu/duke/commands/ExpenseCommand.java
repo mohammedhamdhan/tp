@@ -1,10 +1,18 @@
 package seedu.duke.commands;
 
-import java.util.List;
-import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.expense.Expense;
+import seedu.duke.friends.Friend;
+import seedu.duke.friends.GroupManager;
+import java.util.Scanner;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Handles expense-related commands entered by the user.
@@ -12,6 +20,7 @@ import seedu.duke.expense.Expense;
 public class ExpenseCommand {
     private BudgetManager budgetManager;
     private Scanner scanner;
+    private GroupManager groupManager;
 
     /**
      * Constructs an ExpenseCommand with the given BudgetManager and Scanner.
@@ -56,32 +65,44 @@ public class ExpenseCommand {
             System.out.println("Error adding expense: " + e.getMessage());
         }
     }
-
+    //@@author matthewyeo1
     /**
-     * Executes the delete expense command.
+     * Executes the delete expense command by setting the expense amount to 0.0.
      */
     public void executeDeleteExpense() {
         try {
             displayAllExpenses();
-            
+
             if (budgetManager.getExpenseCount() == 0) {
                 return;
             }
-            
-            System.out.println("Enter the index of the expense to delete:");
+
+            System.out.println("Enter the index of the expense to mark as deleted (amount set to 0.0):");
             int index = Integer.parseInt(scanner.nextLine().trim()) - 1; // Convert to 0-based index
-            
-            Expense deletedExpense = budgetManager.deleteExpense(index);
-            System.out.println("Expense deleted successfully:");
-            System.out.println(deletedExpense);
+
+            // Get the expense to be deleted
+            Expense deletedExpense = budgetManager.getExpense(index);
+            if (deletedExpense == null) {
+                throw new IndexOutOfBoundsException("Invalid expense index.");
+            }
+
+            // Update the expense amount to 0.0
+            Expense updatedExpense = budgetManager.setExpenseAmountToZero(index);
+
+            // Update the owesData.txtfile
+            updateOwesDataFile(deletedExpense);
+
+            System.out.println("Expense marked as deleted (amount set to 0.0) successfully:");
+            System.out.println(updatedExpense);
         } catch (NumberFormatException e) {
             System.out.println("Invalid index format. Please enter a valid number.");
         } catch (IndexOutOfBoundsException e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
-            System.out.println("Error deleting expense: " + e.getMessage());
+            System.out.println("Error marking expense as deleted: " + e.getMessage());
         }
     }
+    //@@author
 
     /**
      * Executes the edit expense command.
@@ -269,4 +290,79 @@ public class ExpenseCommand {
     public BudgetManager getBudgetManager() {
         return budgetManager;
     }
+
+    //@@author matthewyeo1
+    /**
+     * Updates the owesData.txt file for the deleted expense.
+     *
+     * @param deletedExpense the expense being deleted
+     */
+    private void updateOwesDataFile(Expense deletedExpense) {
+        String owesFile = "owedAmounts.txt";
+        File file = new File(owesFile);
+
+        // Temporary map to store updated owed amounts
+        Map<String, Double> updatedOwes = new HashMap<>();
+
+        try (Scanner fileScanner = new Scanner(file)) {
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine().trim();
+                if (line.startsWith("- ")) { // Lines with owed amounts start with "- "
+                    String[] parts = line.split(" owes: ");
+                    if (parts.length == 2) {
+                        String name = parts[0].substring(2).trim(); // Extract the member's name
+                        double amount = Double.parseDouble(parts[1].trim()); // Extract the owed amount
+                        updatedOwes.put(name, amount); // Store in the map
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Owed amounts file not found. No amounts to update.");
+            return;
+        } catch (NumberFormatException e) {
+            System.out.println("Error parsing owed amounts. Some amounts may not be updated.");
+            return;
+        }
+
+        // Adjust owed amounts for the deleted expense
+        List<Friend> groupMembers = getGroupMembersForExpense(deletedExpense);
+        if (groupMembers != null && !groupMembers.isEmpty()) {
+            double totalAmount = deletedExpense.getAmount();
+            int numMembers = groupMembers.size();
+            double sharePerMember = totalAmount / numMembers;
+
+            for (Friend member : groupMembers) {
+                String name = member.getName();
+                double currentOwed = updatedOwes.getOrDefault(name, 0.0);
+                double newOwed = Math.max(currentOwed - sharePerMember, 0.0); // Reduce owed amount
+                updatedOwes.put(name, newOwed);
+            }
+        }
+
+        // Clear the existing file content before appending updated data
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write(""); // Clear the file
+        } catch (IOException e) {
+            System.out.println("Error clearing owed amounts file: " + e.getMessage());
+            return;
+        }
+
+        System.out.println("Updated owed amounts written to file successfully.");
+    }
+
+    /**
+     * Retrieves the group members associated with the given expense.
+     *
+     * @param expense the expense to find group members for
+     * @return the list of group members, or null if none are found
+     */
+    private List<Friend> getGroupMembersForExpense(Expense expense) {
+        // Assuming the expense has a reference to its associated group
+        String groupName = expense.getGroupName(); // Add this method to your Expense class
+        if (groupName == null || groupName.isEmpty()) {
+            return null;
+        }
+        return groupManager.getGroupMembers(groupName);
+    }
+    //@@author
 } 
