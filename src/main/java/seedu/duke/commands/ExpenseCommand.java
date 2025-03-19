@@ -66,9 +66,11 @@ public class ExpenseCommand {
         }
     }
     //@@author matthewyeo1
+
     /**
      * Executes the delete expense command by setting the expense amount to 0.0.
      */
+    /*
     public void executeDeleteExpense() {
         try {
             displayAllExpenses();
@@ -81,10 +83,7 @@ public class ExpenseCommand {
             int index = Integer.parseInt(scanner.nextLine().trim()) - 1; // Convert to 0-based index
 
             // Get the expense to be deleted
-            Expense deletedExpense = budgetManager.getExpense(index);
-            if (deletedExpense == null) {
-                throw new IndexOutOfBoundsException("Invalid expense index.");
-            }
+            Expense deletedExpense = budgetManager.deleteExpense(index);
 
             // Update the expense amount to 0.0
             Expense updatedExpense = budgetManager.setExpenseAmountToZero(index);
@@ -102,6 +101,32 @@ public class ExpenseCommand {
             System.out.println("Error marking expense as deleted: " + e.getMessage());
         }
     }
+    */
+    public void executeDeleteExpense() {
+        try {
+            displayAllExpenses();
+
+            if (budgetManager.getExpenseCount() == 0) {
+                return;
+            }
+
+            System.out.println("Enter the index of the expense to delete:");
+            int index = Integer.parseInt(scanner.nextLine().trim()) - 1; // Convert to 0-based index
+
+            Expense deletedExpense = budgetManager.deleteExpense(index);
+            // Update the owesData.txtfile
+            updateOwesDataFile(deletedExpense);
+            System.out.println("Expense deleted successfully:");
+            System.out.println(deletedExpense);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid index format. Please enter a valid number.");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error deleting expense: " + e.getMessage());
+        }
+    }
+
     //@@author
 
     /**
