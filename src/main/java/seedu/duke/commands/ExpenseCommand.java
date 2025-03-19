@@ -235,11 +235,13 @@ public class ExpenseCommand {
     public void executeMarkCommand() {
         System.out.println("Enter expense number to mark");
         String expenseNumberToMark = scanner.nextLine().trim();
-        int indexToMark = Integer.parseInt(expenseNumberToMark) - 1;
         try{
+            int indexToMark = Integer.parseInt(expenseNumberToMark) - 1;
             budgetManager.markExpense(indexToMark);
         } catch(IndexOutOfBoundsException e){
             System.out.println("Please enter a valid expense number.");
+        } catch(NumberFormatException e){
+            System.out.println("Please enter a number.");
         }
     }
 
@@ -249,11 +251,13 @@ public class ExpenseCommand {
     public void executeUnmarkCommand() {
         System.out.println("Enter expense number to mark");
         String expenseNumberToMark = scanner.nextLine().trim();
-        int indexToUnmark = Integer.parseInt(expenseNumberToMark) - 1;
         try {
+            int indexToUnmark = Integer.parseInt(expenseNumberToMark) - 1;
             budgetManager.unmarkExpense(indexToUnmark);
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Please enter a valid expense number.");
+        } catch(NumberFormatException e){
+            System.out.println("Please enter a number.");
         }
     }
 
