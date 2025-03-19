@@ -42,13 +42,13 @@ public class Duke {
         FriendsCommands friendsCommand = new FriendsCommands(groupManager);
         SplitCommand splitCommand = new SplitCommand(scanner, groupManager);
         UI ui = new UI(scanner,
-        messages,
-        helpPage,
-        storageFilePath,
-        expenseCommand,
-        commands,
-        friendsCommand,
-        splitCommand);
+            messages,
+            helpPage,
+            storageFilePath,
+            expenseCommand,
+            commands,
+            friendsCommand,
+            splitCommand);
 
         messages.displayWelcomeMessage();
         helpPage.displayCommandList();
