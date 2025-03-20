@@ -29,6 +29,8 @@ public class ExpenseCommand {
      * @param scanner       the scanner for user input
      */
     public ExpenseCommand(BudgetManager budgetManager, Scanner scanner) {
+        assert budgetManager != null : "BudgetManager cannot be null";
+        assert scanner != null : "Scanner cannot be null";
         this.budgetManager = budgetManager;
         this.scanner = scanner;
     }
@@ -66,6 +68,7 @@ public class ExpenseCommand {
                 return;
             }
             
+            assert amount >= 0 : "Amount should be non-negative";
             Expense expense = new Expense(title, description, amount);
             budgetManager.addExpense(expense);
             
@@ -137,6 +140,7 @@ public class ExpenseCommand {
                 return;
             }
 
+            assert index >= 0 && index < budgetManager.getExpenseCount() : "Index should be within valid range";
             Expense deletedExpense = budgetManager.deleteExpense(index);
             // Update the owesData.txtfile
             updateOwesDataFile(deletedExpense);
@@ -179,8 +183,11 @@ public class ExpenseCommand {
                 return;
             }
             
+            assert index >= 0 && index < budgetManager.getExpenseCount() : "Index should be within valid range";
+            
             // Display current details
             Expense currentExpense = budgetManager.getExpense(index);
+            assert currentExpense != null : "Current expense should not be null";
             System.out.println("Current expense details:");
             System.out.println(currentExpense);
             
@@ -206,9 +213,11 @@ public class ExpenseCommand {
                     System.out.println("Amount cannot be negative. Keeping current amount.");
                     amount = -1;
                 }
+                assert amount >= 0 || amount == -1 : "Amount should be non-negative or -1 for no change";
             }
             
             Expense editedExpense = budgetManager.editExpense(index, title, description, amount);
+            assert editedExpense != null : "Edited expense should not be null";
             System.out.println("Expense edited successfully:");
             System.out.println(editedExpense);
         } catch (NumberFormatException e) {
@@ -225,6 +234,7 @@ public class ExpenseCommand {
      */
     public void displayAllExpenses() {
         List<Expense> expenses = budgetManager.getAllExpenses();
+        assert expenses != null : "Expenses list should not be null";
         
         if (expenses.isEmpty()) {
             System.out.println("No expenses found.");
@@ -233,6 +243,7 @@ public class ExpenseCommand {
         
         System.out.println("List of Expenses:");
         for (int i = 0; i < expenses.size(); i++) {
+            assert expenses.get(i) != null : "Expense at index " + i + " should not be null";
             System.out.println("Expense #" + (i + 1));
             System.out.println(expenses.get(i));
             System.out.println();
