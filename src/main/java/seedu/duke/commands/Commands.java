@@ -16,6 +16,7 @@ public class Commands {
     public static final String VIEW_GROUP = "view-group";
     public static final String ADD_MEMBER = "add-member";
     public static final String REMOVE_MEMBER = "remove-member";
+    public static final String REMOVE_GROUP = "remove-group";
     public static final String VIEW_ALL_GROUPS = "my-groups";
     public static final String SPLIT = "split";
 

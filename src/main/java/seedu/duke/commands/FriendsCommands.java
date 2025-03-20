@@ -111,5 +111,19 @@ public class FriendsCommands {
         }
     }
 
+    public void removeGroup() {
+        System.out.print("Enter the name of the group to remove: ");
+        String groupName = scanner.nextLine().trim();
+
+        if (!groupManager.groupExists(groupName)) {
+            System.out.println("Group does not exist.");
+            return;
+        }
+
+        groupManager.removeGroup(groupName);
+        groupManager.saveGroups();  // Save the updated groups list
+        System.out.println("Group '" + groupName + "' has been removed successfully.");
+    }
+
 }
 //@@author

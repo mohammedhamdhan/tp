@@ -96,13 +96,28 @@ public class GroupManager {
         return new ArrayList<>(); // Return an empty list if the group doesn't exist
     }
 
+    // Remove a group by name
+    public void removeGroup(String groupName) {
+        boolean removed = groups.removeIf(group -> group.getName().equals(groupName));
+
+        if (removed) {
+            saveGroups(); // Save changes after removal
+            System.out.println("Group '" + groupName + "' has been removed.");
+        } else {
+            System.out.println("Group not found.");
+        }
+    }
+
+
     // Save the updated list of groups
     public void saveGroups() {
+
         GroupStorage.saveGroups(groups);
     }
 
     // Get all groups
     public List<Group> getGroups() {
+
         return groups;
     }
 }
