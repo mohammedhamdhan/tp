@@ -30,16 +30,6 @@ Terminates the program and saves the user’s data, such as their payee list, gr
 
 ---
 
-#### Check Current Category: `/cats`
-Shows all the previously created categories.
-- **Usage:** `/cats`
-- **Sample expected output:**
-  ```
-  Your payment categories are: Personal, Transport, Accommodation
-  ```
-
----
-
 ## Manage Balance:
 
 #### Add an expense: `/add`
@@ -76,9 +66,50 @@ Delete expenses to remove unwanted expenses.
 
 ---
 
+#### Edit an expense: `/edit`
+Edit an existing expense.
+- **Format:**
+  ```
+  edit
+  "Enter the index of the expense to edit" <index of expense>
+  "Enter the expense details"
+  "Title:" <New title>
+  "Description:" <New description>
+  "Amount:" <New amount>
+  ```
+
+- **Usage:**
+  ```
+  edit
+  "Enter the index of the expense to edit" 
+  User input:1
+  "Enter the expense details"
+  "Title:"
+  User input: Edited expense 1
+  "Description:"
+  User input: new edited expense
+  "Amount:" 10
+  ```
+---
+
+#### View all expenses: `/list`
+View all the expenses.
+- **Format:** `/list`
+- **Usage:** `/list`
+- **Example:**
+  ```
+  List of Expenses:
+  Expense #1
+  Title: test expense
+  Description: testing testing
+  Amount: $50.00
+  ```
+
+---
+
 #### View unsettled expenses: `/list-unsettled`
 View expenses you owe or is owed to you.
-- **Format:** `/list-unsettled`
+- **Format and Usage:** `/list-unsettled`
 - **Example:**
   ```
   1. Alex owes you $10
@@ -88,15 +119,42 @@ View expenses you owe or is owed to you.
 
 ---
 
+#### View settled expenses: `/list-settled`
+View expenses that are marked as settled using "mark" command.
+- **Format and Usage:** `/list-settled`
+- **Example:**
+  ```
+  Expense #1
+  Title: test expense
+  Description: testing testing
+  Amount: $50.00
+  
+  List of Settled Expenses:
+  You have 1 settled expense
+  ```
+
+---
+
 #### Mark settled expenses: `/mark`
 Once a transaction is made, the user can mark it as paid.
 
 - **Usage:**
   ```
-  /mark <expense ID>
-  /mark-all
-  /mark-all-to-pay
-  /mark-all-to-receive
+  /mark
+  "Enter expense number to mark:"
+  User input: 1
+  
+  ```
+
+---
+
+#### Unmark settled expenses: `/unmark`
+User can unmark an expense that has been marked already.
+
+- **Usage:**
+  ```
+  "Enter expense number to unmark"
+  User input: 1
   ```
 
 ---
@@ -113,26 +171,96 @@ Shows total money to be paid and total money to pay.
 
 ## Manage Group Members:
 
-#### View Friends in a group: `/view-mem`
-Views all the members of a specified group.
-- **Usage:** `/view-mem <group name>`
-- **Sample expected output:**
+#### View Friends in a group: `/create-group`
+Create a new group to split expenses with.
+- **Usage:**
   ```
-  Here are the members in Jap Travel Group (3 members):
-  - Person 1
-  - Person 2
-  - Person 3
+  create-group
+  "Enter the group name:" test group
+  "Who would you like to add to the group? (Type 'done' to finish)"
+  "Enter name:" apple
+  "Enter name:" mango
+  "Enter name:" carrot
+  "Enter name:" done
+  Group created successfully!
+  
   ```
 
 ---
 
-#### Add Friends to a group: `/add-to-grp`
+#### Add Friends to a group: `/view-group`
+View a specific group and see how much each member owes.
+- **Usage:**
+  ```
+  view-group
+  Enter the group name to view: TestGroup
+  Group: TestGroup
+  Members of group "TestGroup":
+  - Alice owes: 25.00
+  - Bob owes: 25.00
+  
+    ```
+
+---
+
+#### Add Friends to a group: `/add-member`
 Adds a user to a group.
-- **Usage:** `/add-to-group <username> <groupname>`
-- **Sample expected output:**
+- **Usage:**
   ```
-  Done! Added qwerty to Jap Travel Group
+  add-member
+  Enter the name of the member to add: natasha
+  Enter the group name: TestGroup
+  natasha has been added to TestGroup
+  
+    ```
+
+---
+
+#### Add Friends to a group: `/remove-member`
+Removes a member from a group
+- **Usage:**
   ```
+  remove-member
+  Enter the name of the member to remove: natasha
+  Enter name of group to remove member from: TestGroup
+  
+    ```
+
+---
+
+#### Add Friends to a group: `/my-groups`
+Shows all of the users groups.
+- **Usage:**
+  ```
+  my-groups
+  Group Name: TestGroup
+  Members:
+  - Alice
+  - Bob
+  - natasha
+  
+  Group Name: NewGroup
+  Members:
+  - Charlie
+
+  Group Name: test group
+  Members:
+  - apple
+  - mango
+  - carrot
+  ```
+
+---
+
+#### Add Friends to a group: `/remove-group`
+Removes an entire group.
+
+- **Usage:**
+  ```
+  remove-group
+  Enter the name of the group to remove: TestGroup
+  
+    ```
 
 ---
 
@@ -147,43 +275,7 @@ Opens a menu for the user to select a method of splitting.
   [2] Manually input percentage and members involved in transaction
   [x]: Cancel
   ```
-
 ---
-
-## Manage foreign currencies:
-
-#### List currencies: `/currencies`
-Lists all the currencies that have been entered.
-- **Usage:** `/currencies`
-- **Sample expected output:**
-  ```
-  SGD$1 is equal to:
-  - USD $0.75
-  - MYR $3.33
-  - YEN $113.73
-  ```
-
----
-
-#### Add a new currency: `/add-currency`
-Adds a new currency with a user-specified exchange rate.
-- **Usage:** `/add-currency <currency code> /rate <exchange rate>`
-- **Sample usage:** `/add-currency MYR /rate 3.29`
-
----
-
-#### Delete a currency rate: `/delete-currency`
-Deletes a currency.
-- **Usage:** `/delete-currency <currency code>`
-- **Sample usage:** `/delete-currency MYR`
-
----
-
-#### Switch to common foreign currencies: `/switch-currency`
-Switch all expenses to a currency of your choice.
-- **Usage:** `/switch-currency <currency code>`
-
-
 
 
 
