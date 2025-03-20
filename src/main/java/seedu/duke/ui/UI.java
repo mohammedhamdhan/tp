@@ -121,6 +121,9 @@ public class UI {
         case Commands.SPLIT:
             splitCommand.executeSplit();
             break;
+        case Commands.REMOVE_GROUP:
+            friendsCommand.removeGroup();
+            break;
         default:
             messages.displayInvalidCommandMessage();
             break;
