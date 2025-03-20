@@ -4,7 +4,11 @@ import seedu.duke.friends.Group;
 import seedu.duke.friends.GroupManager;
 import seedu.duke.friends.Friend;
 
+import java.util.List;
 import java.util.Scanner;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 //@@author nandhananm7
 public class FriendsCommands {
@@ -41,11 +45,45 @@ public class FriendsCommands {
 
         if (groupManager.groupExists(groupName)) {
             System.out.println("Group: " + groupName);
-            groupManager.viewGroupMembers(groupName);
+
+            // Load owed amounts from file into a map.
+            java.util.Map<String, Double> owedAmounts = new java.util.HashMap<>();
+            File file = new File("owedAmounts.txt");
+            try (Scanner fileScanner = new Scanner(file)) {
+                while (fileScanner.hasNextLine()) {
+                    String line = fileScanner.nextLine().trim();
+                    if (line.startsWith("- ")) {
+                        String[] parts = line.split(" owes: ");
+                        if (parts.length == 2) {
+                            String name = parts[0].substring(2).trim();
+                            double amount = Double.parseDouble(parts[1].trim());
+                            owedAmounts.put(name, amount);
+                        }
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println("Owed amounts file not found. No expense data available.");
+            } catch (NumberFormatException e) {
+                System.out.println("Error parsing expense data.");
+            }
+
+            // Get group members and print their name with expense.
+            List<Friend> members = groupManager.getGroupMembers(groupName);
+            if (members.isEmpty()) {
+                System.out.println("No members in this group.");
+            } else {
+                System.out.println("Members:");
+                for (Friend friend : members) {
+                    String name = friend.getName();
+                    double expense = owedAmounts.getOrDefault(name, 0.0);
+                    System.out.println(name + " - Expense: $" + String.format("%.2f", expense));
+                }
+            }
         } else {
             System.out.println("Group not found.");
         }
     }
+
 
     public void viewAllGroups() {
         if (groupManager.getGroups().isEmpty()) {
