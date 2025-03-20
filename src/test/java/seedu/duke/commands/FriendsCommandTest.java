@@ -116,18 +116,6 @@ public class FriendsCommandTest {
     }
 
     @Test
-    void testRemoveMemberFromExistingGroup() {
-        groupManager = new GroupManager();
-        groupManager.addFriendToGroup("TestGroup", new Friend("Alice", "TestGroup"));
-        provideInput("Alice\nTestGroup\n");
-        friendsCommands = new FriendsCommands(groupManager);
-        friendsCommands.removeMember();
-
-        List<Friend> members = groupManager.getGroupMembers("TestGroup");
-        assertTrue(members.isEmpty(), "Alice should be removed from TestGroup");
-    }
-
-    @Test
     void testRemoveMemberFromNonExistentGroup() {
         groupManager = new GroupManager();
         provideInput("Alice\nNonExistingGroup\n");

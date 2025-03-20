@@ -17,7 +17,6 @@ public class Group {
         friends.add(friend);
     }
 
-    // In Group.java
     public boolean removeFriend(String friendName) {
         for (Friend friend : friends) {
             if (friend.getName().equals(friendName)) {
