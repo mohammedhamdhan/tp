@@ -1,21 +1,21 @@
 package seedu.duke.commands;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import seedu.duke.expense.BudgetManager;
-import seedu.duke.expense.Expense;
-
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
 
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import seedu.duke.expense.BudgetManager;
+import seedu.duke.expense.Expense;
 
 //@@author matthewyeo1
 class ExpenseCommandTest {
@@ -205,6 +205,52 @@ class ExpenseCommandTest {
                 + "\n\n" + "List of Unsettled Expenses:" + "\n" + "You have 2 unsettled expenses";
         String actualOutput = outContent.toString().trim();
         actualOutput = actualOutput.replaceAll("\r\n", "\n");
+        assertEquals(expectedMessage, actualOutput);
+    }
+    //@@author
+
+    //@@author mohammedhamdhan
+    @Test
+    void testExecuteDeleteExpenseInvalidInput() {
+        budgetManager.addExpense(new Expense("Lunch", "Pizza", 10));
+
+        provideInput("2\n");
+        expenseCommand.executeDeleteExpense();
+
+        assertEquals(1, budgetManager.getExpenseCount());
+        assertTrue(outContent.toString().contains("Please enter a valid expense number"));
+    }
+
+    @Test
+    void testExecuteEditExpenseInvalidInput() {
+        budgetManager.addExpense(new Expense("Coffee", "Starbucks", 5.0));
+
+        provideInput("2\nLatte\nCaramel Latte\n6.5\n");
+        expenseCommand.executeEditExpense();
+
+        Expense originalExpense = budgetManager.getExpense(0);
+        assertEquals("Coffee", originalExpense.getTitle());
+        assertEquals("Starbucks", originalExpense.getDescription());
+        assertEquals(5.0, originalExpense.getAmount());
+        assertTrue(outContent.toString().contains("Please enter a valid expense number"));
+    }
+
+    @Test
+    void testExecuteAddExpenseEmptyInput() {
+        provideInput("\n\n\n");
+        expenseCommand.executeAddExpense();
+
+        assertEquals(0, budgetManager.getExpenseCount());
+        assertTrue(outContent.toString().contains("Title cannot be empty"));
+    }
+
+    @Test
+    void testDisplayUnsettledExpensesZeroExpenses() {
+        provideInput("\n");
+        expenseCommand.displayUnsettledExpenses();
+        String expectedMessage = "No expenses found.";
+
+        String actualOutput = outContent.toString().trim();
         assertEquals(expectedMessage, actualOutput);
     }
     //@@author

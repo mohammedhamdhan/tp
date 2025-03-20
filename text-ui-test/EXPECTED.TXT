@@ -140,7 +140,7 @@ Description: 1x Big Breakfast from McDonald's
 Amount: $9.00
 
 Enter the index of the expense to edit:
-Invalid expense index.
+Please enter a valid expense number.
 
 ________________________________________________________________________________
 
@@ -179,7 +179,7 @@ Description: 10x Egg Prata from SpringLeaf
 Amount: $25.00
 
 Enter the index of the expense to delete:
-Invalid expense index.
+Please enter a valid expense number.
 
 ________________________________________________________________________________
 
