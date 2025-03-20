@@ -105,7 +105,7 @@ public class FriendsCommandTest {
     }
 
     @Test
-    void testAddMemberToNonExistentGroup_UserRejects() {
+    void testAddMemberToNonExistentGroupUserRejects() {
         groupManager = new GroupManager();
         provideInput("Charlie\nNonExistingGroup\nno\n");
         friendsCommands = new FriendsCommands(groupManager);
