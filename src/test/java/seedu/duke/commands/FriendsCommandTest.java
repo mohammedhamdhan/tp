@@ -93,7 +93,7 @@ public class FriendsCommandTest {
     }
 
     @Test
-    void testAddMemberToNonExistentGroup_CreatesGroup() {
+    void testAddMemberToNonExistentGroupCreatesGroup() {
         groupManager = new GroupManager();
         provideInput("Charlie\nNewGroup\nyes\n");
         friendsCommands = new FriendsCommands(groupManager);
