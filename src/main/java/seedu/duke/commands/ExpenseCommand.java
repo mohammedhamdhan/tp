@@ -4,15 +4,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.expense.Expense;
 import seedu.duke.friends.Friend;
 import seedu.duke.friends.GroupManager;
-import java.util.Scanner;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * Handles expense-related commands entered by the user.
@@ -41,11 +41,23 @@ public class ExpenseCommand {
             System.out.println("Enter expense title:");
             String title = scanner.nextLine().trim();
             
+            if (title.isEmpty()) {
+                System.out.println("Title cannot be empty.");
+                return;
+            }
+            
             System.out.println("Enter expense description:");
             String description = scanner.nextLine().trim();
             
             System.out.println("Enter expense amount:");
-            double amount = Double.parseDouble(scanner.nextLine().trim());
+            String amountStr = scanner.nextLine().trim();
+            
+            if (amountStr.isEmpty()) {
+                System.out.println("Amount cannot be empty.");
+                return;
+            }
+            
+            double amount = Double.parseDouble(amountStr);
 
             System.out.println("Enter :");
             
@@ -111,7 +123,19 @@ public class ExpenseCommand {
             }
 
             System.out.println("Enter the index of the expense to delete:");
-            int index = Integer.parseInt(scanner.nextLine().trim()) - 1; // Convert to 0-based index
+            String indexStr = scanner.nextLine().trim();
+            
+            if (indexStr.isEmpty()) {
+                System.out.println("Please enter a valid expense number.");
+                return;
+            }
+            
+            int index = Integer.parseInt(indexStr) - 1; // Convert to 0-based index
+            
+            if (index < 0 || index >= budgetManager.getExpenseCount()) {
+                System.out.println("Please enter a valid expense number.");
+                return;
+            }
 
             Expense deletedExpense = budgetManager.deleteExpense(index);
             // Update the owesData.txtfile
@@ -119,9 +143,9 @@ public class ExpenseCommand {
             System.out.println("Expense deleted successfully:");
             System.out.println(deletedExpense);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid index format. Please enter a valid number.");
+            System.out.println("Invalid input format. Please enter a valid number.");
         } catch (IndexOutOfBoundsException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Please enter a valid expense number.");
         } catch (Exception e) {
             System.out.println("Error deleting expense: " + e.getMessage());
         }
@@ -141,7 +165,19 @@ public class ExpenseCommand {
             }
             
             System.out.println("Enter the index of the expense to edit:");
-            int index = Integer.parseInt(scanner.nextLine().trim()) - 1; // Convert to 0-based index
+            String indexStr = scanner.nextLine().trim();
+            
+            if (indexStr.isEmpty()) {
+                System.out.println("Please enter a valid expense number.");
+                return;
+            }
+            
+            int index = Integer.parseInt(indexStr) - 1; // Convert to 0-based index
+            
+            if (index < 0 || index >= budgetManager.getExpenseCount()) {
+                System.out.println("Please enter a valid expense number.");
+                return;
+            }
             
             // Display current details
             Expense currentExpense = budgetManager.getExpense(index);
@@ -178,7 +214,7 @@ public class ExpenseCommand {
         } catch (NumberFormatException e) {
             System.out.println("Invalid input format. Please enter a valid number.");
         } catch (IndexOutOfBoundsException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Please enter a valid expense number.");
         } catch (Exception e) {
             System.out.println("Error editing expense: " + e.getMessage());
         }
