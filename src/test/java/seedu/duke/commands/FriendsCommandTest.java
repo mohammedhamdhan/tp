@@ -47,7 +47,7 @@ public class FriendsCommandTest {
     }
 
     @Test
-    void testViewGroup_ExistingGroup() {
+    void testViewGroupExistingGroup() {
         groupManager = new GroupManager();
         groupManager.addFriendToGroup("TestGroup", new Friend("Alice", "TestGroup"));
         provideInput("TestGroup\n");
@@ -58,7 +58,7 @@ public class FriendsCommandTest {
     }
 
     @Test
-    void testViewGroup_NonExistentGroup() {
+    void testViewGroupNonExistentGroup() {
         groupManager = new GroupManager();
         provideInput("NonExistingGroup\n");
         friendsCommands = new FriendsCommands(groupManager);
@@ -69,7 +69,7 @@ public class FriendsCommandTest {
     }
 
     @Test
-    void testViewAllGroups_WithGroups() {
+    void testViewAllGroupsWithGroups() {
         groupManager.addFriendToGroup("Group1", new Friend("Alice", "Group1"));
         groupManager.addFriendToGroup("Group2", new Friend("Bob", "Group2"));
 
@@ -81,7 +81,7 @@ public class FriendsCommandTest {
     }
 
     @Test
-    void testAddMember_ToExistingGroup() {
+    void testAddMemberToExistingGroup() {
         groupManager = new GroupManager();
         groupManager.addFriendToGroup("TestGroup", new Friend("Alice", "TestGroup"));
         provideInput("Bob\nTestGroup\n");
@@ -93,7 +93,7 @@ public class FriendsCommandTest {
     }
 
     @Test
-    void testAddMember_ToNonExistentGroup_CreatesGroup() {
+    void testAddMemberToNonExistentGroup_CreatesGroup() {
         groupManager = new GroupManager();
         provideInput("Charlie\nNewGroup\nyes\n");
         friendsCommands = new FriendsCommands(groupManager);
@@ -105,7 +105,7 @@ public class FriendsCommandTest {
     }
 
     @Test
-    void testAddMember_ToNonExistentGroup_UserRejects() {
+    void testAddMemberToNonExistentGroup_UserRejects() {
         groupManager = new GroupManager();
         provideInput("Charlie\nNonExistingGroup\nno\n");
         friendsCommands = new FriendsCommands(groupManager);
@@ -116,7 +116,7 @@ public class FriendsCommandTest {
     }
 
     @Test
-    void testRemoveMember_FromExistingGroup() {
+    void testRemoveMemberFromExistingGroup() {
         groupManager = new GroupManager();
         groupManager.addFriendToGroup("TestGroup", new Friend("Alice", "TestGroup"));
         provideInput("Alice\nTestGroup\n");
@@ -128,7 +128,7 @@ public class FriendsCommandTest {
     }
 
     @Test
-    void testRemoveMember_FromNonExistentGroup() {
+    void testRemoveMemberFromNonExistentGroup() {
         groupManager = new GroupManager();
         provideInput("Alice\nNonExistingGroup\n");
         friendsCommands = new FriendsCommands(groupManager);
