@@ -113,7 +113,15 @@ public class HelpPage {
         System.out.println("  Usage: view-group");
         System.out.println("  Shows all the members and groups");
         System.out.println();
-        
+
+        System.out.println("split");
+        System.out.println("  Description: Split an expense between the members of an existing group");
+        System.out.println("  Usage: split");
+        System.out.println("  You will be prompted to enter:");
+        System.out.println("    - Expense");
+        System.out.println("    - Group to split it among");
+        System.out.println();
+
         System.out.println("exit");
         System.out.println("  Description: Exit the program");
         System.out.println("  Usage: exit");
