@@ -48,10 +48,15 @@ public class FriendsCommands {
     }
 
     public void viewAllGroups() {
-        for (Group group : groupManager.getGroups()) {
-            System.out.println(group);
+        if (groupManager.getGroups().isEmpty()) {
+            System.out.println("You have no groups.");
+        } else {
+            for (Group group : groupManager.getGroups()) {
+                System.out.println(group);
+            }
         }
     }
+
 
     public void addMember() {
         System.out.print("Enter the name of the member to add: ");
