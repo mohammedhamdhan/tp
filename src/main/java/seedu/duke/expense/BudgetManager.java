@@ -109,6 +109,7 @@ public class BudgetManager {
                 numberOfUnsettledExpenses++;
             }
         }
+        assert numberOfUnsettledExpenses >= 0 : "number of settled expenses should not be negative";
         return numberOfUnsettledExpenses;
     }
 
@@ -153,6 +154,7 @@ public class BudgetManager {
         }
         expenses.get(index).setDone(true);
         saveAllExpenses();
+        assert (index >= 0 && index < expenses.size()) : "index should be within bounds for mark command";
     }
 
     /**
@@ -167,6 +169,7 @@ public class BudgetManager {
         }
         expenses.get(index).setDone(false);
         saveAllExpenses();
+        assert (index >= 0 && index < expenses.size()) : "index should be within bounds for mark command";
     }
 
     /**
