@@ -109,6 +109,7 @@ public class BudgetManager {
                 numberOfUnsettledExpenses++;
             }
         }
+        assert numberOfUnsettledExpenses >= 0 : "number of unsettled exopenses should not be negative";
         return numberOfUnsettledExpenses;
     }
 
