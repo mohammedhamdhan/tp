@@ -167,7 +167,7 @@ class SplitCommandTest {
             assertTrue(fileContent.contains("Alice owes: 50.00"), "Expected owes file to include Alice owes: 50.00.");
             // New assertEquals to check the exact file content.
             String expectedContent = " - Alice owes: 50.00\n - Bob owes: 50.00\n";
-            assertEquals(expectedContent, fileContent, "File content should exactly match expected content for equal split.");
+            assertEquals(expectedContent, fileContent, "File content does not match");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -204,7 +204,7 @@ class SplitCommandTest {
         try {
             String fileContent = new String(java.nio.file.Files.readAllBytes(owesFile.toPath()));
             String expectedContent = " - Alice owes: 30.00\n - Bob owes: 70.00\n";
-            assertEquals(expectedContent, fileContent, "File content should exactly match expected content for manual split.");
+            assertEquals(expectedContent, fileContent, "File content does not match.");
         } catch (IOException e) {
             e.printStackTrace();
         }
