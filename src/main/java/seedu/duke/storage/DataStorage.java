@@ -1,3 +1,4 @@
+//@@author matthewyeo1
 package seedu.duke.storage;
 
 import java.io.File;
@@ -46,10 +47,12 @@ public class DataStorage {
             for (Expense expense : expenses) {
                 writer.write(expense.getTitle() + SEPARATOR
                         + expense.getDescription() + SEPARATOR
+                        //@@author matthewyeo1
+                        + expense.getDate() + SEPARATOR
+                        //@@author
                         + expense.getAmount() + SEPARATOR
                         + expense.getDone() + System.lineSeparator());
             }
-            // Removed: System.out.println("Expenses saved successfully.");
             return true;
         } catch (IOException e) {
             System.out.println(Messages.errorMessageTag() + " Error saving expenses: " + e.getMessage());
@@ -67,35 +70,30 @@ public class DataStorage {
         File file = new File(dataFile);
         
         if (!file.exists()) {
-            // Removed: Messages.createNewFileMessage(dataFile);
             return expenses;
         }
         
         try (Scanner scanner = new Scanner(file)) {
             if (!scanner.hasNext()) {
-                // Removed: Messages.emptyDataFileMessage();
                 return expenses;
             }
-            
-            // Removed: Messages.loadDataMessage(dataFile);
             
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split("\\" + SEPARATOR);
 
-                if (parts.length == 4) {
+                if (parts.length == 5) {
                     String title = parts[0];
                     String description = parts[1];
-                    double amount = Double.parseDouble(parts[2]);
+                    String date = parts[2];
+                    double amount = Double.parseDouble(parts[3]);
                     boolean isDone = true;
-                    if (parts[3].equals("false")) {
+                    if (parts[4].equals("false")) {
                         isDone = false;
                     }
-                    expenses.add(new Expense(title, description, amount,isDone));
+                    expenses.add(new Expense(title, description, date, amount, isDone));
                 }
             }
-            
-            // Removed: System.out.println("Loaded " + expenses.size() + " expenses.");
         } catch (FileNotFoundException e) {
             System.out.println(Messages.errorMessageTag() + " Error loading expenses: " + e.getMessage());
         }
@@ -117,4 +115,4 @@ public class DataStorage {
         //@@author
     }
 }
-
+//@@author

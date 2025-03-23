@@ -25,6 +25,7 @@ class ExpenseCommandTest {
     private ByteArrayOutputStream outContent;
     private final String testTitle = "Test Expense";
     private final String testDescription = "Test Description";
+    private final String testDate = "31-12-2025";
     private final double testAmount = 100.0;
 
     @BeforeEach
@@ -53,7 +54,7 @@ class ExpenseCommandTest {
 
     @Test
     void testExecuteAddExpense() {
-        provideInput("Groceries\nWeekly food shopping\n100\n");
+        provideInput("Groceries\nWeekly food shopping\n01-01-2025\n100\n");
 
         expenseCommand.executeAddExpense();
         assertEquals(1, budgetManager.getExpenseCount());
@@ -61,12 +62,13 @@ class ExpenseCommandTest {
         Expense addedExpense = budgetManager.getExpense(0);
         assertEquals("Groceries", addedExpense.getTitle());
         assertEquals("Weekly food shopping", addedExpense.getDescription());
+        assertEquals("01-01-2025", addedExpense.getDate());
         assertEquals(100.0, addedExpense.getAmount());
     }
 
     @Test
     void testExecuteDeleteExpense() {
-        budgetManager.addExpense(new Expense("Lunch", "Pizza", 10));
+        budgetManager.addExpense(new Expense("Lunch", "Pizza", "01-01-2025",10));
 
         provideInput("1\n");
         expenseCommand.executeDeleteExpense();
@@ -77,23 +79,45 @@ class ExpenseCommandTest {
 
     @Test
     void testExecuteEditExpense() {
-        budgetManager.addExpense(new Expense("Coffee", "Starbucks", 5.0));
+        budgetManager.addExpense(new Expense("Coffee", "Starbucks", "01-01-2025",5.0));
 
-        provideInput("1\nLatte\nCaramel Latte\n6.5\n");
+        provideInput("1\nLatte\nCaramel Latte\n31-12-2025\n6.5\n");
         expenseCommand.executeEditExpense();
 
         Expense editedExpense = budgetManager.getExpense(0);
         assertEquals("Latte", editedExpense.getTitle());
         assertEquals("Caramel Latte", editedExpense.getDescription());
+        assertEquals("31-12-2025", editedExpense.getDate());
         assertEquals(6.5, editedExpense.getAmount());
     }
 
     @Test
-    void testInvalidInputHandling() {
+    void testInvalidDateHandling() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        provideInput("Test Expense\nDescription\nInvalid\n");
+        // Simulating user input with an invalid date
+        provideInput("Test Expense\nDescription\n32-13-2000\n100\n");
+
+        expenseCommand.executeAddExpense();
+
+        String actualOutput = outContent.toString().trim();
+        System.out.println("Actual Output:\n" + actualOutput); // Debugging
+
+        // Check if it contains either of the expected messages
+        assertTrue(
+                actualOutput.contains("Invalid date format.") ||
+                        actualOutput.contains("Invalid day or month value. Please enter a real date."),
+                "Expected output to contain an error message about date format, but got:\n" + actualOutput
+        );
+    }
+
+    @Test
+    void testInvalidAmountHandling() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        provideInput("Test Expense\nDescription\n31-12-2025\nInvalidAmount\n");
 
         expenseCommand.executeAddExpense();
 
@@ -109,7 +133,7 @@ class ExpenseCommandTest {
     //@@author NandhithaShree
     @Test
     void testExecuteMarkCommand() {
-        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
         budgetManager.addExpense(expense);
         assertEquals(false, expense.getDone());
 
@@ -120,11 +144,14 @@ class ExpenseCommandTest {
         assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
         assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
         assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
+        //@@author matthewyeo1
+        assertEquals(testDate, budgetManager.getExpense(0).getDate());
+        //@@author
     }
 
     @Test
     void testExecuteUnmarkCommand() {
-        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
         budgetManager.addExpense(expense);
         assertEquals(false, expense.getDone());
 
@@ -139,11 +166,14 @@ class ExpenseCommandTest {
         assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
         assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
         assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
+        //@@author matthewyeo1
+        assertEquals(testDate, budgetManager.getExpense(0).getDate());
+        //@@author
     }
 
     @Test
     void testExecuteMarkCommandInvalidInputs() {
-        Expense expense = new Expense(testTitle, testDescription, testAmount);
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
         budgetManager.addExpense(expense);
         assertEquals(false, expense.getDone());
         provideInput("2\n");
@@ -158,6 +188,9 @@ class ExpenseCommandTest {
         assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
         assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
         assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
+        //@@author matthewyeo1
+        assertEquals(testDate, budgetManager.getExpense(0).getDate());
+        //@@author
     }
 
     @Test
@@ -173,9 +206,11 @@ class ExpenseCommandTest {
     @Test
     void testDisplaySettledExpensesTwoSettledExpenses(){
         provideInput("\n");
-        Expense expense = new Expense(testTitle, testDescription, testAmount);
-        Expense expense1 = new Expense(testTitle + "1", testDescription + "1", testAmount + 1);
-        Expense expense2= new Expense(testTitle + "2", testDescription + "2", testAmount + 1);
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        Expense expense1 = new Expense(testTitle + "1", testDescription + "1",
+                testDate, testAmount + 1);
+        Expense expense2= new Expense(testTitle + "2", testDescription + "2",
+                testDate, testAmount + 1);
         budgetManager.addExpense(expense);
         budgetManager.addExpense(expense1);
         budgetManager.addExpense(expense2);
@@ -192,9 +227,11 @@ class ExpenseCommandTest {
 
     void testDisplayUnsettledExpensesTwoUnsettledExpenses(){
         provideInput("\n");
-        Expense expense = new Expense(testTitle, testDescription, testAmount);
-        Expense expense1 = new Expense(testTitle + "1", testDescription + "1", testAmount + 1);
-        Expense expense2= new Expense(testTitle + "2", testDescription + "2", testAmount + 1);
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        Expense expense1 = new Expense(testTitle + "1", testDescription + "1",
+                testDate,testAmount + 1);
+        Expense expense2= new Expense(testTitle + "2", testDescription + "2",
+                testDate, testAmount + 1);
         budgetManager.addExpense(expense);
         budgetManager.addExpense(expense1);
         budgetManager.addExpense(expense2);
@@ -212,7 +249,7 @@ class ExpenseCommandTest {
     //@@author mohammedhamdhan
     @Test
     void testExecuteDeleteExpenseInvalidInput() {
-        budgetManager.addExpense(new Expense("Lunch", "Pizza", 10));
+        budgetManager.addExpense(new Expense("Lunch", "Pizza", "01-01-2025",10));
 
         provideInput("2\n");
         expenseCommand.executeDeleteExpense();
@@ -223,7 +260,7 @@ class ExpenseCommandTest {
 
     @Test
     void testExecuteEditExpenseInvalidInput() {
-        budgetManager.addExpense(new Expense("Coffee", "Starbucks", 5.0));
+        budgetManager.addExpense(new Expense("Coffee", "Starbucks", "31-12-2025",5.0));
 
         provideInput("2\nLatte\nCaramel Latte\n6.5\n");
         expenseCommand.executeEditExpense();
@@ -231,6 +268,9 @@ class ExpenseCommandTest {
         Expense originalExpense = budgetManager.getExpense(0);
         assertEquals("Coffee", originalExpense.getTitle());
         assertEquals("Starbucks", originalExpense.getDescription());
+        //@@author matthewyeo1
+        assertEquals("31-12-2025", originalExpense.getDate());
+        //@@author
         assertEquals(5.0, originalExpense.getAmount());
         assertTrue(outContent.toString().contains("Please enter a valid expense number"));
     }
