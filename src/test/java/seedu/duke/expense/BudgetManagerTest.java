@@ -65,7 +65,8 @@ public class BudgetManagerTest {
         Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
         budgetManager.addExpense(expense);
 
-        Expense editedExpense = budgetManager.editExpense(0, "Updated Title", "Updated Description", "02-01-2025",200.0);
+        Expense editedExpense = budgetManager.editExpense(0, "Updated Title", "Updated Description",
+                "02-01-2025",200.0);
 
         assertEquals("Updated Title", editedExpense.getTitle());
         assertEquals("Updated Description", editedExpense.getDescription());
