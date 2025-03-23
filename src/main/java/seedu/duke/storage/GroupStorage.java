@@ -17,8 +17,10 @@ public class GroupStorage {
     private static final String GROUP_HEADER = "[GROUP]";
 
     public static void saveGroups(List<Group> groups) {
+        assert groups != null : "Groups list must not be null";
         try (FileWriter writer = new FileWriter(DATA_FILE)) {
             for (Group group : groups) {
+                assert group != null : "Group in list must not be null";
                 writer.write(GROUP_HEADER + SEPARATOR + group.getName() + System.lineSeparator());
                 // Write all friends in the group
                 for (Friend friend : group.getFriends()) {

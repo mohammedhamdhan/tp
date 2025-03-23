@@ -1,18 +1,23 @@
+//@@author mohammedhamdhan
 package seedu.duke.commands;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
+import java.util.List;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.expense.Expense;
 import seedu.duke.friends.Friend;
 import seedu.duke.friends.GroupManager;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Handles expense-related commands entered by the user.
@@ -35,6 +40,32 @@ public class ExpenseCommand {
         this.scanner = scanner;
     }
 
+    //@@author matthewyeo1
+    public static boolean isValidDate(String date) {
+        if (date.isEmpty()) {
+            System.out.println("Please enter a date.");
+            return false;
+        }
+
+        // Ensure format is correct: DD-MM-YYYY
+        if (!date.matches("\\d{2}-\\d{2}-\\d{4}")) {
+            System.out.println("Invalid date format.");
+            return false;
+        }
+
+        // Validate actual date values
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        dateFormat.setLenient(false); // Strict date checking
+        try {
+            dateFormat.parse(date); // Throws exception if date is invalid
+            return true;
+        } catch (ParseException e) {
+            System.out.println("Invalid day or month value. Please enter a real date.");
+            return false;
+        }
+    }
+    //@@author
+
     /**
      * Executes the add expense command.
      */
@@ -42,36 +73,42 @@ public class ExpenseCommand {
         try {
             System.out.println("Enter expense title:");
             String title = scanner.nextLine().trim();
-            
+
             if (title.isEmpty()) {
                 System.out.println("Title cannot be empty.");
                 return;
             }
-            
+
             System.out.println("Enter expense description:");
             String description = scanner.nextLine().trim();
-            
+
+            System.out.println("Enter date of expense (DD-MM-YYYY):");
+            String date = scanner.nextLine().trim();
+            if (!isValidDate(date)) {
+                return;
+            }
+
             System.out.println("Enter expense amount:");
             String amountStr = scanner.nextLine().trim();
-            
+
             if (amountStr.isEmpty()) {
                 System.out.println("Amount cannot be empty.");
                 return;
             }
-            
+
             double amount = Double.parseDouble(amountStr);
 
             System.out.println("Enter :");
-            
+
             if (amount < 0) {
                 System.out.println("Amount cannot be negative.");
                 return;
             }
-            
+
             assert amount >= 0 : "Amount should be non-negative";
-            Expense expense = new Expense(title, description, amount);
+            Expense expense = new Expense(title, description, date, amount);
             budgetManager.addExpense(expense);
-            
+
             System.out.println("Expense added successfully:");
             System.out.println(expense);
         } catch (NumberFormatException e) {
@@ -80,7 +117,6 @@ public class ExpenseCommand {
             System.out.println("Error adding expense: " + e.getMessage());
         }
     }
-    //@@author matthewyeo1
 
     /**
      * Executes the delete expense command by setting the expense amount to 0.0.
@@ -95,14 +131,14 @@ public class ExpenseCommand {
 
             System.out.println("Enter the index of the expense to delete:");
             String indexStr = scanner.nextLine().trim();
-            
+
             if (indexStr.isEmpty()) {
                 System.out.println("Please enter a valid expense number.");
                 return;
             }
-            
+
             int index = Integer.parseInt(indexStr) - 1; // Convert to 0-based index
-            
+
             if (index < 0 || index >= budgetManager.getExpenseCount()) {
                 System.out.println("Please enter a valid expense number.");
                 return;
@@ -123,55 +159,57 @@ public class ExpenseCommand {
         }
     }
 
-    //@@author
-
     /**
      * Executes the edit expense command.
      */
     public void executeEditExpense() {
         try {
             displayAllExpenses();
-            
+
             if (budgetManager.getExpenseCount() == 0) {
                 return;
             }
-            
+
             System.out.println("Enter the index of the expense to edit:");
             String indexStr = scanner.nextLine().trim();
-            
+
             if (indexStr.isEmpty()) {
                 System.out.println("Please enter a valid expense number.");
                 return;
             }
-            
+
             int index = Integer.parseInt(indexStr) - 1; // Convert to 0-based index
-            
+
             if (index < 0 || index >= budgetManager.getExpenseCount()) {
                 System.out.println("Please enter a valid expense number.");
                 return;
             }
-            
+
             assert index >= 0 && index < budgetManager.getExpenseCount() : "Index should be within valid range";
-            
+
             // Display current details
             Expense currentExpense = budgetManager.getExpense(index);
             assert currentExpense != null : "Current expense should not be null";
             System.out.println("Current expense details:");
             System.out.println(currentExpense);
-            
+
             // Get new details (leave blank to keep current)
             System.out.println("Enter new title (press Enter to keep current):");
             String title = scanner.nextLine().trim();
             if (title.isEmpty()) {
                 title = null;
             }
-            
+
             System.out.println("Enter new description (press Enter to keep current):");
             String description = scanner.nextLine().trim();
             if (description.isEmpty()) {
                 description = null;
             }
-            
+
+            System.out.println("Enter new date (press Enter to keep current):");
+            String date = scanner.nextLine().trim();
+            isValidDate(date);
+
             System.out.println("Enter new amount (press Enter to keep current):");
             String amountInput = scanner.nextLine().trim();
             double amount = -1; // Sentinel value to indicate no change
@@ -183,8 +221,8 @@ public class ExpenseCommand {
                 }
                 assert amount >= 0 || amount == -1 : "Amount should be non-negative or -1 for no change";
             }
-            
-            Expense editedExpense = budgetManager.editExpense(index, title, description, amount);
+
+            Expense editedExpense = budgetManager.editExpense(index, title, description, date, amount);
             assert editedExpense != null : "Edited expense should not be null";
             System.out.println("Expense edited successfully:");
             System.out.println(editedExpense);
@@ -198,17 +236,19 @@ public class ExpenseCommand {
     }
 
     /**
-     * Displays all expenses.
+     * Displays all expenses in chronological order (most recent first).
      */
     public void displayAllExpenses() {
         List<Expense> expenses = budgetManager.getAllExpenses();
         assert expenses != null : "Expenses list should not be null";
-        
+
         if (expenses.isEmpty()) {
             System.out.println("No expenses found.");
             return;
         }
-        
+
+        expenses.sort(Comparator.comparing(Expense::getDate).reversed());
+
         System.out.println("List of Expenses:");
         for (int i = 0; i < expenses.size(); i++) {
             assert expenses.get(i) != null : "Expense at index " + i + " should not be null";
@@ -218,6 +258,7 @@ public class ExpenseCommand {
         }
     }
 
+    //@@author NandhithaShree
     /**
      * Displays all settled expenses.
      */
@@ -228,6 +269,8 @@ public class ExpenseCommand {
             System.out.println("No expenses found.");
             return;
         }
+
+        expenses.sort(Comparator.comparing(Expense::getDate).reversed());
 
         for (int i = 0; i < expenses.size(); i++) {
             while(i < expenses.size() && !expenses.get(i).getDone()) {
@@ -260,6 +303,8 @@ public class ExpenseCommand {
             return;
         }
 
+        expenses.sort(Comparator.comparing(Expense::getDate).reversed());
+
         for (int i = 0; i < expenses.size(); i++) {
             while (i < expenses.size() && expenses.get(i).getDone()) {
                 i++;
@@ -278,6 +323,7 @@ public class ExpenseCommand {
         String pluralOrSingular = (numberOfExpensesPrinted != 1 ? "expenses" : "expense");
         System.out.println("You have " + numberOfExpensesPrinted + " unsettled " + pluralOrSingular);
     }
+    //@@author
 
     /**
      * Shows the balance overview.
@@ -331,7 +377,6 @@ public class ExpenseCommand {
         return budgetManager;
     }
 
-    //@@author matthewyeo1
     /**
      * Updates the owesData.txt file for the deleted expense.
      *
@@ -404,5 +449,5 @@ public class ExpenseCommand {
         }
         return groupManager.getGroupMembers(groupName);
     }
-    //@@author
-} 
+}
+//@@author
