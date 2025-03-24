@@ -11,7 +11,6 @@ import seedu.duke.messages.Messages;
 import seedu.duke.summary.ExpenseClassifier;
 import seedu.duke.ui.UI;
 import seedu.duke.commands.Commands;
-import seedu.duke.summary.ExpenseClassifier;
 
 
 public class OMPM {

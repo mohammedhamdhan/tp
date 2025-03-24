@@ -21,10 +21,14 @@ public class ExpenseClassifier {
         }
 
         Map<Categories, List<String>> categoryKeywords = new HashMap<>();
-        categoryKeywords.put(Categories.Food, Arrays.asList("restaurant", "groceries", "dining", "snack", "lunch", "dinner"));
-        categoryKeywords.put(Categories.Shopping, Arrays.asList("clothes", "electronics", "mall", "fashion", "accessory"));
-        categoryKeywords.put(Categories.Travel, Arrays.asList("flight", "hotel", "transport", "train", "taxi"));
-        categoryKeywords.put(Categories.Entertainment, Arrays.asList("movie", "concert", "game", "party", "music"));
+        categoryKeywords.put(Categories.Food, Arrays.asList(
+                "restaurant", "groceries", "dining", "snack", "lunch", "dinner"));
+        categoryKeywords.put(Categories.Shopping, Arrays.asList(
+                "clothes", "electronics", "mall", "fashion", "accessory"));
+        categoryKeywords.put(Categories.Travel, Arrays.asList(
+                "flight", "hotel", "transport", "train", "taxi"));
+        categoryKeywords.put(Categories.Entertainment, Arrays.asList(
+                "movie", "concert", "game", "party", "music"));
 
 
         for (Expense expense : expenses) {
@@ -40,7 +44,9 @@ public class ExpenseClassifier {
                         break;
                     }
                 }
-                if (categorized) break;
+                if (categorized) {
+                    break;
+                }
             }
 
             if (!categorized) {
