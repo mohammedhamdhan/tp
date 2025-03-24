@@ -50,6 +50,7 @@ class ExpenseCommandTest {
     void provideInput(String input) {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
+        currency = new Currency(scanner, budgetManager);
         expenseCommand = new ExpenseCommand(budgetManager, scanner, currency );
     }
 
@@ -185,8 +186,8 @@ class ExpenseCommandTest {
         budgetManager.markExpense(1);
 
         expenseCommand.displaySettledExpenses();
-        String expectedMessage = "Expense #1\n" + expense.toString() + "\n\n" + "Expense #2\n" + expense1.toString()
-                + "\n\n" + "List of Settled Expenses:" + "\n" + "You have 2 settled expenses";
+        String expectedMessage = "All expenses are in USD\n" + "Expense #1\n" + expense.toString() + "\n\n" + "Expense #2\n" + expense1.toString()
+                + "\n" + "\n" + "You have 2 settled expenses";
         String actualOutput = outContent.toString().trim();
         actualOutput = actualOutput.replaceAll("\r\n", "\n");
         assertEquals(expectedMessage, actualOutput);
