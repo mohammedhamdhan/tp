@@ -147,6 +147,7 @@ public class BudgetManager {
         return expenses.get(index);
     }
 
+    //@@author NandhithaShree
     /**
      * Marks an expense at the specified index.
      *
@@ -179,6 +180,13 @@ public class BudgetManager {
         saveAllExpenses();
     }
 
+    /**
+     * Updates the amounts of all expenses by applying the given exchange rate to each expense.
+     * This method multiplies the amount of each expense by the provided exchange rate and updates the expense.
+     *
+     * @param finalExchangeRate The exchange rate to be applied to the expense amounts.
+     *                         The expense amount will be multiplied by this rate.
+     */
     public void editExpenseCurrency(Double finalExchangeRate){
 
         if (getExpenseCount() == 0) {
@@ -190,6 +198,7 @@ public class BudgetManager {
             editExpense(i, expense.getTitle(), expense.getDescription(), expense.getAmount()*finalExchangeRate);
         }
     }
+    //@@author
 
     /**
      * Saves all expenses to storage.

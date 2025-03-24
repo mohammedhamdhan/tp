@@ -10,12 +10,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * Represents the Currency class which handles currency conversion and exchange rate management.
+ */
 public class Currency {
     private String currentCurrency;
     private final HashMap<String, Double> exchangeRates = new HashMap<>();
     private Scanner scanner;
     private BudgetManager budgetManager;
 
+    /**
+     * Constructor for the Currency class.
+     * Initializes exchange rates and attempts to load the current currency from a file.
+     *
+     * @param scanner The scanner object for reading user input.
+     * @param budgetManager The budget manager object to manage the expenses.
+     */
     public Currency(Scanner scanner, BudgetManager budgetManager){
         initializeExchangeRates();
         this.scanner = scanner;
@@ -43,6 +53,10 @@ public class Currency {
         }
     }
 
+    /**
+     * Initializes the exchange rates for various currencies.
+     * Populates the exchangeRates HashMap with ISO 4217 currency codes and their respective exchange rates.
+     */
     public void initializeExchangeRates() {
         exchangeRates.put("AED", 3.6725);
         exchangeRates.put("AFN", 88.9280);
@@ -199,10 +213,21 @@ public class Currency {
         exchangeRates.put("USD", 0.7439);
     }
 
+    /**
+     * Returns the current currency.
+     *
+     * @return The current currency ISO code.
+     */
     public String getCurrentCurrency() {
         return currentCurrency;
     }
 
+    /**
+     * Retrieves the exchange rate for a specified currency code.
+     *
+     * @param currencyCode The ISO 4217 currency code.
+     * @return The exchange rate for the specified currency, or null if the currency code is not found.
+     */
     public Double getExchangeRate(String currencyCode) {
         if (exchangeRates.containsKey(currencyCode)) {
             return exchangeRates.get(currencyCode);
@@ -213,6 +238,10 @@ public class Currency {
         }
     }
 
+    /**
+     * Allows the user to change the current currency by either entering their own exchange rate or selecting
+     * an exchange rate from the predefined list.
+     */
     public void changeCurrency(){
         System.out.println("If you'd like to enter your own exchange rate from your current currency, enter 1");
         System.out.println("If you'd like to switch currencies with an estimated exchange rate, enter 2");
@@ -265,6 +294,12 @@ public class Currency {
         }
     }
 
+    /**
+     * Updates the budget manager with the new currency exchange rate and changes the current currency.
+     *
+     * @param finalExchangeRate The exchange rate to be applied to the expenses.
+     * @param newCurrency The new currency ISO code.
+     */
     public void editExpenseCurrency(Double finalExchangeRate, String newCurrency){
         budgetManager.editExpenseCurrency(finalExchangeRate);
         currentCurrency = newCurrency;
@@ -281,6 +316,12 @@ public class Currency {
         System.out.println("Currency successfully changed to " + currentCurrency);
     }
 
+    /**
+     * Writes the new currency ISO code to a file to persist the change.
+     *
+     * @param newCurrency The new currency to be written to the file.
+     * @throws IOException If an error occurs while writing to the file.
+     */
     public void writeToFile(String newCurrency) throws IOException {
         FileWriter fw = new FileWriter("./currentCurrency", false);
         fw.write(newCurrency);
