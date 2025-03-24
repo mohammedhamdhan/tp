@@ -1,3 +1,5 @@
+file not found...
+A new file to load your current currency will be created for you!
 
 ________________________________________________________________________________
 
@@ -91,6 +93,25 @@ my-groups
   Usage: view-group
   Shows all the members and groups
 
+split
+  Description: Split an expense between the members of an existing group
+  Usage: split
+  You will be prompted to enter:
+    - Expense
+    - Group to split it among
+
+change-currency
+  Description: Change all you expenses to a different currency
+  Usage: change currency
+  You will be prompted to enter:
+    -Please enter a number
+  Enter 1 to enter your own exchange rate
+  Enter 2 to use an estimated exchange rate
+    -Please enter a currency to change to
+  Enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)
+    -Please input your exchange rate from USD to a new currency (if you picked 1)
+  Enter the exchange rate you'd like to use
+
 exit
   Description: Exit the program
   Usage: exit
@@ -108,60 +129,63 @@ Enter :
 Expense added successfully:
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: $10.00
+Amount: 10.00
 
 ________________________________________________________________________________
 
-Enter command: List of Expenses:
+Enter command: All expenses are in SGD
+List of Expenses:
 Expense #1
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: $10.00
+Amount: 10.00
 
 Enter the index of the expense to edit:
 Current expense details:
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: $10.00
+Amount: 10.00
 Enter new title (press Enter to keep current):
 Enter new description (press Enter to keep current):
 Enter new amount (press Enter to keep current):
 Expense edited successfully:
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: $9.00
+Amount: 9.00
 
 ________________________________________________________________________________
 
-Enter command: List of Expenses:
+Enter command: All expenses are in SGD
+List of Expenses:
 Expense #1
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: $9.00
+Amount: 9.00
 
 Enter the index of the expense to edit:
-Invalid expense index.
+Please enter a valid expense number.
 
 ________________________________________________________________________________
 
-Enter command: List of Expenses:
+Enter command: All expenses are in SGD
+List of Expenses:
 Expense #1
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: $9.00
+Amount: 9.00
 
 Enter the index of the expense to edit:
 Current expense details:
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: $9.00
+Amount: 9.00
 Enter new title (press Enter to keep current):
 Enter new description (press Enter to keep current):
 Enter new amount (press Enter to keep current):
 Expense edited successfully:
 Title: Supper
 Description: 10x Egg Prata from SpringLeaf
-Amount: $25.00
+Amount: 25.00
 
 ________________________________________________________________________________
 
@@ -172,29 +196,31 @@ Total amount owed: $25.00
 
 ________________________________________________________________________________
 
-Enter command: List of Expenses:
+Enter command: All expenses are in SGD
+List of Expenses:
 Expense #1
 Title: Supper
 Description: 10x Egg Prata from SpringLeaf
-Amount: $25.00
+Amount: 25.00
 
 Enter the index of the expense to delete:
-Invalid expense index.
+Please enter a valid expense number.
 
 ________________________________________________________________________________
 
-Enter command: List of Expenses:
+Enter command: All expenses are in SGD
+List of Expenses:
 Expense #1
 Title: Supper
 Description: 10x Egg Prata from SpringLeaf
-Amount: $25.00
+Amount: 25.00
 
 Enter the index of the expense to delete:
 Owed amounts file not found. No amounts to update.
 Expense deleted successfully:
 Title: Supper
 Description: 10x Egg Prata from SpringLeaf
-Amount: $25.00
+Amount: 25.00
 
 ________________________________________________________________________________
 
@@ -290,6 +316,25 @@ my-groups
   Description: view the members of a specific group
   Usage: view-group
   Shows all the members and groups
+
+split
+  Description: Split an expense between the members of an existing group
+  Usage: split
+  You will be prompted to enter:
+    - Expense
+    - Group to split it among
+
+change-currency
+  Description: Change all you expenses to a different currency
+  Usage: change currency
+  You will be prompted to enter:
+    -Please enter a number
+  Enter 1 to enter your own exchange rate
+  Enter 2 to use an estimated exchange rate
+    -Please enter a currency to change to
+  Enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)
+    -Please input your exchange rate from USD to a new currency (if you picked 1)
+  Enter the exchange rate you'd like to use
 
 exit
   Description: Exit the program
