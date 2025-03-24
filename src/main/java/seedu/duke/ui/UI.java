@@ -10,7 +10,6 @@ import seedu.duke.commands.FriendsCommands;
 import seedu.duke.commands.Commands;
 import seedu.duke.commands.SplitCommand;
 import seedu.duke.expense.BudgetManager;
-import seedu.duke.currency.Currency;
 
 public class UI {
     private final Scanner scanner;

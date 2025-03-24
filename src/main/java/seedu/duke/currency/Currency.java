@@ -1,7 +1,6 @@
 package seedu.duke.currency;
 import seedu.duke.commands.Commands;
 import seedu.duke.expense.BudgetManager;
-import seedu.duke.expense.Expense;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -39,13 +38,10 @@ public class Currency {
             if(s.hasNextLine()){
                 line = s.nextLine();
                 currentCurrency = line;
-            }
-
-            else{
+            } else {
                 currentCurrency = Commands.DEFAULT_CURRENCY;
             }
-        }
-        catch(FileNotFoundException e){
+        } catch (FileNotFoundException e){
             File f = new File("./currentCurrency");
             System.out.println("file not found...");
             System.out.println("A new file to load your current currency will be created for you!");
@@ -268,7 +264,8 @@ public class Currency {
                     return;
                 }
 
-                System.out.println("Please input your exchange rate from " + getCurrentCurrency() + " to a new currency");
+                System.out.println("Please input your exchange rate from " + getCurrentCurrency() +
+                        " to a new currency");
                 String input = scanner.nextLine().trim();
                 finalExchangeRate = Double.parseDouble(input);
             }
@@ -287,9 +284,7 @@ public class Currency {
                 finalExchangeRate = exchangeRate/getExchangeRate(currentCurrency);
             }
             editExpenseCurrency(finalExchangeRate, newCurrency);
-        }
-
-        catch(NumberFormatException e){
+        } catch (NumberFormatException e){
             System.out.println("Please input a valid number");
         }
     }
@@ -306,9 +301,7 @@ public class Currency {
 
         try{
             writeToFile(newCurrency);
-        }
-
-        catch(IOException e){
+        } catch (IOException e){
             System.out.println("error recording the change of currency");
             return;
         }
