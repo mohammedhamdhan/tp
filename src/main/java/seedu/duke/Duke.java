@@ -13,6 +13,7 @@ import seedu.duke.menu.HelpPage;
 import seedu.duke.messages.Messages;
 import seedu.duke.storage.DataStorage;
 import seedu.duke.ui.UI;
+import seedu.duke.summary.ExpenseClassifier;
 
 /**
  * Main class of application.
@@ -37,10 +38,11 @@ public class Duke {
         HelpPage helpPage = new HelpPage();
         Commands commands = new Commands();
         ExpenseCommand expenseCommand = new ExpenseCommand(budgetManager, scanner);
-
         GroupManager groupManager = new GroupManager();
         FriendsCommands friendsCommand = new FriendsCommands(groupManager);
         SplitCommand splitCommand = new SplitCommand(scanner, groupManager);
+        ExpenseClassifier expenseClassifier = new ExpenseClassifier();
+
         UI ui = new UI(scanner,
             messages,
             helpPage,
@@ -48,7 +50,8 @@ public class Duke {
             expenseCommand,
             commands,
             friendsCommand,
-            splitCommand);
+            splitCommand,
+            expenseClassifier);
 
         messages.displayWelcomeMessage();
         helpPage.displayCommandList();

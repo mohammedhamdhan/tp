@@ -8,6 +8,7 @@ import seedu.duke.commands.FriendsCommands;
 import seedu.duke.commands.Commands;
 import seedu.duke.commands.SplitCommand;
 import seedu.duke.expense.BudgetManager;
+import seedu.duke.summary.ExpenseClassifier;
 
 public class UI {
     private final Scanner scanner;
@@ -19,6 +20,7 @@ public class UI {
     private final SplitCommand splitCommand;
     private Commands commands;
     private final BudgetManager budgetManager;
+    private ExpenseClassifier expenseClassifier;
     private boolean isRunning;
 
     public UI(Scanner scanner, 
@@ -28,7 +30,8 @@ public class UI {
             ExpenseCommand expenseCommand, 
             Commands commands, 
             FriendsCommands friendsCommand, 
-            SplitCommand splitCommand) {
+            SplitCommand splitCommand,
+            ExpenseClassifier expenseClassifier) {
         this.scanner = scanner;
         this.messages = messages;
         this.helpPage = helpPage;
@@ -38,6 +41,7 @@ public class UI {
         this.budgetManager = expenseCommand.getBudgetManager();
         this.friendsCommand = friendsCommand;
         this.splitCommand = splitCommand;
+        this.expenseClassifier = expenseClassifier;
         this.isRunning = true;
     }
 
@@ -122,6 +126,9 @@ public class UI {
             break;
         case Commands.REMOVE_GROUP:
             friendsCommand.removeGroup();
+            break;
+        case Commands.SUMMARY:
+            expenseClassifier.calculateCategoryProportions();
             break;
         default:
             messages.displayInvalidCommandMessage();
