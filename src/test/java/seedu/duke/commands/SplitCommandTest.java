@@ -2,7 +2,7 @@ package seedu.duke.commands;
 
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.io.File;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -157,6 +158,19 @@ class SplitCommandTest {
         // Both friends should owe 50.00 each.
         assertTrue(output.contains("Alice owes: 50.00"), "Expected Alice to owe 50.00.");
         assertTrue(output.contains("Bob owes: 50.00"), "Expected Bob to owe 50.00.");
+        
+        // Additional asserts:
+        File owesFile = new File(SplitCommand.OwesStorage.owesFile);
+        assertTrue(owesFile.exists(), "Expected owes file to exist after equal split.");
+        try {
+            String fileContent = new String(java.nio.file.Files.readAllBytes(owesFile.toPath()));
+            assertTrue(fileContent.contains("Alice owes: 50.00"), "Expected owes file to include Alice owes: 50.00.");
+            // New assertEquals to check the exact file content.
+            String expectedContent = " - Alice owes: 50.00\n - Bob owes: 50.00\n";
+            assertEquals(expectedContent, fileContent, "File content does not match");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -184,6 +198,16 @@ class SplitCommandTest {
         String output = outContent.toString();
         assertTrue(output.contains("Alice owes: 30.00"), "Expected Alice to owe 30.00.");
         assertTrue(output.contains("Bob owes: 70.00"), "Expected Bob to owe 70.00.");
+        
+        // New assertEquals to check the exact file content for manual split.
+        File owesFile = new File(SplitCommand.OwesStorage.owesFile);
+        try {
+            String fileContent = new String(java.nio.file.Files.readAllBytes(owesFile.toPath()));
+            String expectedContent = " - Alice owes: 30.00\n - Bob owes: 70.00\n";
+            assertEquals(expectedContent, fileContent, "File content does not match.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

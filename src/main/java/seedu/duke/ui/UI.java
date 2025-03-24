@@ -40,12 +40,11 @@ public class UI {
         this.expenseCommand = expenseCommand;
         this.commands = commands;
         this.budgetManager = expenseCommand.getBudgetManager();
-        this.friendsCommand = friendsCommand; // Initialize friendsCommand here
+        this.friendsCommand = friendsCommand;
         this.splitCommand = splitCommand;
         this.isRunning = true;
         this.currency = currency;
     }
-
 
     public void handleUserInput() {
         while (isRunning) {
