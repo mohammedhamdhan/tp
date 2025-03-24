@@ -14,11 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import seedu.duke.currency.Currency;
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.expense.Expense;
 
 //@@author matthewyeo1
 class ExpenseCommandTest {
+    private Currency currency;
     private BudgetManager budgetManager;
     private ExpenseCommand expenseCommand;
     private final PrintStream originalOut = System.out;
@@ -48,7 +50,7 @@ class ExpenseCommandTest {
     void provideInput(String input) {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
-        expenseCommand = new ExpenseCommand(budgetManager, scanner);
+        expenseCommand = new ExpenseCommand(budgetManager, scanner, currency );
     }
 
     @Test

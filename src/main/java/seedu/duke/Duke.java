@@ -37,12 +37,12 @@ public class Duke {
         Messages messages = new Messages();
         HelpPage helpPage = new HelpPage();
         Commands commands = new Commands();
-        ExpenseCommand expenseCommand = new ExpenseCommand(budgetManager, scanner);
 
         GroupManager groupManager = new GroupManager();
         FriendsCommands friendsCommand = new FriendsCommands(groupManager);
         SplitCommand splitCommand = new SplitCommand(scanner, groupManager);
         Currency currency = new Currency(scanner, budgetManager);
+        ExpenseCommand expenseCommand = new ExpenseCommand(budgetManager, scanner, currency);
         UI ui = new UI(scanner,
             messages,
             helpPage,

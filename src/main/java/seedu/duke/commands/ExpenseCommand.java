@@ -30,11 +30,12 @@ public class ExpenseCommand {
      * @param budgetManager the budget manager to use
      * @param scanner       the scanner for user input
      */
-    public ExpenseCommand(BudgetManager budgetManager, Scanner scanner) {
+    public ExpenseCommand(BudgetManager budgetManager, Scanner scanner, Currency currency) {
         assert budgetManager != null : "BudgetManager cannot be null";
         assert scanner != null : "Scanner cannot be null";
         this.budgetManager = budgetManager;
         this.scanner = scanner;
+        this.currency = currency;
     }
 
     /**
@@ -242,7 +243,8 @@ public class ExpenseCommand {
             System.out.println("No expenses found.");
             return;
         }
-        
+
+        System.out.println("All expenses are in " + currency.getCurrentCurrency());
         System.out.println("List of Expenses:");
         for (int i = 0; i < expenses.size(); i++) {
             assert expenses.get(i) != null : "Expense at index " + i + " should not be null";
@@ -264,6 +266,8 @@ public class ExpenseCommand {
             return;
         }
 
+        System.out.println("All expenses are in " + currency.getCurrentCurrency());
+
         for (int i = 0; i < expenses.size(); i++) {
             while(i < expenses.size() && !expenses.get(i).getDone()) {
                 i++;
@@ -277,10 +281,6 @@ public class ExpenseCommand {
             System.out.println("Expense #" + (i + 1));
             System.out.println(expenses.get(i));
             System.out.println();
-        }
-
-        if(numberOfExpensesPrinted != 0){
-            System.out.println("List of Settled Expenses:");
         }
 
         String pluralOrSingular = (numberOfExpensesPrinted != 1 ? "expenses" : "expense");
@@ -299,6 +299,8 @@ public class ExpenseCommand {
             return;
         }
 
+        System.out.println("All expenses are in " + currency.getCurrentCurrency());
+
         for (int i = 0; i < expenses.size(); i++) {
             while (i < expenses.size() && expenses.get(i).getDone()) {
                 i++;
@@ -312,10 +314,6 @@ public class ExpenseCommand {
             System.out.println("Expense #" + (i + 1));
             System.out.println(expenses.get(i));
             System.out.println();
-        }
-
-        if(numberOfExpensesPrinted != 0){
-            System.out.println("List of Settled Expenses:");
         }
 
         String pluralOrSingular = (numberOfExpensesPrinted != 1 ? "expenses" : "expense");

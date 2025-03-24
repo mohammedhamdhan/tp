@@ -102,7 +102,7 @@ public class Expense {
     public String toString() {
         return "Title: " + title + "\n"
                 + "Description: " + description + "\n"
-                + "Amount: $" + String.format("%.2f", amount);
+                + "Amount: " + String.format("%.2f", amount);
     }
 
     /**
