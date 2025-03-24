@@ -1,6 +1,8 @@
 package seedu.duke.ui;
 
 import java.util.Scanner;
+
+import seedu.duke.currency.Currency;
 import seedu.duke.messages.Messages;
 import seedu.duke.menu.HelpPage;
 import seedu.duke.commands.ExpenseCommand;
@@ -8,6 +10,7 @@ import seedu.duke.commands.FriendsCommands;
 import seedu.duke.commands.Commands;
 import seedu.duke.commands.SplitCommand;
 import seedu.duke.expense.BudgetManager;
+import seedu.duke.currency.Currency;
 
 public class UI {
     private final Scanner scanner;
@@ -20,6 +23,7 @@ public class UI {
     private Commands commands;
     private final BudgetManager budgetManager;
     private boolean isRunning;
+    private final Currency currency;
 
     public UI(Scanner scanner, 
             Messages messages, 
@@ -28,7 +32,8 @@ public class UI {
             ExpenseCommand expenseCommand, 
             Commands commands, 
             FriendsCommands friendsCommand, 
-            SplitCommand splitCommand) {
+            SplitCommand splitCommand,
+              Currency currency) {
         this.scanner = scanner;
         this.messages = messages;
         this.helpPage = helpPage;
@@ -39,6 +44,7 @@ public class UI {
         this.friendsCommand = friendsCommand; // Initialize friendsCommand here
         this.splitCommand = splitCommand;
         this.isRunning = true;
+        this.currency = currency;
     }
 
 
@@ -123,6 +129,9 @@ public class UI {
             break;
         case Commands.REMOVE_GROUP:
             friendsCommand.removeGroup();
+            break;
+        case Commands.CHANGE_CURRENCY:
+            currency.changeCurrency();
             break;
         default:
             messages.displayInvalidCommandMessage();

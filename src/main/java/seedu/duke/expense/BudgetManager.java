@@ -104,11 +104,13 @@ public class BudgetManager {
      */
     public int getUnsettledExpenseCount() {
         int numberOfUnsettledExpenses = 0;
+
         for (Expense expense : expenses) {
             if (!expense.getDone()) {
                 numberOfUnsettledExpenses++;
             }
         }
+
         return numberOfUnsettledExpenses;
     }
 
@@ -119,11 +121,13 @@ public class BudgetManager {
      */
     public double getTotalBalance() {
         double total = 0;
+
         for (Expense expense : expenses) {
             if(!expense.getDone()) {
                 total += expense.getAmount();
             }
         }
+
         return total;
     }
 
@@ -135,9 +139,11 @@ public class BudgetManager {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     public Expense getExpense(int index) throws IndexOutOfBoundsException {
+
         if (index < 0 || index >= expenses.size()) {
             throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
         }
+
         return expenses.get(index);
     }
 
@@ -148,9 +154,11 @@ public class BudgetManager {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     public void markExpense(int index) throws IndexOutOfBoundsException {
+
         if (index < 0 || index >= expenses.size()) {
             throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
         }
+
         expenses.get(index).setDone(true);
         saveAllExpenses();
     }
@@ -162,11 +170,25 @@ public class BudgetManager {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     public void unmarkExpense(int index) throws IndexOutOfBoundsException {
+
         if (index < 0 || index >= expenses.size()) {
             throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
         }
+
         expenses.get(index).setDone(false);
         saveAllExpenses();
+    }
+
+    public void editExpenseCurrency(Double finalExchangeRate){
+
+        if (getExpenseCount() == 0) {
+            return;
+        }
+
+        for(int i = 0; i < getExpenseCount(); i++){
+            Expense expense = expenses.get(i);
+            editExpense(i, expense.getTitle(), expense.getDescription(), expense.getAmount()*finalExchangeRate);
+        }
     }
 
     /**

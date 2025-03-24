@@ -13,6 +13,7 @@ import seedu.duke.expense.BudgetManager;
 import seedu.duke.expense.Expense;
 import seedu.duke.friends.Friend;
 import seedu.duke.friends.GroupManager;
+import seedu.duke.currency.Currency;
 
 /**
  * Handles expense-related commands entered by the user.
@@ -21,6 +22,7 @@ public class ExpenseCommand {
     private BudgetManager budgetManager;
     private Scanner scanner;
     private GroupManager groupManager;
+    private Currency currency;
 
     /**
      * Constructs an ExpenseCommand with the given BudgetManager and Scanner.
@@ -256,6 +258,7 @@ public class ExpenseCommand {
     public void displaySettledExpenses(){
         List<Expense> expenses = budgetManager.getAllExpenses();
         int numberOfExpensesPrinted = 0;
+
         if (expenses.isEmpty()) {
             System.out.println("No expenses found.");
             return;
@@ -265,17 +268,21 @@ public class ExpenseCommand {
             while(i < expenses.size() && !expenses.get(i).getDone()) {
                 i++;
             }
+
             if(i >= expenses.size()) {
                 break;
             }
+
             numberOfExpensesPrinted++;
             System.out.println("Expense #" + (i + 1));
             System.out.println(expenses.get(i));
             System.out.println();
         }
+
         if(numberOfExpensesPrinted != 0){
             System.out.println("List of Settled Expenses:");
         }
+
         String pluralOrSingular = (numberOfExpensesPrinted != 1 ? "expenses" : "expense");
         System.out.println("You have " + numberOfExpensesPrinted + " settled " + pluralOrSingular);
     }
@@ -296,17 +303,21 @@ public class ExpenseCommand {
             while (i < expenses.size() && expenses.get(i).getDone()) {
                 i++;
             }
+
             if (i >= expenses.size()) {
                 break;
             }
+
             numberOfExpensesPrinted++;
             System.out.println("Expense #" + (i + 1));
             System.out.println(expenses.get(i));
             System.out.println();
         }
+
         if(numberOfExpensesPrinted != 0){
             System.out.println("List of Settled Expenses:");
         }
+
         String pluralOrSingular = (numberOfExpensesPrinted != 1 ? "expenses" : "expense");
         System.out.println("You have " + numberOfExpensesPrinted + " unsettled " + pluralOrSingular);
     }
@@ -328,11 +339,14 @@ public class ExpenseCommand {
     public void executeMarkCommand() {
         System.out.println("Enter expense number to mark");
         String expenseNumberToMark = scanner.nextLine().trim();
+
         try{
             int indexToMark = Integer.parseInt(expenseNumberToMark) - 1;
             budgetManager.markExpense(indexToMark);
+
         } catch(IndexOutOfBoundsException e){
             System.out.println("Please enter a valid expense number.");
+
         } catch(NumberFormatException e){
             System.out.println("Please enter a number.");
         }
