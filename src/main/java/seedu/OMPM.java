@@ -8,8 +8,10 @@ import seedu.duke.expense.BudgetManager;
 import seedu.duke.friends.GroupManager;
 import seedu.duke.menu.HelpPage;
 import seedu.duke.messages.Messages;
+import seedu.duke.summary.ExpenseClassifier;
 import seedu.duke.ui.UI;
 import seedu.duke.commands.Commands;
+
 
 public class OMPM {
 
@@ -18,12 +20,14 @@ public class OMPM {
     private Messages messages;
     private HelpPage helpPage;
     private Commands commands;
+    private ExpenseClassifier expenseClassifier;
 
     public OMPM () {
         scanner = new Scanner(System.in);
         messages = new Messages();
         helpPage = new HelpPage();
         commands = new Commands();
+        expenseClassifier = new ExpenseClassifier();
     }
 
     public static void main(String[] args) {
@@ -35,6 +39,7 @@ public class OMPM {
         FriendsCommands friendsCommand = new FriendsCommands(groupManager);
         ExpenseCommand expenseCommand = new ExpenseCommand(new BudgetManager(), scanner);
         SplitCommand splitCommand = new SplitCommand(scanner, groupManager);
+        ExpenseClassifier expenseClassifier = new ExpenseClassifier();
 
         ui = new UI(scanner, 
         messages, 
@@ -43,7 +48,8 @@ public class OMPM {
         expenseCommand, 
         commands, 
         friendsCommand, 
-        splitCommand);
+        splitCommand,
+        expenseClassifier);
 
         // Display welcome message and command list
         messages.displayWelcomeMessage();

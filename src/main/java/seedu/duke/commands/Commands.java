@@ -1,3 +1,4 @@
+//@@author matthewyeo1
 package seedu.duke.commands;
 
 public class Commands {
@@ -19,10 +20,11 @@ public class Commands {
     public static final String REMOVE_GROUP = "remove-group";
     public static final String VIEW_ALL_GROUPS = "my-groups";
     public static final String SPLIT = "split";
+    public static final String SUMMARY = "summary";
 
     public static String getCommandDescription(String command) {
         return "hello";
     }
 }
-
+//@@author
 
