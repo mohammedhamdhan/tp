@@ -40,8 +40,8 @@ class DataStorageTest {
     @Test
     void testSaveAndLoadExpenses() {
         List<Expense> expenses = new ArrayList<>();
-        expenses.add(new Expense("Lunch", "Fast food", 10.50));
-        expenses.add(new Expense("Transport", "Bus fare", 2.00));
+        expenses.add(new Expense("Lunch", "Fast food", "01-01-2025",10.50));
+        expenses.add(new Expense("Transport", "Bus fare", "31-12-2025",2.00));
 
         assertTrue(DataStorage.saveExpenses(expenses), "Saving should be successful");
 
@@ -50,10 +50,12 @@ class DataStorageTest {
 
         assertEquals("Lunch", loadedExpenses.get(0).getTitle());
         assertEquals("Fast food", loadedExpenses.get(0).getDescription());
+        assertEquals("01-01-2025", loadedExpenses.get(0).getDate());
         assertEquals(10.50, loadedExpenses.get(0).getAmount());
 
         assertEquals("Transport", loadedExpenses.get(1).getTitle());
         assertEquals("Bus fare", loadedExpenses.get(1).getDescription());
+        assertEquals("31-12-2025", loadedExpenses.get(1).getDate());
         assertEquals(2.00, loadedExpenses.get(1).getAmount());
     }
 
