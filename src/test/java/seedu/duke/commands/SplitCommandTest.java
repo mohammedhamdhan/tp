@@ -140,7 +140,7 @@ class SplitCommandTest {
     @Test
     void testExecuteSplitEqualSplit() {
         // Add an expense so DataStorage.loadExpenses() returns it.
-        Expense expense = new Expense("Lunch", "Meal", 100.0);
+        Expense expense = new Expense("Lunch", "Meal", "01-01-2025", 100.0);
         budgetManager.addExpense(expense);
 
         // Create a group "friends" with two members.
@@ -176,7 +176,7 @@ class SplitCommandTest {
     @Test
     void testExecuteSplitManualSplit() {
         // Add an expense so DataStorage.loadExpenses() returns it.
-        Expense expense = new Expense("Dinner", "Evening meal", 100.0);
+        Expense expense = new Expense("Dinner", "Evening meal", "31-12-2025", 100.0);
         budgetManager.addExpense(expense);
 
         // Create a group "friends" with two members.
@@ -213,7 +213,7 @@ class SplitCommandTest {
     @Test
     void testExecuteSplitInvalidExpenseSelection() {
         // Add a single expense.
-        Expense expense = new Expense("Snack", "Small bite", 20.0);
+        Expense expense = new Expense("Snack", "Small bite", "23-08-2025",20.0);
         budgetManager.addExpense(expense);
 
         // Provide an invalid expense number "5".

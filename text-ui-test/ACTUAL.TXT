@@ -124,12 +124,14 @@ ________________________________________________________________________________
 
 Enter command: Enter expense title:
 Enter expense description:
+Enter date of expense (DD-MM-YYYY):
 Enter expense amount:
 Enter :
 Expense added successfully:
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: 10.00
+Date: 01-01-2025
+Amount: $10.00
 
 ________________________________________________________________________________
 
@@ -138,20 +140,25 @@ List of Expenses:
 Expense #1
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: 10.00
+Date: 01-01-2025
+Amount: $10.00
 
 Enter the index of the expense to edit:
 Current expense details:
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: 10.00
+Date: 01-01-2025
+Amount: $10.00
+
 Enter new title (press Enter to keep current):
 Enter new description (press Enter to keep current):
+Enter new date (press Enter to keep current):
 Enter new amount (press Enter to keep current):
 Expense edited successfully:
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: 9.00
+Date: 31-12-2025
+Amount: $9.00
 
 ________________________________________________________________________________
 
@@ -160,7 +167,8 @@ List of Expenses:
 Expense #1
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: 9.00
+Date: 31-12-2025
+Amount: $9.00
 
 Enter the index of the expense to edit:
 Please enter a valid expense number.
@@ -172,20 +180,24 @@ List of Expenses:
 Expense #1
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: 9.00
+Date: 31-12-2025
+Amount: $9.00
 
 Enter the index of the expense to edit:
 Current expense details:
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
-Amount: 9.00
+Date: 31-12-2025
+Amount: $9.00
 Enter new title (press Enter to keep current):
 Enter new description (press Enter to keep current):
+Enter new date (press Enter to keep current):
 Enter new amount (press Enter to keep current):
 Expense edited successfully:
 Title: Supper
 Description: 10x Egg Prata from SpringLeaf
-Amount: 25.00
+Date: 02-01-2025
+Amount: $25.00
 
 ________________________________________________________________________________
 
@@ -201,7 +213,8 @@ List of Expenses:
 Expense #1
 Title: Supper
 Description: 10x Egg Prata from SpringLeaf
-Amount: 25.00
+Date: 02-01-2025
+Amount: $25.00
 
 Enter the index of the expense to delete:
 Please enter a valid expense number.
@@ -213,14 +226,16 @@ List of Expenses:
 Expense #1
 Title: Supper
 Description: 10x Egg Prata from SpringLeaf
-Amount: 25.00
+Date: 02-01-2025
+Amount: $25.00
 
 Enter the index of the expense to delete:
 Owed amounts file not found. No amounts to update.
 Expense deleted successfully:
 Title: Supper
 Description: 10x Egg Prata from SpringLeaf
-Amount: 25.00
+Date: 02-01-2025
+Amount: $25.00
 
 ________________________________________________________________________________
 

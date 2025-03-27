@@ -6,6 +6,7 @@ package seedu.duke.expense;
 public class Expense {
     private String title;
     private String description;
+    private String date;
     private double amount;
     private Boolean isDone;
     private String groupName;
@@ -15,11 +16,13 @@ public class Expense {
      *
      * @param title       A short name or summary of the expense
      * @param description Detailed information about the expense
+     * @param date        Date of expense
      * @param amount      The monetary value of the expense
      */
-    public Expense(String title, String description, double amount) {
+    public Expense(String title, String description, String date, double amount) {
         this.title = title;
         this.description = description;
+        this.date = date;
         this.amount = amount;
         this.isDone = false;
     }
@@ -32,9 +35,10 @@ public class Expense {
      * @param amount      The monetary value of the expense.
      * @param isDone      Indicates whether the expense is settled
      */
-    public Expense(String title, String description, double amount, boolean isDone) {
+    public Expense(String title, String description, String date, double amount, boolean isDone) {
         this.title = title;
         this.description = description;
+        this.date = date;
         this.amount = amount;
         this.isDone = isDone;
     }
@@ -75,6 +79,26 @@ public class Expense {
         this.description = description;
     }
 
+    //@@author matthewyeo1
+    /**
+     * Returns the date of the expense.
+     *
+     * @return the date
+     */
+    public String getDate() {
+        return date;
+    }
+
+    /**
+     * Sets the date of the expense.
+     *
+     * @param date the new date
+     */
+    public void setDate(String date) {
+        this.date = date;
+    }
+    //@@author
+
     /**
      * Returns the amount of the expense.
      *
@@ -102,7 +126,10 @@ public class Expense {
     public String toString() {
         return "Title: " + title + "\n"
                 + "Description: " + description + "\n"
-                + "Amount: " + String.format("%.2f", amount);
+                //@@author matthewyeo1
+                + "Date: " + date + "\n"
+                //@@author
+                + "Amount: $" + String.format("%.2f", amount);
     }
 
     /**

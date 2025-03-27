@@ -1,3 +1,4 @@
+//@@author matthewyeo1
 package seedu.duke.commands;
 
 public class Commands {
@@ -21,10 +22,11 @@ public class Commands {
     public static final String SPLIT = "split";
     public static final String CHANGE_CURRENCY = "change-currency";
     public static final String DEFAULT_CURRENCY = "SGD";
+    public static final String SUMMARY = "summary";
 
     public static String getCommandDescription(String command) {
         return "hello";
     }
 }
-
+//@@author
 

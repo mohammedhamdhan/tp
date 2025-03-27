@@ -55,7 +55,7 @@ public class BudgetManager {
      * @return the edited expense
      * @throws IndexOutOfBoundsException if the index is out of range
      */
-    public Expense editExpense(int index, String title, String description, double amount) 
+    public Expense editExpense(int index, String title, String description, String date, double amount)
             throws IndexOutOfBoundsException {
         if (index < 0 || index >= expenses.size()) {
             throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
@@ -69,6 +69,10 @@ public class BudgetManager {
         
         if (description != null) {
             expense.setDescription(description);
+        }
+
+        if (date != null) {
+            expense.setDate(date);
         }
         
         if (amount >= 0) {

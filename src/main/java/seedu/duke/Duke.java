@@ -14,6 +14,7 @@ import seedu.duke.menu.HelpPage;
 import seedu.duke.messages.Messages;
 import seedu.duke.storage.DataStorage;
 import seedu.duke.ui.UI;
+import seedu.duke.summary.ExpenseClassifier;
 
 /**
  * Main class of application.
@@ -41,8 +42,16 @@ public class Duke {
         GroupManager groupManager = new GroupManager();
         FriendsCommands friendsCommand = new FriendsCommands(groupManager);
         SplitCommand splitCommand = new SplitCommand(scanner, groupManager);
-        Currency currency = new Currency(scanner, budgetManager);
+        
         ExpenseCommand expenseCommand = new ExpenseCommand(budgetManager, scanner, currency);
+
+        ExpenseCommand expenseCommand = new ExpenseCommand(budgetManager, scanner);
+        GroupManager groupManager = new GroupManager();
+        FriendsCommands friendsCommand = new FriendsCommands(groupManager);
+        SplitCommand splitCommand = new SplitCommand(scanner, groupManager);
+        ExpenseClassifier expenseClassifier = new ExpenseClassifier();
+        Currency currency = new Currency(scanner, budgetManager);
+
         UI ui = new UI(scanner,
             messages,
             helpPage,
@@ -51,7 +60,8 @@ public class Duke {
             commands,
             friendsCommand,
             splitCommand,
-            currency
+            currency,
+            expenseClassifier
         );
 
         messages.displayWelcomeMessage();
