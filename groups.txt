@@ -1,5 +1,1 @@
-[GROUP]|TestGroup
-TestGroup|Alice
-TestGroup|Bob
-[GROUP]|NewGroup
-NewGroup|Charlie
+
