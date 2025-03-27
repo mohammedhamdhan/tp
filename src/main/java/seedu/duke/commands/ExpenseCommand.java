@@ -15,6 +15,7 @@ import seedu.duke.expense.BudgetManager;
 import seedu.duke.expense.Expense;
 import seedu.duke.friends.Friend;
 import seedu.duke.friends.GroupManager;
+import seedu.duke.currency.Currency;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +27,7 @@ public class ExpenseCommand {
     private BudgetManager budgetManager;
     private Scanner scanner;
     private GroupManager groupManager;
+    private Currency currency;
 
     /**
      * Constructs an ExpenseCommand with the given BudgetManager and Scanner.
@@ -33,11 +35,12 @@ public class ExpenseCommand {
      * @param budgetManager the budget manager to use
      * @param scanner       the scanner for user input
      */
-    public ExpenseCommand(BudgetManager budgetManager, Scanner scanner) {
+    public ExpenseCommand(BudgetManager budgetManager, Scanner scanner, Currency currency) {
         assert budgetManager != null : "BudgetManager cannot be null";
         assert scanner != null : "Scanner cannot be null";
         this.budgetManager = budgetManager;
         this.scanner = scanner;
+        this.currency = currency;
     }
 
     //@@author matthewyeo1
@@ -247,6 +250,8 @@ public class ExpenseCommand {
             return;
         }
 
+        System.out.println("All expenses are in " + currency.getCurrentCurrency());
+      
         expenses.sort(Comparator.comparing(Expense::getDate).reversed());
 
         System.out.println("List of Expenses:");
@@ -265,10 +270,14 @@ public class ExpenseCommand {
     public void displaySettledExpenses(){
         List<Expense> expenses = budgetManager.getAllExpenses();
         int numberOfExpensesPrinted = 0;
+
         if (expenses.isEmpty()) {
             System.out.println("No expenses found.");
             return;
         }
+
+
+        System.out.println("All expenses are in " + currency.getCurrentCurrency());
 
         expenses.sort(Comparator.comparing(Expense::getDate).reversed());
 
@@ -276,17 +285,17 @@ public class ExpenseCommand {
             while(i < expenses.size() && !expenses.get(i).getDone()) {
                 i++;
             }
+
             if(i >= expenses.size()) {
                 break;
             }
+
             numberOfExpensesPrinted++;
             System.out.println("Expense #" + (i + 1));
             System.out.println(expenses.get(i));
             System.out.println();
         }
-        if(numberOfExpensesPrinted != 0){
-            System.out.println("List of Settled Expenses:");
-        }
+
         String pluralOrSingular = (numberOfExpensesPrinted != 1 ? "expenses" : "expense");
         System.out.println("You have " + numberOfExpensesPrinted + " settled " + pluralOrSingular);
     }
@@ -303,23 +312,25 @@ public class ExpenseCommand {
             return;
         }
 
+        System.out.println("All expenses are in " + currency.getCurrentCurrency());
+      
         expenses.sort(Comparator.comparing(Expense::getDate).reversed());
 
         for (int i = 0; i < expenses.size(); i++) {
             while (i < expenses.size() && expenses.get(i).getDone()) {
                 i++;
             }
+
             if (i >= expenses.size()) {
                 break;
             }
+
             numberOfExpensesPrinted++;
             System.out.println("Expense #" + (i + 1));
             System.out.println(expenses.get(i));
             System.out.println();
         }
-        if(numberOfExpensesPrinted != 0){
-            System.out.println("List of Settled Expenses:");
-        }
+
         String pluralOrSingular = (numberOfExpensesPrinted != 1 ? "expenses" : "expense");
         System.out.println("You have " + numberOfExpensesPrinted + " unsettled " + pluralOrSingular);
     }
@@ -342,11 +353,14 @@ public class ExpenseCommand {
     public void executeMarkCommand() {
         System.out.println("Enter expense number to mark");
         String expenseNumberToMark = scanner.nextLine().trim();
+
         try{
             int indexToMark = Integer.parseInt(expenseNumberToMark) - 1;
             budgetManager.markExpense(indexToMark);
+
         } catch(IndexOutOfBoundsException e){
             System.out.println("Please enter a valid expense number.");
+
         } catch(NumberFormatException e){
             System.out.println("Please enter a number.");
         }

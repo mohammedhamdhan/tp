@@ -1,6 +1,8 @@
 package seedu.duke.ui;
 
 import java.util.Scanner;
+
+import seedu.duke.currency.Currency;
 import seedu.duke.messages.Messages;
 import seedu.duke.menu.HelpPage;
 import seedu.duke.commands.ExpenseCommand;
@@ -22,6 +24,7 @@ public class UI {
     private final BudgetManager budgetManager;
     private ExpenseClassifier expenseClassifier;
     private boolean isRunning;
+    private final Currency currency;
 
     public UI(Scanner scanner, 
             Messages messages, 
@@ -31,7 +34,10 @@ public class UI {
             Commands commands, 
             FriendsCommands friendsCommand, 
             SplitCommand splitCommand,
-            ExpenseClassifier expenseClassifier) {
+            Currency currency,
+            ExpenseClassifier expenseClassifier
+            ) {
+      
         this.scanner = scanner;
         this.messages = messages;
         this.helpPage = helpPage;
@@ -43,6 +49,7 @@ public class UI {
         this.splitCommand = splitCommand;
         this.expenseClassifier = expenseClassifier;
         this.isRunning = true;
+        this.currency = currency;
     }
 
     public void handleUserInput() {
@@ -126,6 +133,9 @@ public class UI {
             break;
         case Commands.REMOVE_GROUP:
             friendsCommand.removeGroup();
+            break;
+        case Commands.CHANGE_CURRENCY:
+            currency.changeCurrency();
             break;
         case Commands.SUMMARY:
             expenseClassifier.calculateCategoryProportions();
