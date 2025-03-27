@@ -60,13 +60,13 @@ public class BudgetManager {
         if (index < 0 || index >= expenses.size()) {
             throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
         }
-        
+
         Expense expense = expenses.get(index);
-        
+
         if (title != null) {
             expense.setTitle(title);
         }
-        
+
         if (description != null) {
             expense.setDescription(description);
         }
@@ -74,11 +74,11 @@ public class BudgetManager {
         if (date != null) {
             expense.setDate(date);
         }
-        
+
         if (amount >= 0) {
             expense.setAmount(amount);
         }
-        
+
         DataStorage.saveExpenses(expenses);
         return expense;
     }
@@ -199,7 +199,7 @@ public class BudgetManager {
 
         for(int i = 0; i < getExpenseCount(); i++){
             Expense expense = expenses.get(i);
-            editExpense(i, expense.getTitle(), expense.getDescription(), expense.getAmount()*finalExchangeRate);
+            editExpense(i, expense.getTitle(), expense.getDescription(), expense.getDate(), expense.getAmount()*finalExchangeRate);
         }
     }
     //@@author
@@ -237,4 +237,4 @@ public class BudgetManager {
         return expense;
     }
     //@@author
-} 
+}
