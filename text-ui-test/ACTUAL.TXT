@@ -149,7 +149,6 @@ Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
 Date: 01-01-2025
 Amount: $10.00
-
 Enter new title (press Enter to keep current):
 Enter new description (press Enter to keep current):
 Enter new date (press Enter to keep current):
