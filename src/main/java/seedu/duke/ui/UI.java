@@ -35,8 +35,7 @@ public class UI {
             FriendsCommands friendsCommand, 
             SplitCommand splitCommand,
             Currency currency,
-            ExpenseClassifier expenseClassifier
-            ) {
+            ExpenseClassifier expenseClassifier) {
       
         this.scanner = scanner;
         this.messages = messages;

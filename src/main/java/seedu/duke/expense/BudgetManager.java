@@ -199,7 +199,8 @@ public class BudgetManager {
 
         for(int i = 0; i < getExpenseCount(); i++){
             Expense expense = expenses.get(i);
-            editExpense(i, expense.getTitle(), expense.getDescription(), expense.getDate(), expense.getAmount()*finalExchangeRate);
+            editExpense(i, expense.getTitle(), expense.getDescription(), expense.getDate(),
+                    expense.getAmount()*finalExchangeRate);
         }
     }
     //@@author
