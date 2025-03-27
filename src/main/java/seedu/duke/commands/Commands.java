@@ -21,6 +21,7 @@ public class Commands {
     public static final String VIEW_ALL_GROUPS = "my-groups";
     public static final String SPLIT = "split";
     public static final String SUMMARY = "summary";
+    public static final String EXPORT = "export";
 
     public static String getCommandDescription(String command) {
         return "hello";

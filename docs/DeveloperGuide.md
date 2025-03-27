@@ -91,6 +91,30 @@ The `executeDeleteExpense()` method manages expense deletion with these features
 - Handles invalid indices gracefully
 - Uses assertions to ensure valid state
 
+#### Expense Summaries
+
+The class provides comprehensive expense summary functionality:
+
+1. Viewing Summaries:
+
+   - Monthly Summary: Shows total expenses and count per month
+   - Category-wise Summary: Shows total expenses and count per category
+   - Interactive menu for choosing summary view
+   - Formatted output with clear headers and separators
+
+2. Exporting Summaries:
+
+   - Export to text files (monthly_summary.txt, category_summary.txt)
+   - Same formatting as view summaries
+   - Error handling for file operations
+   - Confirmation messages for successful exports
+
+3. Data Organization:
+   - Uses Maps to group and aggregate expenses
+   - Maintains both totals and counts
+   - Sorts data for better readability
+   - Handles empty expense lists gracefully
+
 #### Error Handling
 
 Both methods implement comprehensive error handling:

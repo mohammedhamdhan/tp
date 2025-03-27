@@ -122,6 +122,22 @@ public class HelpPage {
         System.out.println("    - Group to split it among");
         System.out.println();
 
+        System.out.println("summary");
+        System.out.println("  Description: View expense summaries in different formats");
+        System.out.println("  Usage: summary");
+        System.out.println("  You will be prompted to choose:");
+        System.out.println("    - Monthly Summary: Shows total expenses and count per month");
+        System.out.println("    - Category-wise Summary: Shows total expenses and count per category");
+        System.out.println();
+
+        System.out.println("export");
+        System.out.println("  Description: Export expense summaries to text files");
+        System.out.println("  Usage: export");
+        System.out.println("  You will be prompted to choose:");
+        System.out.println("    - Monthly Summary: Exports to monthly_summary.txt");
+        System.out.println("    - Category-wise Summary: Exports to category_summary.txt");
+        System.out.println();
+
         System.out.println("exit");
         System.out.println("  Description: Exit the program");
         System.out.println("  Usage: exit");
