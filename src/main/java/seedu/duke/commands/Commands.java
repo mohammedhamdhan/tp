@@ -20,6 +20,8 @@ public class Commands {
     public static final String REMOVE_GROUP = "remove-group";
     public static final String VIEW_ALL_GROUPS = "my-groups";
     public static final String SPLIT = "split";
+    public static final String CHANGE_CURRENCY = "change-currency";
+    public static final String DEFAULT_CURRENCY = "SGD";
     public static final String SUMMARY = "summary";
     public static final String EXPORT = "export";
 

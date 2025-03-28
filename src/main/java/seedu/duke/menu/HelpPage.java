@@ -136,6 +136,19 @@ public class HelpPage {
         System.out.println("  You will be prompted to choose:");
         System.out.println("    - Monthly Summary: Exports to monthly_summary.txt");
         System.out.println("    - Category-wise Summary: Exports to category_summary.txt");
+
+        System.out.println("change-currency");
+        System.out.println("  Description: Change all you expenses to a different currency");
+        System.out.println("  Usage: change currency");
+        System.out.println("  You will be prompted to enter:");
+        System.out.println("    -Please enter a number");
+        System.out.println("  Enter 1 to enter your own exchange rate");
+        System.out.println("  Enter 2 to use an estimated exchange rate");
+        System.out.println("    -Please enter a currency to change to");
+        System.out.println("  Enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)");
+        System.out.println("    -Please input your exchange rate from USD to a new currency (if you picked 1)");
+        System.out.println("  Enter the exchange rate you'd like to use");
+
         System.out.println();
 
         System.out.println("exit");
