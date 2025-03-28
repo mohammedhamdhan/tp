@@ -7,6 +7,7 @@ import seedu.duke.commands.ExpenseCommand;
 import seedu.duke.commands.FriendsCommands;
 import seedu.duke.commands.SplitCommand;
 import seedu.duke.commands.Commands;
+import seedu.duke.currency.Currency;
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.friends.GroupManager;
 import seedu.duke.menu.HelpPage;
@@ -37,11 +38,14 @@ public class Duke {
         Messages messages = new Messages();
         HelpPage helpPage = new HelpPage();
         Commands commands = new Commands();
-        ExpenseCommand expenseCommand = new ExpenseCommand(budgetManager, scanner);
+
         GroupManager groupManager = new GroupManager();
         FriendsCommands friendsCommand = new FriendsCommands(groupManager);
         SplitCommand splitCommand = new SplitCommand(scanner, groupManager);
+
         ExpenseClassifier expenseClassifier = new ExpenseClassifier();
+        Currency currency = new Currency(scanner, budgetManager);
+        ExpenseCommand expenseCommand = new ExpenseCommand(budgetManager, scanner, currency);
 
         UI ui = new UI(scanner,
             messages,
@@ -51,7 +55,9 @@ public class Duke {
             commands,
             friendsCommand,
             splitCommand,
-            expenseClassifier);
+            currency,
+            expenseClassifier
+        );
 
         messages.displayWelcomeMessage();
         helpPage.displayCommandList();

@@ -60,13 +60,13 @@ public class BudgetManager {
         if (index < 0 || index >= expenses.size()) {
             throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
         }
-        
+
         Expense expense = expenses.get(index);
-        
+
         if (title != null) {
             expense.setTitle(title);
         }
-        
+
         if (description != null) {
             expense.setDescription(description);
         }
@@ -74,11 +74,11 @@ public class BudgetManager {
         if (date != null) {
             expense.setDate(date);
         }
-        
+
         if (amount >= 0) {
             expense.setAmount(amount);
         }
-        
+
         DataStorage.saveExpenses(expenses);
         return expense;
     }
@@ -108,12 +108,13 @@ public class BudgetManager {
      */
     public int getUnsettledExpenseCount() {
         int numberOfUnsettledExpenses = 0;
+
         for (Expense expense : expenses) {
             if (!expense.getDone()) {
                 numberOfUnsettledExpenses++;
             }
         }
-        assert numberOfUnsettledExpenses >= 0 : "number of unsettled exopenses should not be negative";
+        assert numberOfUnsettledExpenses >= 0 : "number of unsettled expenses should not be negative";
         return numberOfUnsettledExpenses;
     }
 
@@ -124,11 +125,13 @@ public class BudgetManager {
      */
     public double getTotalBalance() {
         double total = 0;
+
         for (Expense expense : expenses) {
             if(!expense.getDone()) {
                 total += expense.getAmount();
             }
         }
+
         return total;
     }
 
@@ -140,12 +143,15 @@ public class BudgetManager {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     public Expense getExpense(int index) throws IndexOutOfBoundsException {
+
         if (index < 0 || index >= expenses.size()) {
             throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
         }
+
         return expenses.get(index);
     }
 
+    //@@author NandhithaShree
     /**
      * Marks an expense at the specified index.
      *
@@ -153,9 +159,11 @@ public class BudgetManager {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     public void markExpense(int index) throws IndexOutOfBoundsException {
+
         if (index < 0 || index >= expenses.size()) {
             throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
         }
+
         expenses.get(index).setDone(true);
         saveAllExpenses();
     }
@@ -167,12 +175,35 @@ public class BudgetManager {
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     public void unmarkExpense(int index) throws IndexOutOfBoundsException {
+
         if (index < 0 || index >= expenses.size()) {
             throw new IndexOutOfBoundsException(messages.invalidIndexMessage());
         }
+
         expenses.get(index).setDone(false);
         saveAllExpenses();
     }
+
+    /**
+     * Updates the amounts of all expenses by applying the given exchange rate to each expense.
+     * This method multiplies the amount of each expense by the provided exchange rate and updates the expense.
+     *
+     * @param finalExchangeRate The exchange rate to be applied to the expense amounts.
+     *                         The expense amount will be multiplied by this rate.
+     */
+    public void editExpenseCurrency(Double finalExchangeRate){
+
+        if (getExpenseCount() == 0) {
+            return;
+        }
+
+        for(int i = 0; i < getExpenseCount(); i++){
+            Expense expense = expenses.get(i);
+            editExpense(i, expense.getTitle(), expense.getDescription(), expense.getDate(),
+                    expense.getAmount()*finalExchangeRate);
+        }
+    }
+    //@@author
 
     /**
      * Saves all expenses to storage.
@@ -207,4 +238,4 @@ public class BudgetManager {
         return expense;
     }
     //@@author
-} 
+}
