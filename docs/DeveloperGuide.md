@@ -26,30 +26,26 @@
 &nbsp;&nbsp;[4.4 Messages Class](#43-messages-class) <br>
 &nbsp;&nbsp;[4.5 ExpenseClassifier Class](#44-expenseclassifier-class) <br>
 
-
 ## Acknowledgements
 
 ---
-
-
-
 
 ## 1. Introduction
 
 ---
 
-O\$P\$ is an expense-tracker application that allows 
+O\$P\$ is an expense-tracker application that allows
 the user to keep track of their expenditure with ease!
-Users can also manage expenses in a group setting with 
+Users can also manage expenses in a group setting with
 simple splitting functions, as well as view analytics
 of their spending across multiple categories.
-
 
 ## 2. Setup Guide
 
 ---
 
 ### 2.1 Prerequisites
+
 1.  Ensure you have Java 17 or above installed on your PC. **[Version 17 is preferred]**
 2.  You may download [here](https://se-education.org/guides/tutorials/javaInstallationMac.html) for Mac users and [here](https://www.oracle.com/sg/java/technologies/downloads/) for Windows users.
 3.  If you have it installed already, you may check it by running `java -version` in your terminal.
@@ -59,3 +55,100 @@ of their spending across multiple categories.
 7.  Type the command in the command box and press **Enter** to execute it.
 8.  **Example:** Typing `help` and pressing **Enter** will open a mini window showing a list of all possible commands.
 9.  Refer to the [features](https://docs.google.com/document/d/125Cg7wzuc4XFo3wsziwL2f64KN1uUfvFL5dIm6IQrSk/edit?tab=t.xl7ogrtj0a5q#heading=h.61o02m6y9xrc) section below for details on all commands and functionalities.
+
+## 3. Design
+
+---
+
+### 3.1 UI Class
+
+### 3.2 DataStorage Class
+
+### 3.3 GroupStorage Class
+
+### 3.4 Commands Class
+
+### 3.5 ExpenseCommands Classes
+
+The ExpenseCommand class handles all expense-related operations in the application. It provides functionality for adding, deleting, editing, and managing expenses.
+
+#### Adding Expenses
+
+The `executeAddExpense()` method handles the addition of new expenses with the following features:
+
+- Validates input fields (title, description, date, amount)
+- Ensures date format is DD-MM-YYYY
+- Prevents negative amounts
+- Handles empty inputs gracefully
+- Uses assertions to validate state
+
+#### Deleting Expenses
+
+The `executeDeleteExpense()` method manages expense deletion with these features:
+
+- Validates expense index before deletion
+- Updates owed amounts in the owesData.txt file
+- Handles invalid indices gracefully
+- Uses assertions to ensure valid state
+
+#### Expense Summaries
+
+The class provides comprehensive expense summary functionality:
+
+1. Viewing Summaries:
+
+   - Monthly Summary: Shows total expenses and count per month
+   - Category-wise Summary: Shows total expenses and count per category
+   - Interactive menu for choosing summary view
+   - Formatted output with clear headers and separators
+
+2. Exporting Summaries:
+
+   - Export to text files (monthly_summary.txt, category_summary.txt)
+   - Same formatting as view summaries
+   - Error handling for file operations
+   - Confirmation messages for successful exports
+
+3. Data Organization:
+   - Uses Maps to group and aggregate expenses
+   - Maintains both totals and counts
+   - Sorts data for better readability
+   - Handles empty expense lists gracefully
+
+#### Error Handling
+
+Both methods implement comprehensive error handling:
+
+- NumberFormatException for invalid number inputs
+- IndexOutOfBoundsException for invalid indices
+- FileNotFoundException for file operations
+- General exception handling with user-friendly messages
+
+#### Data Validation
+
+The class uses assertions to validate:
+
+- Non-null objects
+- Valid indices
+- Non-negative amounts
+- Valid expense states
+
+### 3.6 FriendsCommands Class
+
+### 3.7 SplitCommand Class
+
+### 3.8 BudgetManager Class
+
+### 3.9 Expense Class
+
+### 4.0 Friend Class
+
+### 4.1 Group Class
+
+### 4.2 GroupManager Class
+
+### 4.3 HelpPage Class
+
+### 4.4 Messages Class
+
+### 4.5 ExpenseClassifier Class
