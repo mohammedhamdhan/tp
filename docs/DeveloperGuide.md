@@ -189,6 +189,45 @@ The class uses assertions to validate:
 ### 4.0 Friend Class
 
 ### 4.1 Group Class
+### Group Class
+
+The `Group` class in the `seedu.duke.friends` package manages a collection of `Friend` objects under a specified group name.
+
+#### Group Initialization
+- **Constructor:** `Group(String name)`
+- **Features:**
+   - Sets the group name.
+   - Initializes an empty list of `Friend` objects.
+
+#### Adding Friends
+- **Method:** `addFriend(Friend friend)`
+- **Features:**
+   - Adds a `Friend` object to the group.
+
+#### Removing Friends
+- **Method:** `removeFriend(String friendName)`
+- **Features:**
+   - Searches for the first friend with a matching name and removes them.
+   - Returns `true` if removal is successful; otherwise returns `false`.
+   - Note: Uses a for-each loop for removal, which may require caution regarding concurrent modifications.
+
+#### Retrieving Friends
+- **Method:** `getFriends()`
+- **Features:**
+   - Returns the list of `Friend` objects in the group.
+
+#### Getting Group Name
+- **Method:** `getName()`
+- **Features:**
+   - Returns the group’s name.
+
+#### String Representation
+- **Method:** `toString()`
+- **Features:**
+   - Constructs a formatted string showing the group name and member names.
+   - If the group is empty, calls `messages.displayEmptyGroupMessage()` to display an appropriate message.
+   - **Important:** Ensure that the `messages` field is initialized externally to prevent a `NullPointerException`.
+
 
 ### 4.2 GroupManager Class
 
