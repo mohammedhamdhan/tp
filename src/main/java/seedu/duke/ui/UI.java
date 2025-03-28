@@ -12,8 +12,6 @@ import seedu.duke.commands.ExpenseCommand;
 import seedu.duke.commands.FriendsCommands;
 import seedu.duke.commands.SplitCommand;
 import seedu.duke.expense.BudgetManager;
-import seedu.duke.menu.HelpPage;
-import seedu.duke.messages.Messages;
 import seedu.duke.summary.ExpenseClassifier;
 
 public class UI {
