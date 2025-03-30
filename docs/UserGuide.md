@@ -23,9 +23,9 @@ Lists the commands available to the user.
 
 ---
 
-#### Exiting the program: `bye`
+#### Exiting the program: `exit`
 Terminates the program and saves the user’s data, such as their payee list, groups, balance, and transaction information to a `.csv` file.
-- **Usage:** `bye`
+- **Usage:** `exit`
 - **Expected output:** *[Save aforementioned data into file and produce an exit message]*
 
 ---
@@ -33,28 +33,24 @@ Terminates the program and saves the user’s data, such as their payee list, gr
 ## Manage Balance:
 
 #### Add an expense: `add`
-Add an expense with a description, amount, category, payee.
-
-- **Format:**
-  ```
-  add <amount>
-  "App asks for description" <description of payment>
-  "App asks for category of expense" <category of expense>
-  "App asks for currency" <*optionally convert the amount into SGD as the home currency*>
-  ```
+Add an expense with a title, description, date, amount.
 
 - **Usage:**
   ```
-  add 400
-  "Add a description for this expense!"
-  User input: Grab-booking
-  "Add a category for this expense!"
-  User input: transport
-  "What currency is this expense in? Leave EMPTY if in SGD"
-  User input: YEN
-  "Awesome! I have added this expense :)
-  You can view it under your expenses now!"
+  add
+  Enter expense title:
+  User input: Breakfast
+  Enter expense description:
+  User input: 1x Big Breakfast from McDonald's
+  Enter date of expense (DD-MM-YYYY):
+  User input: 01-01-2025
+  Enter expense amount:
+  10
+  
   ```
+
+- **Expected output:** *[A short summary of the added expense will appear]*
+
   The entry will automatically be tagged with a unique expense ID.
 
 ---
@@ -75,6 +71,7 @@ Edit an existing expense.
   "Enter the expense details"
   "Title:" <New title>
   "Description:" <New description>
+  "Date:" <New date>
   "Amount:" <New amount>
   ```
 
@@ -84,12 +81,18 @@ Edit an existing expense.
   "Enter the index of the expense to edit" 
   User input:1
   "Enter the expense details"
-  "Title:"
+  "Enter new title (press Enter to keep current):"
   User input: Edited expense 1
-  "Description:"
-  User input: new edited expense
-  "Amount:" 10
+  "Enter new description (press Enter to keep current):"
+  User input: New description
+  "Enter new date (press Enter to keep current):"
+  User input: 02-01-2025
+  "Enter new amount (press Enter to keep current):" 
+  20
   ```
+
+- **Expected output:** *[A short summary of the edited expense will appear]*
+
 ---
 
 #### View all expenses: `list`
@@ -102,6 +105,7 @@ View all the expenses.
   Expense #1
   Title: test expense
   Description: testing testing
+  Date: 01-01-2025
   Amount: $50.00
   ```
 
@@ -127,6 +131,7 @@ View expenses that are marked as settled using "mark" command.
   Expense #1
   Title: test expense
   Description: testing testing
+  Date: 01-01-2025
   Amount: $50.00
   
   List of Settled Expenses:
@@ -267,9 +272,9 @@ Removes an entire group.
 ## Manage Payments:
 
 
-#### Select split method: `/split`
+#### Select split method: `split`
 Allows an expense to be split among a certain group, either equally or via manually specified amounts/percentages.
-- **Format:** `/split`
+- **Format:** `split`
 
 - **Example output:**
   ```
