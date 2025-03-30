@@ -1,0 +1,4 @@
+Category-wise Expense Summary
+----------------------------
+Food: $55.00 (1 expenses)
+Travel: $45.00 (1 expenses)

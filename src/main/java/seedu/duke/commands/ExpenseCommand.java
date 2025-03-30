@@ -1,6 +1,7 @@
 //@@author mohammedhamdhan
 package seedu.duke.commands;
 
+import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -14,11 +15,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
+import org.knowm.xchart.AnnotationTextPanel;
+import org.knowm.xchart.PieChart;
+import org.knowm.xchart.PieChartBuilder;
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.style.PieStyler.LabelType;
+import org.knowm.xchart.style.Styler;
+import org.knowm.xchart.style.Styler.ChartTheme;
+
+import seedu.duke.currency.Currency;
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.expense.Expense;
 import seedu.duke.friends.Friend;
 import seedu.duke.friends.GroupManager;
-import seedu.duke.currency.Currency;
+import seedu.duke.summary.Categories;
+import seedu.duke.summary.ExpenseClassifier;
 
 /**
  * Handles expense-related commands entered by the user.
@@ -390,7 +405,7 @@ public class ExpenseCommand {
         System.out.println("Choose summary view:");
         System.out.println("1. Monthly Summary");
         System.out.println("2. Category-wise Summary");
-        System.out.println("3. Back to main menu");
+        System.out.println("3. Cancel");
         
         String choice = scanner.nextLine().trim();
         
@@ -412,7 +427,7 @@ public class ExpenseCommand {
     /**
      * Shows a monthly summary of expenses.
      */
-    private void showMonthlySummary() {
+    public void showMonthlySummary() {
         List<Expense> expenses = budgetManager.getAllExpenses();
         assert expenses != null : "Expenses list should not be null";
         
@@ -460,9 +475,9 @@ public class ExpenseCommand {
     }
 
     /**
-     * Shows a category-wise summary of expenses.
+     * Shows a category-wise summary of expenses with visualization.
      */
-    private void showCategorySummary() {
+    public void showCategorySummary() {
         List<Expense> expenses = budgetManager.getAllExpenses();
         assert expenses != null : "Expenses list should not be null";
         
@@ -471,24 +486,92 @@ public class ExpenseCommand {
             return;
         }
 
-        // Group expenses by category (using description instead of title)
-        Map<String, Double> categoryTotals = new HashMap<>();
-        Map<String, Integer> categoryCounts = new HashMap<>();
-        
-        for (Expense expense : expenses) {
-            String category = expense.getDescription();
-            categoryTotals.merge(category, expense.getAmount(), Double::sum);
-            categoryCounts.merge(category, 1, Integer::sum);
-        }
+        // Use ExpenseClassifier to calculate category proportions
+        ExpenseClassifier classifier = new ExpenseClassifier();
+        Map<Categories, Double> categoryTotals = classifier.calculateCategoryTotals(expenses);
+        Map<Categories, Integer> categoryCounts = classifier.calculateCategoryCounts(expenses);
 
+        // Display the summary
         System.out.println("\nCategory-wise Expense Summary:");
         System.out.println("----------------------------");
-        for (Map.Entry<String, Double> entry : categoryTotals.entrySet()) {
-            String category = entry.getKey();
-            double total = entry.getValue();
+        
+        // Prepare data for pie chart
+        List<String> categoryNames = new ArrayList<>();
+        List<Number> categoryValues = new ArrayList<>();
+        
+        for (Categories category : Categories.values()) {
+            double total = categoryTotals.get(category);
             int count = categoryCounts.get(category);
-            System.out.printf("%s: $%.2f (%d expenses)%n", category, total, count);
+            if (count > 0) {  // Only show categories with expenses
+                System.out.printf("%s: $%.2f (%d expenses)%n", 
+                        category.toString(), total, count);
+                
+                // Add to chart data
+                categoryNames.add(category.toString());
+                categoryValues.add(total);
+            }
         }
+        
+        // Ask user if they want to see the chart visualization
+        System.out.println("\nDo you want to see a pie chart visualization? (y/n)");
+        String response = scanner.nextLine().trim().toLowerCase();
+        
+        if (response.equals("y") || response.equals("yes")) {
+            showPieChart(categoryNames, categoryValues);
+        }
+    }
+
+    /**
+     * Displays a pie chart of expenses by category using XChart.
+     * 
+     * @param categoryNames The list of category names
+     * @param categoryValues The list of category values (total expense amounts)
+     */
+    private void showPieChart(List<String> categoryNames, List<Number> categoryValues) {
+        // Create Chart
+        PieChart chart = new PieChartBuilder()
+                .width(800)
+                .height(600)
+                .title("Expenses by Category")
+                .theme(ChartTheme.GGPlot2)
+                .build();
+        
+        // Customize Chart
+        chart.getStyler().setLegendPosition(Styler.LegendPosition.OutsideE);
+        chart.getStyler().setLegendVisible(true);
+        chart.getStyler().setAnnotationTextPanelPadding(1);
+        chart.getStyler().setPlotContentSize(0.7);
+        chart.getStyler().setDecimalPattern("#,###.##");
+        chart.getStyler().setLabelsVisible(true);
+        chart.getStyler().setLabelType(LabelType.Percentage); // Show percentages on pie slices
+        
+        // Add an annotation panel with summary info
+        chart.addAnnotation(
+            new AnnotationTextPanel("Expense Categories Summary", 40, 40, true));
+        
+        // Create custom series names with formatted amounts for legend
+        for (int i = 0; i < categoryNames.size(); i++) {
+            String name = categoryNames.get(i);
+            Number value = categoryValues.get(i);
+            // Format the series name to include the amount
+            String formattedName = String.format("%s: $%.2f", name, value.doubleValue());
+            chart.addSeries(formattedName, value);
+        }
+        
+        // Display the chart in a Swing window using SwingWrapper
+        SwingWrapper<PieChart> wrapper = new SwingWrapper<>(chart);
+        JFrame frame = wrapper.displayChart();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        // Add instruction label
+        JLabel label = new JLabel("Close this window to return to the application", SwingConstants.CENTER);
+        frame.add(label, BorderLayout.SOUTH);
+        
+        // Resize and center
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        
+        System.out.println("Displaying pie chart. Close the chart window to continue.");
     }
 
     /**
@@ -520,7 +603,7 @@ public class ExpenseCommand {
     /**
      * Exports monthly summary to a file.
      */
-    private void exportMonthlySummary() {
+    public void exportMonthlySummary() {
         try (FileWriter writer = new FileWriter("monthly_summary.txt")) {
             List<Expense> expenses = budgetManager.getAllExpenses();
             assert expenses != null : "Expenses list should not be null";
@@ -576,7 +659,7 @@ public class ExpenseCommand {
     /**
      * Exports category-wise summary to a file.
      */
-    private void exportCategorySummary() {
+    public void exportCategorySummary() {
         try (FileWriter writer = new FileWriter("category_summary.txt")) {
             List<Expense> expenses = budgetManager.getAllExpenses();
             assert expenses != null : "Expenses list should not be null";
@@ -586,22 +669,20 @@ public class ExpenseCommand {
                 return;
             }
 
-            Map<String, Double> categoryTotals = new HashMap<>();
-            Map<String, Integer> categoryCounts = new HashMap<>();
-            
-            for (Expense expense : expenses) {
-                String category = expense.getDescription();
-                categoryTotals.merge(category, expense.getAmount(), Double::sum);
-                categoryCounts.merge(category, 1, Integer::sum);
-            }
+            // Use ExpenseClassifier to calculate category proportions
+            ExpenseClassifier classifier = new ExpenseClassifier();
+            Map<Categories, Double> categoryTotals = classifier.calculateCategoryTotals(expenses);
+            Map<Categories, Integer> categoryCounts = classifier.calculateCategoryCounts(expenses);
 
             writer.write("Category-wise Expense Summary\n");
             writer.write("----------------------------\n");
-            for (Map.Entry<String, Double> entry : categoryTotals.entrySet()) {
-                String category = entry.getKey();
-                double total = entry.getValue();
+            for (Categories category : Categories.values()) {
+                double total = categoryTotals.get(category);
                 int count = categoryCounts.get(category);
-                writer.write(String.format("%s: $%.2f (%d expenses)%n", category, total, count));
+                if (count > 0) {  // Only show categories with expenses
+                    writer.write(String.format("%s: $%.2f (%d expenses)%n", 
+                            category.toString(), total, count));
+                }
             }
             System.out.println("Category summary exported to category_summary.txt");
         } catch (IOException e) {
