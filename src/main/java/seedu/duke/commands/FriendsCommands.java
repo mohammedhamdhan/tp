@@ -49,7 +49,7 @@ public class FriendsCommands {
 
         // Check if this group exists
         if (!groupManager.groupExists(groupName)) {
-            System.out.println("Unable to find group");
+            System.out.println("Group not found");
             return;
         }
         System.out.println("Group: " + groupName);

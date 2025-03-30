@@ -118,6 +118,8 @@ class SplitCommandTest {
     void provideInput(String input) {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
+        // Initialize friendsCommands using the groupManager.
+        friendsCommand = new FriendsCommands(groupManager);
         splitCommand = new SplitCommand(scanner, groupManager, friendsCommand);
     }
 
