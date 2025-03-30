@@ -4,7 +4,9 @@ import seedu.duke.friends.Group;
 import seedu.duke.friends.GroupManager;
 import seedu.duke.friends.Friend;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import java.io.File;
@@ -38,31 +40,43 @@ public class FriendsCommands {
         groupManager.saveGroups();  // Save the updated groups using GroupManager
         System.out.println("Group created successfully!");
     }
+    //@@author
 
+//@@author Ashertan256
+// Edited to ensure sum up values from owedAmounts.txt instead of showing the last value
     public void viewGroup() {
         System.out.print("Enter the group name to view: ");
         String groupName = scanner.nextLine().trim();
 
-        if (groupManager.groupExists(groupName)) {
+    // Check if this group exists
+    if (!groupManager.groupExists(groupName)) {
+        System.out.println("Unable to find group");
+        return;
+    }
             System.out.println("Group: " + groupName);
 
-            // Load owed amounts from file into a map.
+            // Load owedAmounts.txt into owedAmounts map
             java.util.Map<String, Double> owedAmounts = new java.util.HashMap<>();
             File file = new File("owedAmounts.txt");
             try (Scanner fileScanner = new Scanner(file)) {
                 while (fileScanner.hasNextLine()) {
                     String line = fileScanner.nextLine().trim();
-                    if (line.startsWith("- ")) {
+                    if (line.startsWith("- ")) {// Format for data storage, delimiter
                         String[] parts = line.split(" owes: ");
                         if (parts.length == 2) {
-                            String name = parts[0].substring(2).trim();
+                    // Extract the member's name and the owed amount
+                    String name = parts[0].substring(2).trim();  //remove "- "
                             double amount = Double.parseDouble(parts[1].trim());
-                            owedAmounts.put(name, amount);
+
+                    // Accumulate amounts for that name, do NOT overwrite
+                    double existing = owedAmounts.getOrDefault(name, 0.0);
+                    owedAmounts.put(name, existing + amount);
                         }
                     }
                 }
             } catch (FileNotFoundException e) {
-                System.out.println("Owed amounts file not found. No expense data available.");
+                // Exception for file not found
+                System.out.println("owedAmounts.txt file not found. No expense data available.");
             } catch (NumberFormatException e) {
                 System.out.println("Error parsing expense data.");
             }
@@ -74,17 +88,54 @@ public class FriendsCommands {
             } else {
                 System.out.println("Members:");
                 for (Friend friend : members) {
-                    String name = friend.getName();
-                    double expense = owedAmounts.getOrDefault(name, 0.0);
-                    System.out.println(name + " - Expense: $" + String.format("%.2f", expense));
+            String friendName = friend.getName();
+            // If the friend appears in owedAmounts, show the sum total, else 0.00
+            double totalOwed = owedAmounts.getOrDefault(friendName, 0.0);
+            System.out.println(friendName + " - Expense: $" + String.format("%.2f", totalOwed));
                 }
             }
-        } else {
-            System.out.println("Group not found.");
+}
+public void viewGroupDirect(String groupName) {
+    // Exactly the same as viewGroup but WITHOUT requiring the user to input the group name. Called directly from the split command, to show the sum of amounts. Should not be callable from user input side.
+
+    Map<String, Double> owedAmounts = new HashMap<>();
+    File file = new File("owedAmounts.txt");
+    try (Scanner fileScanner = new Scanner(file)) {
+        while (fileScanner.hasNextLine()) {
+            String line = fileScanner.nextLine().trim();
+            if (line.startsWith("- ")) {
+                String[] parts = line.split(" owes: ");
+                if (parts.length == 2) {
+                    String name = parts[0].substring(2).trim();
+                    double amount = Double.parseDouble(parts[1].trim());
+                    owedAmounts.put(name, owedAmounts.getOrDefault(name, 0.0) + amount);
+                }
+            }
         }
+    } catch (FileNotFoundException e) {
+        System.out.println("Owed amounts file not found. No expense data available.");
+    } catch (NumberFormatException e) {
+        System.out.println("Error parsing expense data.");
     }
 
+    // Retrieve the group’s members and print their total so far
+    List<Friend> members = groupManager.getGroupMembers(groupName);
+    if (members.isEmpty()) {
+        System.out.println("No members in this group.");
+    } else {
+        System.out.println("Members:");
+        for (Friend friend : members) {
+            String name = friend.getName();
+            double totalOwed = owedAmounts.getOrDefault(name, 0.0);
+            System.out.println(name + " - Expense: $" + String.format("%.2f", totalOwed));
+        }
+    }
+}
 
+//@@author
+
+
+//@@author nandhananm7
     public void viewAllGroups() {
         if (groupManager.getGroups().isEmpty()) {
             System.out.println("You have no groups.");

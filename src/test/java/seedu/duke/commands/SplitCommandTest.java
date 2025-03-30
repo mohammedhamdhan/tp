@@ -24,12 +24,14 @@ import seedu.duke.expense.Expense;
 import seedu.duke.friends.Friend;
 import seedu.duke.friends.Group;
 import seedu.duke.friends.GroupManager;
+import seedu.duke.commands.FriendsCommands;
 import seedu.duke.storage.DataStorage;
 
 class SplitCommandTest {
     private BudgetManager budgetManager;
     private SplitCommand splitCommand;
     private GroupManager groupManager; // our test group manager
+    private FriendsCommands friendsCommand;
     private final PrintStream originalOut = System.out;
     private ByteArrayOutputStream outContent;
 
@@ -117,7 +119,7 @@ class SplitCommandTest {
     void provideInput(String input) {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
-        splitCommand = new SplitCommand(scanner, groupManager);
+        splitCommand = new SplitCommand(scanner, groupManager, friendsCommand);
     }
 
     @Test

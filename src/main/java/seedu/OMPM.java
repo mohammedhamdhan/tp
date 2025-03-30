@@ -38,7 +38,7 @@ public class OMPM {
     public void run() {
         GroupManager groupManager = new GroupManager();  // Create an instance of GroupManager
         FriendsCommands friendsCommand = new FriendsCommands(groupManager);
-        SplitCommand splitCommand = new SplitCommand(scanner, groupManager);
+        SplitCommand splitCommand = new SplitCommand(scanner, groupManager, friendsCommand);
 
         Currency currency = new Currency(scanner, new BudgetManager());
         ExpenseCommand expenseCommand = new ExpenseCommand(new BudgetManager(), scanner, currency);
