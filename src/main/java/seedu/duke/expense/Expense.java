@@ -129,7 +129,7 @@ public class Expense {
                 //@@author matthewyeo1
                 + "Date: " + date + "\n"
                 //@@author
-                + "Amount: $" + String.format("%.2f", amount);
+                + "Amount: " + String.format("%.2f", amount);
     }
 
     /**
