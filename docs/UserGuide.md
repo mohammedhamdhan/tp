@@ -112,9 +112,13 @@ View expenses you owe or is owed to you.
 - **Format and Usage:** `list-unsettled`
 - **Example:**
   ```
-  1. Alex owes you $10
-  2. Mary owes you $20
-  3. You owe Raj $30
+  All expenses are in SGD
+  Expense #1
+  Title: test expense
+  Description: testing testing
+  Amount: $50.00
+
+  You have 1 unsettled expense
   ```
 
 ---
@@ -124,12 +128,12 @@ View expenses that are marked as settled using "mark" command.
 - **Format and Usage:** `list-settled`
 - **Example:**
   ```
+  All expenses are in SGD
   Expense #1
   Title: test expense
   Description: testing testing
   Amount: $50.00
-  
-  List of Settled Expenses:
+
   You have 1 settled expense
   ```
 
@@ -137,27 +141,57 @@ View expenses that are marked as settled using "mark" command.
 
 #### Mark settled expenses: `mark`
 Once a transaction is made, the user can mark it as paid.
-
-- **Usage:**
+- **Format and Usage:** `mark`
+- **Example:**
   ```
   mark
   "Enter expense number to mark:"
   User input: 1
-  
   ```
 
 ---
 
 #### Unmark settled expenses: `unmark`
 User can unmark an expense that has been marked already.
-
-- **Usage:**
+- **Format and Usage:** `unmark`
+- **Example:**
   ```
   "Enter expense number to unmark"
   User input: 1
   ```
 
+#### Change currency: `change-currency`
+User can change the currency all expenses are in
+- **Format and Usage:** `change-currency`
+- **Example 1:**
+  ```
+  "[1] Enter your own exchange rate from the current currency"
+  "[2] Switch currencies with an estimated exchange rate"
+  "Enter option:"
+  User input: 1
+  "Note: Please enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)"
+  "Please enter a currency to change to"
+  User input: USD
+  "Please input your exchange rate from SGD to a new currency"
+  User input: 0.75
+  "Currency successfully changed to USD"
+  ```
+  - **Usage example 2:**
+  ```
+  "[1] Enter your own exchange rate from the current currency"
+  "[2] Switch currencies with an estimated exchange rate"
+  "Enter option:"
+  User input: 2
+  "Your current currency is SGD"
+  "Note: Please enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)"
+  "Please enter a currency to change to"
+  User input: USD
+  "Currency successfully changed to USD"
+  ```
+
 ---
+
+
 
 #### View balance in wallet: `balance`
 Shows total money to be paid and total money to pay.
