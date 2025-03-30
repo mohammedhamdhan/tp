@@ -30,6 +30,7 @@ class SplitCommandTest {
     private BudgetManager budgetManager;
     private SplitCommand splitCommand;
     private GroupManager groupManager; // our test group manager
+    private FriendsCommands friendsCommand;
     private final PrintStream originalOut = System.out;
     private ByteArrayOutputStream outContent;
 
@@ -117,7 +118,9 @@ class SplitCommandTest {
     void provideInput(String input) {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
-        splitCommand = new SplitCommand(scanner, groupManager);
+        // Initialize friendsCommands using the groupManager.
+        friendsCommand = new FriendsCommands(groupManager);
+        splitCommand = new SplitCommand(scanner, groupManager, friendsCommand);
     }
 
     @Test
