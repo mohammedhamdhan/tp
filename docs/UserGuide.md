@@ -16,28 +16,28 @@
 
 ### Admin:
 
-#### Viewing help: `/help`
+#### Viewing help: `help`
 Lists the commands available to the user.
-- **Usage:** `/help`
+- **Usage:** `help`
 - **Expected output:** *[To insert list of commands that will be returned]*
 
 ---
 
-#### Exiting the program: `/bye`
+#### Exiting the program: `bye`
 Terminates the program and saves the user’s data, such as their payee list, groups, balance, and transaction information to a `.csv` file.
-- **Usage:** `/bye`
+- **Usage:** `bye`
 - **Expected output:** *[Save aforementioned data into file and produce an exit message]*
 
 ---
 
 ## Manage Balance:
 
-#### Add an expense: `/add`
+#### Add an expense: `add`
 Add an expense with a description, amount, category, payee.
 
 - **Format:**
   ```
-  /add <amount>
+  add <amount>
   "App asks for description" <description of payment>
   "App asks for category of expense" <category of expense>
   "App asks for currency" <*optionally convert the amount into SGD as the home currency*>
@@ -45,7 +45,7 @@ Add an expense with a description, amount, category, payee.
 
 - **Usage:**
   ```
-  /add 400
+  add 400
   "Add a description for this expense!"
   User input: Grab-booking
   "Add a category for this expense!"
@@ -59,14 +59,14 @@ Add an expense with a description, amount, category, payee.
 
 ---
 
-#### Delete an expense: `/delete`
+#### Delete an expense: `delete`
 Delete expenses to remove unwanted expenses.
-- **Format:** `/delete <expense ID>`
-- **Usage:** `/delete 2`
+- **Format:** `delete <expense ID>`
+- **Usage:** `delete 2`
 
 ---
 
-#### Edit an expense: `/edit`
+#### Edit an expense: `edit`
 Edit an existing expense.
 - **Format:**
   ```
@@ -92,10 +92,10 @@ Edit an existing expense.
   ```
 ---
 
-#### View all expenses: `/list`
+#### View all expenses: `list`
 View all the expenses.
-- **Format:** `/list`
-- **Usage:** `/list`
+- **Format:** `list`
+- **Usage:** `list`
 - **Example:**
   ```
   List of Expenses:
@@ -107,9 +107,9 @@ View all the expenses.
 
 ---
 
-#### View unsettled expenses: `/list-unsettled`
+#### View unsettled expenses: `list-unsettled`
 View expenses you owe or is owed to you.
-- **Format and Usage:** `/list-unsettled`
+- **Format and Usage:** `list-unsettled`
 - **Example:**
   ```
   1. Alex owes you $10
@@ -119,9 +119,9 @@ View expenses you owe or is owed to you.
 
 ---
 
-#### View settled expenses: `/list-settled`
+#### View settled expenses: `list-settled`
 View expenses that are marked as settled using "mark" command.
-- **Format and Usage:** `/list-settled`
+- **Format and Usage:** `list-settled`
 - **Example:**
   ```
   Expense #1
@@ -135,12 +135,12 @@ View expenses that are marked as settled using "mark" command.
 
 ---
 
-#### Mark settled expenses: `/mark`
+#### Mark settled expenses: `mark`
 Once a transaction is made, the user can mark it as paid.
 
 - **Usage:**
   ```
-  /mark
+  mark
   "Enter expense number to mark:"
   User input: 1
   
@@ -148,7 +148,7 @@ Once a transaction is made, the user can mark it as paid.
 
 ---
 
-#### Unmark settled expenses: `/unmark`
+#### Unmark settled expenses: `unmark`
 User can unmark an expense that has been marked already.
 
 - **Usage:**
@@ -159,7 +159,7 @@ User can unmark an expense that has been marked already.
 
 ---
 
-#### View balance in wallet: `/balance`
+#### View balance in wallet: `balance`
 Shows total money to be paid and total money to pay.
 - **Output:**
   ```
@@ -171,7 +171,7 @@ Shows total money to be paid and total money to pay.
 
 ## Manage Group Members:
 
-#### View Friends in a group: `/create-group`
+#### View Friends in a group: `create-group`
 Create a new group to split expenses with.
 - **Usage:**
   ```
@@ -188,7 +188,7 @@ Create a new group to split expenses with.
 
 ---
 
-#### Add Friends to a group: `/view-group`
+#### Add Friends to a group: `view-group`
 View a specific group and see how much each member owes.
 - **Usage:**
   ```
@@ -203,7 +203,7 @@ View a specific group and see how much each member owes.
 
 ---
 
-#### Add Friends to a group: `/add-member`
+#### Add Friends to a group: `add-member`
 Adds a user to a group.
 - **Usage:**
   ```
@@ -216,7 +216,7 @@ Adds a user to a group.
 
 ---
 
-#### Add Friends to a group: `/remove-member`
+#### Add Friends to a group: `remove-member`
 Removes a member from a group
 - **Usage:**
   ```
@@ -228,8 +228,8 @@ Removes a member from a group
 
 ---
 
-#### Add Friends to a group: `/my-groups`
-Shows all of the users groups.
+#### Add Friends to a group: `my-groups`
+Shows all the user's groups.
 - **Usage:**
   ```
   my-groups
@@ -252,7 +252,7 @@ Shows all of the users groups.
 
 ---
 
-#### Add Friends to a group: `/remove-group`
+#### Add Friends to a group: `remove-group`
 Removes an entire group.
 
 - **Usage:**
@@ -260,15 +260,17 @@ Removes an entire group.
   remove-group
   Enter the name of the group to remove: TestGroup
   
-    ```
+  ```
 
 ---
 
 ## Manage Payments:
 
+
 #### Select split method: `/split`
 Allows an expense to be split among a certain group, either equally or via manually specified amounts/percentages.
 - **Format:** `/split`
+
 - **Example output:**
   ```
   [1] Split equally among all members of the selected group
@@ -283,6 +285,25 @@ Allows an expense to be split among a certain group, either equally or via manua
   Will display the total amounts owed by each member
   ```
 ---
+
+## Expense Analytics:
+
+#### View summary of expenses: `summary`
+Displays a chart of the chosen user's expense distribution 
+among the Food, Travel, Entertainment, Shopping and Miscellaneous
+categories.
+
+- **Usage:**
+  ```
+  summary
+  Choose summary view:
+  1. Monthly Summary
+  2. Category-wise Summary
+  3. Back to main menu
+  
+  ```
+---
+
 
 
 
