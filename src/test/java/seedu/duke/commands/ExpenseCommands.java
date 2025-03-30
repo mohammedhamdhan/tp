@@ -1,8 +1,14 @@
 package seedu.duke.commands;
 
-import java.io.*;
 import java.util.Scanner;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.File;
+import java.io.FileWriter;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -244,8 +250,8 @@ class ExpenseCommandTest {
         budgetManager.markExpense(2);
 
         expenseCommand.displayUnsettledExpenses();
-        String expectedMessage = "All expenses are in SGD\n" + "Expense #1\n" + expense.toString() + "\n\n" + "Expense #2\n" + expense1.toString()
-                + "\n\n" + "You have 2 unsettled expenses";
+        String expectedMessage = "All expenses are in SGD\n" + "Expense #1\n" + expense.toString() + "\n\n" +
+                "Expense #2\n" + expense1.toString() + "\n\n" + "You have 2 unsettled expenses";
         String actualOutput = outContent.toString().trim();
         actualOutput = actualOutput.replaceAll("\r\n", "\n");
         assertEquals(expectedMessage, actualOutput);
