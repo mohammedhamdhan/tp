@@ -1,11 +1,6 @@
 package seedu.duke.commands;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Scanner;
 
 import org.junit.jupiter.api.AfterEach;
@@ -43,6 +38,13 @@ class ExpenseCommandTest {
 
         try (PrintWriter writer = new PrintWriter("expenses.txt")) {
             writer.print("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File file = new File("./currentCurrency");
+        try (FileWriter writer = new FileWriter(file, false)) { // Open in overwrite mode
+            writer.write(""); // Clear file contents
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -221,13 +223,14 @@ class ExpenseCommandTest {
         budgetManager.markExpense(1);
 
         expenseCommand.displaySettledExpenses();
-        String expectedMessage = "All expenses are in USD\n" + "Expense #1\n" + expense.toString() + "\n\n" +
+        String expectedMessage = "All expenses are in SGD\n" + "Expense #1\n" + expense.toString() + "\n\n" +
                 "Expense " + "#2\n" + expense1.toString() + "\n" + "\n" + "You have 2 settled expenses";
         String actualOutput = outContent.toString().trim();
         actualOutput = actualOutput.replaceAll("\r\n", "\n");
         assertEquals(expectedMessage, actualOutput);
     }
 
+    @Test
     void testDisplayUnsettledExpensesTwoUnsettledExpenses(){
         provideInput("\n");
         Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
@@ -238,15 +241,74 @@ class ExpenseCommandTest {
         budgetManager.addExpense(expense);
         budgetManager.addExpense(expense1);
         budgetManager.addExpense(expense2);
-        budgetManager.markExpense(3);
+        budgetManager.markExpense(2);
 
         expenseCommand.displayUnsettledExpenses();
-        String expectedMessage = "Expense #1\n" + expense.toString() + "\n\n" + "Expense #2\n" + expense1.toString()
-                + "\n\n" + "List of Unsettled Expenses:" + "\n" + "You have 2 unsettled expenses";
+        String expectedMessage = "All expenses are in SGD\n" + "Expense #1\n" + expense.toString() + "\n\n" + "Expense #2\n" + expense1.toString()
+                + "\n\n" + "You have 2 unsettled expenses";
         String actualOutput = outContent.toString().trim();
         actualOutput = actualOutput.replaceAll("\r\n", "\n");
         assertEquals(expectedMessage, actualOutput);
     }
+
+    @Test
+    void testCurrency(){
+        provideInput("\n");
+        assertEquals("SGD", currency.getCurrentCurrency());
+    }
+
+    @Test
+    public void testCurrencyFileNotFound() {
+        provideInput("\n");
+        File file = new File("./currentCurrency");
+        file.delete(); // Ensure the file doesn't exist
+
+        assertEquals(Commands.DEFAULT_CURRENCY, currency.getCurrentCurrency());
+    }
+
+    @Test
+    public void testChangeCurrencyMethod1ValidCurrency() {
+        String newCurrency = "EUR\n";
+        String exchangeRate = "0.69\n";
+        provideInput("1\n" + newCurrency + exchangeRate);
+        currency.changeCurrency();
+
+        assertEquals("EUR", currency.getCurrentCurrency());
+    }
+
+    @Test
+    public void testChangeCurrencyMethod1InValidCurrency() {
+        String newCurrency = "ABC\n";
+        provideInput("1\n" + newCurrency);
+        currency.changeCurrency();
+
+        String actualOutput = outContent.toString().trim();
+        String expectedOutput = "Please provide a valid currency...";
+
+        assertTrue(actualOutput.contains(expectedOutput));
+    }
+
+    @Test
+    public void testChangeCurrencyMethod2ValidCurrency() {
+        String newCurrency = "JPY\n";
+        provideInput("2\n" + newCurrency);
+        currency.changeCurrency();
+
+        assertEquals("JPY", currency.getCurrentCurrency());
+    }
+
+    @Test
+    public void testChangeCurrencyMethod2InValidCurrency() {
+        String newCurrency = "ABC\n";
+        provideInput("2\n" + newCurrency);
+        currency.changeCurrency();
+
+        String actualOutput = outContent.toString().trim();
+        String expectedOutput = "Currency not found!";
+
+        assertTrue(actualOutput.contains(expectedOutput));
+    }
+
     //@@author
 
     //@@author mohammedhamdhan
