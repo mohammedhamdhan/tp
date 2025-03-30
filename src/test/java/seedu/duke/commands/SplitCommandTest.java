@@ -24,7 +24,6 @@ import seedu.duke.expense.Expense;
 import seedu.duke.friends.Friend;
 import seedu.duke.friends.Group;
 import seedu.duke.friends.GroupManager;
-import seedu.duke.commands.FriendsCommands;
 import seedu.duke.storage.DataStorage;
 
 class SplitCommandTest {

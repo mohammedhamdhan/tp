@@ -267,13 +267,20 @@ Removes an entire group.
 ## Manage Payments:
 
 #### Select split method: `/split`
-Opens a menu for the user to select a method of splitting.
+Allows an expense to be split among a certain group, either equally or via manually specified amounts/percentages.
 - **Format:** `/split`
 - **Example output:**
   ```
   [1] Split equally among all members of the selected group
   [2] Manually input percentage and members involved in transaction
   [x]: Cancel
+  ```
+- **Next steps:**
+  ```
+  Select Transaction to split
+  Select group to split transaction with
+  *If selected [2] before, choose whether to split via absolute amounts or via percentage
+  Will display the total amounts owed by each member
   ```
 ---
 
