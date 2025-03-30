@@ -1,5 +1,4 @@
 package seedu.duke.commands;
-
 import seedu.duke.friends.Friend;
 import seedu.duke.friends.GroupManager;
 import seedu.duke.expense.Expense;
@@ -75,6 +74,7 @@ public class SplitCommand {
                 exp.getTitle() + " | Amount: " +
                 String.format("%.2f", exp.getAmount()));
         }
+        
         System.out.print("Enter expense number to split: ");
         String expenseInput = scanner.nextLine().trim();
         int expIndex;
@@ -150,7 +150,7 @@ public class SplitCommand {
                 // Absolute amounts
                 double remaining = totalAmount;
                 System.out.println("Total expense amount to split: " + totalAmount);
-                System.out.println("You can assign up to " + remaining + " in total. Each assignment reduces the remaining amount.");
+                System.out.println("You can assign up to " + remaining + " in total.");
 
                 for (Friend member: members) {
                     while (true) {

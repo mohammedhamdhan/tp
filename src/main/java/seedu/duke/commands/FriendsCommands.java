@@ -1,5 +1,4 @@
 package seedu.duke.commands;
-
 import seedu.duke.friends.Group;
 import seedu.duke.friends.GroupManager;
 import seedu.duke.friends.Friend;
@@ -96,7 +95,9 @@ public class FriendsCommands {
         }
     }
     public void viewGroupDirect(String groupName) {
-        // Exactly the same as viewGroup but WITHOUT requiring the user to input the group name. Called directly from the split command, to show the sum of amounts. Should not be callable from user input side.
+        // Exactly the same as viewGroup but WITHOUT requiring the user to input the group name. 
+        //Called directly from the split command, to show the sum of amounts. 
+        //Should not be callable from user input side.
 
         Map < String, Double > owedAmounts = new HashMap < > ();
         File file = new File("owedAmounts.txt");
