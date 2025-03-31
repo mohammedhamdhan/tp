@@ -73,7 +73,7 @@ class ExpenseCommandTest {
     void testExecuteDeleteExpense() {
         budgetManager.addExpense(new Expense("Lunch", "Pizza", "01-01-2025",10));
 
-        provideInput("1\n");
+        provideInput("1\nyes\n");
         expenseCommand.executeDeleteExpense();
 
         assertEquals(0, budgetManager.getExpenseCount());
