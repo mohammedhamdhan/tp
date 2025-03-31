@@ -21,9 +21,9 @@ Supper
 balance
 delete
 0
-yes
 delete
 1
+yes
 list
 help
 invalidcommand
