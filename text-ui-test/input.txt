@@ -21,6 +21,7 @@ Supper
 balance
 delete
 0
+yes
 delete
 1
 list
