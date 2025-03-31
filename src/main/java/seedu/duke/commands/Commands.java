@@ -24,10 +24,6 @@ public class Commands {
     public static final String DEFAULT_CURRENCY = "SGD";
     public static final String SUMMARY = "summary";
     public static final String EXPORT = "export";
-
-    public static String getCommandDescription(String command) {
-        return "hello";
-    }
 }
 //@@author
 

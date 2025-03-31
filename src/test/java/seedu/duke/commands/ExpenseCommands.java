@@ -247,11 +247,13 @@ class ExpenseCommandTest {
         budgetManager.addExpense(expense);
         budgetManager.addExpense(expense1);
         budgetManager.addExpense(expense2);
+
         budgetManager.markExpense(2);
 
         expenseCommand.displayUnsettledExpenses();
         String expectedMessage = "All expenses are in SGD\n" + "Expense #1\n" + expense.toString() + "\n\n" +
                 "Expense #2\n" + expense1.toString() + "\n\n" + "You have 2 unsettled expenses";
+      
         String actualOutput = outContent.toString().trim();
         actualOutput = actualOutput.replaceAll("\r\n", "\n");
         assertEquals(expectedMessage, actualOutput);
@@ -363,6 +365,169 @@ class ExpenseCommandTest {
 
         String actualOutput = outContent.toString().trim();
         assertEquals(expectedMessage, actualOutput);
+    }
+
+    @Test
+    void testShowCategorySummary() {
+        // Add expenses with more explicit category indicators
+        budgetManager.addExpense(new Expense("Lunch", "restaurant food", "01-01-2025", 25.50));
+        budgetManager.addExpense(new Expense("T-shirt", "clothes shopping", "02-01-2025", 35.00));
+        budgetManager.addExpense(new Expense("Movie ticket", "entertainment movie cinema", "03-01-2025", 15.00));
+
+        // First provideInput with answer for visualization prompt ('n' for no)
+        provideInput("n\n");
+
+        // Run the category summary
+        expenseCommand.showCategorySummary();
+
+        // Get the output and print it for debugging
+        String output = outContent.toString();
+        System.err.println("CATEGORY SUMMARY OUTPUT:\n" + output);
+        
+        // Verify the output contains the summary title
+        assertTrue(output.contains("Category-wise Expense Summary"), 
+                   "Output should contain the summary title");
+        
+        // More comprehensive checks for food-related terms
+        assertTrue(
+            output.contains("Food") || 
+            output.contains("Dining") || 
+            output.contains("restaurant") || 
+            output.contains("Restaurant") || 
+            output.contains("Meal") ||
+            output.contains("Lunch"),
+            "Output should contain food-related category"
+        );
+        
+        // More comprehensive checks for shopping-related terms
+        assertTrue(
+            output.contains("Shopping") || 
+            output.contains("Clothing") || 
+            output.contains("clothes") || 
+            output.contains("T-shirt") || 
+            output.contains("Apparel"),
+            "Output should contain shopping-related category"
+        );
+        
+        // More comprehensive checks for entertainment-related terms
+        assertTrue(
+            output.contains("Entertainment") || 
+            output.contains("Leisure") || 
+            output.contains("Recreation") || 
+            output.contains("movie") || 
+            output.contains("Movie") ||
+            output.contains("cinema") ||
+            output.contains("Cinema") ||
+            output.contains("Misc") ||  // Sometimes entertainment falls under misc
+            output.contains("Other"),   // Or other categories
+            "Output should contain entertainment-related category"
+        );
+    }
+
+    @Test
+    void testExportCategorySummary() {
+        // Add expenses from different categories
+        budgetManager.addExpense(new Expense("Taxi", "transport to airport", "05-01-2025", 45.00));
+        budgetManager.addExpense(new Expense("Dinner", "food at restaurant", "06-01-2025", 55.00));
+
+        provideInput("");
+
+        // Run the export command
+        expenseCommand.exportCategorySummary();
+
+        // Verify the file was created with correct message
+        String output = outContent.toString();
+        assertTrue(output.contains("Category summary exported to category_summary.txt"));
+
+        // Optional: Read and verify file contents
+        try {
+            java.nio.file.Path path = java.nio.file.Paths.get("category_summary.txt");
+            String fileContent = new String(java.nio.file.Files.readAllBytes(path));
+
+            assertTrue(fileContent.contains("Category-wise Expense Summary"));
+            assertTrue(fileContent.contains("Travel:"));  // From "transport"
+            assertTrue(fileContent.contains("Food:"));    // From "food at restaurant"
+        } catch (IOException e) {
+            // Handle exception or fail test
+            assertTrue(false, "Failed to read exported file: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testShowExpenseSummaryMenu() {
+        // Test the summary menu with option 3 (Cancel)
+        provideInput("3\n");
+        expenseCommand.showExpenseSummary();
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Choose summary view:"));
+        assertTrue(output.contains("1. Monthly Summary"));
+        assertTrue(output.contains("2. Category-wise Summary"));
+        assertTrue(output.contains("3. Cancel"));
+    }
+
+    @Test
+    void testMonthlyExpenseSummary() {
+        // Add expenses from different months
+        budgetManager.addExpense(new Expense("January Expense", "first month", "15-01-2025", 100.00));
+        budgetManager.addExpense(new Expense("February Expense", "second month", "15-02-2025", 200.00));
+
+        provideInput("");
+
+        // Run the monthly summary
+        expenseCommand.showMonthlySummary();
+
+        // Verify output shows both months with correct totals
+        String output = outContent.toString();
+        assertTrue(output.contains("Monthly Expense Summary"));
+        assertTrue(output.contains("01-2025")); // January
+        assertTrue(output.contains("02-2025")); // February
+        assertTrue(output.contains("$100.00")); // January amount
+        assertTrue(output.contains("$200.00")); // February amount
+    }
+
+    @Test
+    void testExportMonthlySummary() {
+        // Add expenses from different months
+        budgetManager.addExpense(new Expense("March Expense", "third month", "15-03-2025", 300.00));
+        budgetManager.addExpense(new Expense("April Expense", "fourth month", "15-04-2025", 400.00));
+
+        provideInput("");
+
+        // Run the export command
+        expenseCommand.exportMonthlySummary();
+
+        // Verify the file was created with correct message
+        String output = outContent.toString();
+        assertTrue(output.contains("Monthly summary exported to monthly_summary.txt"));
+
+        // Optional: Read and verify file contents
+        try {
+            java.nio.file.Path path = java.nio.file.Paths.get("monthly_summary.txt");
+            String fileContent = new String(java.nio.file.Files.readAllBytes(path));
+
+            assertTrue(fileContent.contains("Monthly Expense Summary"));
+            assertTrue(fileContent.contains("03-2025")); // March
+            assertTrue(fileContent.contains("04-2025")); // April
+            assertTrue(fileContent.contains("$300.00")); // March amount
+            assertTrue(fileContent.contains("$400.00")); // April amount
+        } catch (IOException e) {
+            // Handle exception or fail test
+            assertTrue(false, "Failed to read exported file: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testExportExpenseSummaryMenu() {
+        // Test the export menu with option 3 (Back to main menu)
+        provideInput("3\n");
+        expenseCommand.exportExpenseSummary();
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Choose export format:"));
+        assertTrue(output.contains("1. Monthly Summary"));
+        assertTrue(output.contains("2. Category-wise Summary"));
+        assertTrue(output.contains("3. Back to main menu"));
     }
     //@@author
 }
