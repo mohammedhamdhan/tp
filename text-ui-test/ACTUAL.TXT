@@ -230,7 +230,11 @@ Amount: $25.00
 
 Enter the index of the expense to delete:
 Are you sure you want to delete this expense? (yes/no)
-Updated owed amounts written to file successfully.
+Title: Supper
+Description: 10x Egg Prata from SpringLeaf
+Date: 02-01-2025
+Amount: $25.00
+Owed amounts file not found. No amounts to update.
 Expense deleted successfully:
 Title: Supper
 Description: 10x Egg Prata from SpringLeaf
