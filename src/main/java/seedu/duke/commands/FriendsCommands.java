@@ -133,6 +133,13 @@ public class FriendsCommands {
             return;
         }
 
+        System.out.print("Are you sure you want to remove " + memberName + " from " + groupName + "? (yes/no): ");
+        String confirm = scanner.nextLine().trim().toLowerCase();
+        if (!confirm.equals("yes")) {
+            System.out.println("Operation cancelled. " + memberName + " was not removed from " + groupName);
+            return;
+        }
+
         boolean removed = false;
         for (Group group : groupManager.getGroups()) {
             if (group.getName().equals(groupName)) {
@@ -155,6 +162,13 @@ public class FriendsCommands {
 
         if (!groupManager.groupExists(groupName)) {
             System.out.println("Group does not exist.");
+            return;
+        }
+
+        System.out.print("Are you sure you want to remove the group " + groupName + "? (yes/no): ");
+        String confirm = scanner.nextLine().trim().toLowerCase();
+        if (!confirm.equals("yes")) {
+            System.out.println("Operation cancelled. Group " + groupName + " was not removed.");
             return;
         }
 
