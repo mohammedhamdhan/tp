@@ -35,7 +35,7 @@ public class FriendsCommands {
             System.out.print("Enter the group name: ");
             groupName = scanner.nextLine().trim();
             if (!isValidName(groupName)) {
-                System.out.println("Invalid group name. It cannot be empty or contain special characters. Please try again.");
+                System.out.println("Invalid group name. Name cannot be empty/contain special characters.Try again :)");
             } else {
                 break;
             }
@@ -125,7 +125,7 @@ public class FriendsCommands {
             System.out.print("Enter the name of the member to add: ");
             name = scanner.nextLine().trim();
             if (!isValidName(name)) {
-                System.out.println("Invalid name. It cannot be empty or contain special characters. Please try again.");
+                System.out.println("Invalid name. Name cannot be empty/contain special characters.Try again :)");
             } else {
                 break;
             }
@@ -136,7 +136,7 @@ public class FriendsCommands {
             System.out.print("Enter the group name: ");
             groupName = scanner.nextLine().trim();
             if (!isValidName(groupName)) {
-                System.out.println("Invalid group name. It cannot be empty or contain special characters. Please try again.");
+                System.out.println("Invalid group name. Name cannot be empty/contain special characters.Try again :)");
             } else {
                 break;
             }
