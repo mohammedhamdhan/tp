@@ -239,9 +239,9 @@ public class Currency {
      * an exchange rate from the predefined list.
      */
     public void changeCurrency(){
-        System.out.println("If you'd like to enter your own exchange rate from your current currency, enter 1");
-        System.out.println("If you'd like to switch currencies with an estimated exchange rate, enter 2");
-        System.out.println("Please enter a number");
+        System.out.println("[1] Enter your own exchange rate from the current currency");
+        System.out.println("[2] Switch currencies with an estimated exchange rate");
+        System.out.print("Enter option: ");
         String method = scanner.nextLine().trim();
 
         try{
