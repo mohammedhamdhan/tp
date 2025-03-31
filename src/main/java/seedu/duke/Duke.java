@@ -41,7 +41,7 @@ public class Duke {
 
         GroupManager groupManager = new GroupManager();
         FriendsCommands friendsCommand = new FriendsCommands(groupManager);
-        SplitCommand splitCommand = new SplitCommand(scanner, groupManager);
+        SplitCommand splitCommand = new SplitCommand(scanner, groupManager, friendsCommand);
 
         ExpenseClassifier expenseClassifier = new ExpenseClassifier();
         Currency currency = new Currency(scanner, budgetManager);

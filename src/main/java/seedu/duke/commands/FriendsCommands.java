@@ -177,7 +177,11 @@ public class FriendsCommands {
             System.out.print("Enter the name of the member to add: ");
             name = scanner.nextLine().trim();
             if (!isValidName(name)) {
+<<<<<<< HEAD
                 System.out.println("Invalid name. It cannot be empty or contain special characters. Try again :)");
+=======
+                System.out.println("Invalid name. Name cannot be empty/contain special characters.Try again :)");
+>>>>>>> aae48313de2095c3e990ef2a681c18c29c261b78
             } else {
                 break;
             }

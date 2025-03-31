@@ -11,6 +11,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.List;
+//@@author matthewyeo1
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+//@@author
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -29,10 +34,22 @@ public class FriendsCommandTest {
         System.setOut(new PrintStream(outContent)); // Capture console output
     }
 
+    //@@author matthewyeo1
     @AfterEach
     void tearDown() {
         System.setIn(originalIn); // Restore original System.in
         outContent.reset();       // Clear output buffer
+    }
+    //@@author
+
+    @AfterEach
+    void clearGroupsFile() {
+        File file = new File("groups.txt");
+        try (FileWriter writer = new FileWriter(file, false)) { // Open in overwrite mode
+            writer.write(""); // Clear file contents
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
