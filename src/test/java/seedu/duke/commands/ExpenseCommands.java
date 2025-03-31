@@ -49,10 +49,29 @@ class ExpenseCommandTest {
         }
 
         File file = new File("./currentCurrency");
-        try (FileWriter writer = new FileWriter(file, false)) { // Open in overwrite mode
-            writer.write(""); // Clear file contents
+        try (FileWriter writer = new FileWriter(file, false)) {
+            writer.write("");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        File monthlySummaryFile = new File("monthly_summary.txt");
+        if (monthlySummaryFile.exists()) {
+            try (PrintWriter writer = new PrintWriter(monthlySummaryFile)) {
+                writer.print("");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Clear the contents of the "category_summary.txt" file
+        File categorySummaryFile = new File("category_summary.txt");
+        if (categorySummaryFile.exists()) {
+            try (PrintWriter writer = new PrintWriter(categorySummaryFile)) {
+                writer.print("");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

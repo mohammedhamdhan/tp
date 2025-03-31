@@ -1,6 +1,6 @@
+//@@author matthewyeo1
 package seedu.duke.messages;
 
-//@@author matthewyeo1
 public class Messages {
 
     /**

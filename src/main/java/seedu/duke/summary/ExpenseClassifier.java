@@ -1,3 +1,4 @@
+//@@author matthewyeo1
 package seedu.duke.summary;
 
 import java.util.Arrays;
@@ -120,7 +121,6 @@ public class ExpenseClassifier {
             double percentage = (entry.getValue() / (double) totalExpenses) * 100;
             System.out.printf("%s: %.2f%%\n", entry.getKey(), percentage);
         }
-
-        // Add data visualization stuff here
     }
 }
+//@@author
