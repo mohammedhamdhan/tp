@@ -1,16 +1,82 @@
 package seedu.duke.summary;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import seedu.duke.expense.Expense;
 import seedu.duke.storage.DataStorage;
 
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Arrays;
-
 public class ExpenseClassifier {
+    private Map<Categories, List<String>> categoryKeywords;
 
-    public ExpenseClassifier() {}
+    public ExpenseClassifier() {
+        initializeCategoryKeywords();
+    }
+
+    private void initializeCategoryKeywords() {
+        categoryKeywords = new HashMap<>();
+        categoryKeywords.put(Categories.Food, Arrays.asList(
+                "food", "restaurant", "groceries", "dining", "snack", "lunch", "dinner",
+                "breakfast", "brunch", "cafe", "bistro", "barbecue", "fast food", "dessert", "bakery"));
+        categoryKeywords.put(Categories.Shopping, Arrays.asList(
+                "clothes", "electronics", "mall", "fashion", "accessory",
+                "shoes", "jewelry", "home decor", "furniture", "beauty", "cosmetics", "boutique", "outlet"));
+        categoryKeywords.put(Categories.Travel, Arrays.asList(
+                "flight", "hotel", "transport", "train", "taxi",
+                "bus", "cruise", "rental car", "itinerary", "tour", "excursion", "travel agent", "reservation",
+                "airport", "visa", "backpacker"));
+        categoryKeywords.put(Categories.Entertainment, Arrays.asList(
+                "movie", "concert", "game", "party", "music",
+                "theater", "comedy", "festival", "show", "art", "exhibition", "opera", "dance", "amusement",
+                 "performance", "arcade"));
+    }
+
+    public Map<Categories, Double> calculateCategoryTotals(List<Expense> expenses) {
+        Map<Categories, Double> categoryTotals = new HashMap<>();
+        for (Categories category : Categories.values()) {
+            categoryTotals.put(category, 0.0);
+        }
+
+        for (Expense expense : expenses) {
+            Categories category = classifyExpense(expense);
+            categoryTotals.put(category, categoryTotals.get(category) + expense.getAmount());
+        }
+
+        return categoryTotals;
+    }
+
+    public Map<Categories, Integer> calculateCategoryCounts(List<Expense> expenses) {
+        Map<Categories, Integer> categoryCounts = new HashMap<>();
+        for (Categories category : Categories.values()) {
+            categoryCounts.put(category, 0);
+        }
+
+        for (Expense expense : expenses) {
+            Categories category = classifyExpense(expense);
+            categoryCounts.put(category, categoryCounts.get(category) + 1);
+        }
+
+        return categoryCounts;
+    }
+
+    private Categories classifyExpense(Expense expense) {
+        String description = expense.getDescription().toLowerCase();
+
+        for (Map.Entry<Categories, List<String>> entry : categoryKeywords.entrySet()) {
+            Categories category = entry.getKey();
+            List<String> keywords = entry.getValue();
+
+            for (String keyword : keywords) {
+                if (description.contains(keyword)) {
+                    return category;
+                }
+            }
+        }
+
+        return Categories.Miscellaneous;
+    }
 
     public void calculateCategoryProportions() {
         List<Expense> expenses = DataStorage.loadExpenses();
@@ -19,17 +85,6 @@ public class ExpenseClassifier {
         for (Categories category : Categories.values()) {
             categoryCount.put(category, 0);
         }
-
-        Map<Categories, List<String>> categoryKeywords = new HashMap<>();
-        categoryKeywords.put(Categories.Food, Arrays.asList(
-                "restaurant", "groceries", "dining", "snack", "lunch", "dinner"));
-        categoryKeywords.put(Categories.Shopping, Arrays.asList(
-                "clothes", "electronics", "mall", "fashion", "accessory"));
-        categoryKeywords.put(Categories.Travel, Arrays.asList(
-                "flight", "hotel", "transport", "train", "taxi"));
-        categoryKeywords.put(Categories.Entertainment, Arrays.asList(
-                "movie", "concert", "game", "party", "music"));
-
 
         for (Expense expense : expenses) {
             String title = expense.getTitle();
