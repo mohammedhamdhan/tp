@@ -24,6 +24,7 @@ public class Commands {
     public static final String DEFAULT_CURRENCY = "SGD";
     public static final String SUMMARY = "summary";
     public static final String EXPORT = "export";
+    public static final String FIND = "find";
 }
 //@@author
 

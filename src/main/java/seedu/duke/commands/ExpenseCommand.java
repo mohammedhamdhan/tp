@@ -783,5 +783,48 @@ public class ExpenseCommand {
         }
         return groupManager.getGroupMembers(groupName);
     }
+
+    //@@author nandhananm7
+    /**
+     * Searches for expenses containing the given keyword in the title or description.
+     */
+    public void findExpense() {
+        System.out.println("Enter keyword to search for expenses:");
+        String keyword = scanner.nextLine().trim();
+
+        if (keyword.isEmpty()) {
+            System.out.println("Keyword cannot be empty.");
+            return;
+        }
+
+        List<Expense> expenses = budgetManager.getAllExpenses();
+        if (expenses.isEmpty()) {
+            System.out.println("No expenses found.");
+            return;
+        }
+
+        List<Expense> matchingExpenses = new ArrayList<>();
+        String lowerKeyword = keyword.toLowerCase();
+
+        for (Expense expense : expenses) {
+            // Check if title or description contains the keyword
+            if ((expense.getTitle() != null && expense.getTitle().toLowerCase().contains(lowerKeyword)) ||
+                    (expense.getDescription() != null && expense.getDescription().toLowerCase().contains(lowerKeyword))) {
+                matchingExpenses.add(expense);
+            }
+        }
+
+        if (matchingExpenses.isEmpty()) {
+            System.out.println("No matching expenses found for keyword: " + keyword);
+        } else {
+            System.out.println("Found " + matchingExpenses.size() + " matching expense(s):");
+            for (int i = 0; i < matchingExpenses.size(); i++) {
+                System.out.println(matchingExpenses.get(i));
+                System.out.println();
+            }
+        }
+    }
+    //@@author
+
 }
 //@@author
