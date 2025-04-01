@@ -28,7 +28,7 @@
 &nbsp;&nbsp;[3.2.5 Currency Class](#325-currency-class) <br>
 [4. Overall Application Architecture](#4-overall-application-architecture) <br>
 &nbsp;&nbsp;[4.1 Application Class Diagram](#41-application-class-diagram) <br>
-&nbsp;&nbsp;[4.2 Add Expense Feature](#42-add-expense-feature) <br>
+&nbsp;&nbsp;[4.2 Expense CRUD Feature](#42-expense-crud-feature) <br>
 &nbsp;&nbsp;[4.3 Create Group Feature](#43-create-group-feature) <br>
 &nbsp;&nbsp;[4.4 Split Expense Feature](#44-split-expense-feature) <br>
 &nbsp;&nbsp;[4.5 Change Currency Feature](#45-change-currency-feature) <br>
@@ -621,3 +621,13 @@ The `writeToFile()` method handles writing the new currency to a file with these
 - Declares the IOException to be thrown, which is handled by the calling method.
 
 # 4. Overall Application Architecture
+
+### 4.1 Application Class Diagram
+
+### 4.2 Expense CRUD Feature
+
+Below is the UML sequence diagram for the classes involved in the CRUD operations regarding user-created expenses. The main application class calls the constructor
+for the UI class, which calls its own method `processCommand()` that processes the addition, editing, deletion and saving of expenses depending on specific user inputs
+as shown in the diagram.
+
+![ExpenseCRUDFeatureSequenceDiagram.drawio.png](diagrams/ExpenseCRUDFeatureSequenceDiagram.drawio.png)

@@ -66,7 +66,6 @@ Here is the list of features implemented:
     - Section 3.2 `DataStorage Class`
     - Section 3.4 `Commands Class`
     - Section 3.8 `BudgetManager Class`
-    - Section 4.3 `HelpPage Class`
     - Section 4.4 `Messages Class`
 
 - **Documentation in Section 4**:
@@ -86,7 +85,9 @@ Here is the list of features implemented:
 - **UG and DG Updates:**
     - Added Table of Contents to both the User Guide and Developer Guide.
     - Reformatted the User Guide and Developer Guide with more specific subsections.
-- **Progress Monitoring:** Regularly created GitHub Issues to assign weekly sprints to teammates.
+- **Progress Monitoring:** 
+    - Regularly created GitHub Issues to assign weekly sprints to teammates.
+    - Frequently reviewed and provided comments to teammates' PRs.
 
 ---
 
