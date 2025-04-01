@@ -162,6 +162,18 @@ public class ExpenseCommand {
                 return;
             }
 
+            //@@author nandhananm7
+            Expense expenseToDelete = budgetManager.getExpense(index);
+            System.out.println("Are you sure you want to delete this expense? (yes/no)");
+            System.out.println(expenseToDelete);
+            String confirmation = scanner.nextLine().trim().toLowerCase();
+
+            if (!confirmation.equals("yes")) {
+                System.out.println("Deletion Aborted.");
+                return;
+            }
+            //@@author
+
             assert index >= 0 && index < budgetManager.getExpenseCount() : "Index should be within valid range";
             Expense deletedExpense = budgetManager.deleteExpense(index);
             // Update the owesData.txtfile
