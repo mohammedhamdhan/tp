@@ -23,6 +23,7 @@ delete
 0
 delete
 1
+yes
 list
 help
 invalidcommand
