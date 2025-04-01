@@ -530,5 +530,41 @@ class ExpenseCommandTest {
         assertTrue(output.contains("3. Back to main menu"));
     }
     //@@author
+
+    //@@author nandhananm7
+    @Test
+    void testFindExpense_Found() {
+        // Add two expenses. Only the second expense ("Cab Ride") should match the keyword "cab".
+        Expense expense1 = new Expense("Taxi", "from jb to singapore", "12-12-1327", 12.00);
+        Expense expense2 = new Expense("Cab Ride", "from home to airport", "15-10-2025", 20.00);
+        budgetManager.addExpense(expense1);
+        budgetManager.addExpense(expense2);
+
+        // Simulate user input: "cab"
+        provideInput("cab\n");
+        expenseCommand.findExpense();
+
+        String output = outContent.toString();
+        // Verify that the output indicates one matching expense and shows the details of "Cab Ride"
+        assertTrue(output.contains("Found 1 matching expense(s):"), "Expected output to indicate 1 matching expense found");
+        assertTrue(output.contains("Cab Ride"), "Expected output to contain 'Cab Ride'");
+    }
+
+    @Test
+    void testFindExpense_NoMatch() {
+        // Add an expense that does not match the keyword "bus"
+        Expense expense1 = new Expense("Taxi", "from jb to singapore", "12-12-1327", 12.00);
+        budgetManager.addExpense(expense1);
+
+        // Simulate user input: "bus"
+        provideInput("bus\n");
+        expenseCommand.findExpense();
+
+        String output = outContent.toString();
+        // Verify that the output indicates no matching expenses were found for the keyword "bus"
+        assertTrue(output.contains("No matching expenses found for keyword: bus"),
+                "Expected output to mention no matching expenses for keyword 'bus'");
+    }
+    //@@author
 }
 
