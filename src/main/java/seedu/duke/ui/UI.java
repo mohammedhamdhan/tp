@@ -140,6 +140,9 @@ public class UI {
         case Commands.EXPORT:
             expenseCommand.exportExpenseSummary();
             break;
+        case Commands.FIND:
+            expenseCommand.findExpense();
+            break;
         default:
             messages.displayInvalidCommandMessage();
             break;
