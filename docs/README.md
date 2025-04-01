@@ -1,3 +1,8 @@
+# O\$P\$ Expense Tracker App
+
+#### By CS2113 F11-2 of AY24/25
+
+#### Find more about us [here](AboutUs.md)
 
 ## Quick Start
 
@@ -5,7 +10,7 @@
 2.  You may download [here](https://se-education.org/guides/tutorials/javaInstallationMac.html) for Mac users and [here](https://www.oracle.com/sg/java/technologies/downloads/) for Windows users.
 3.  If you have it installed already, you may check it by running “java -version” in your terminal.
 4.  Download the latest .jar file from here. [link will be updated once v1 is ready]
-5.  Copy the file to the folder you want to use as the home folder for your O$P$ budget tracking app 🙂.
+5.  Copy the file to the folder you want to use as the home folder for your O\$P$ budget tracking app 🙂.
 6.  Open a command terminal, cd into the folder you put the jar file in, and use the “java -jar oSpS.jar” command to run the application.
 7.  Type the command in the command box and press Enter to execute it.
 8.  EG: Typing “help” and pressing Enter will open a mini window showing a list of all possible commands.
