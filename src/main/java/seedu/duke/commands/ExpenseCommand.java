@@ -809,7 +809,8 @@ public class ExpenseCommand {
         for (Expense expense : expenses) {
             // Check if title or description contains the keyword
             if ((expense.getTitle() != null && expense.getTitle().toLowerCase().contains(lowerKeyword)) ||
-                    (expense.getDescription() != null && expense.getDescription().toLowerCase().contains(lowerKeyword))) {
+                    (expense.getDescription() != null &&
+                            expense.getDescription().toLowerCase().contains(lowerKeyword))) {
                 matchingExpenses.add(expense);
             }
         }
