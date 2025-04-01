@@ -10,7 +10,6 @@ import seedu.duke.commands.Commands;
 import seedu.duke.currency.Currency;
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.friends.GroupManager;
-import seedu.duke.menu.HelpPage;
 import seedu.duke.messages.Messages;
 import seedu.duke.storage.DataStorage;
 import seedu.duke.ui.UI;
@@ -36,7 +35,6 @@ public class Duke {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         Messages messages = new Messages();
-        HelpPage helpPage = new HelpPage();
         Commands commands = new Commands();
 
         GroupManager groupManager = new GroupManager();
@@ -49,7 +47,6 @@ public class Duke {
 
         UI ui = new UI(scanner,
             messages,
-            helpPage,
             storageFilePath,
             expenseCommand,
             commands,
@@ -60,7 +57,7 @@ public class Duke {
         );
 
         messages.displayWelcomeMessage();
-        helpPage.displayCommandList();
+        messages.displayCommandList();
         messages.setDivider();
         ui.handleUserInput();
     }

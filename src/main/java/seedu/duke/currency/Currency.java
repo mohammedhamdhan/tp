@@ -1,3 +1,4 @@
+//@@author NandhithaShree
 package seedu.duke.currency;
 import seedu.duke.commands.Commands;
 import seedu.duke.expense.BudgetManager;
@@ -321,3 +322,4 @@ public class Currency {
         fw.close();
     }
 }
+//@@author

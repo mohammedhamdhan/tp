@@ -1,3 +1,4 @@
+//@@author matthewyeo1
 package seedu.duke.expense;
 
 import java.util.ArrayList;
@@ -212,7 +213,6 @@ public class BudgetManager {
         DataStorage.saveExpenses(expenses);
     }
 
-    //@@author matthewyeo1
     /**
      * Sets the amount of an expense at the given index to 0.0.
      *
@@ -237,5 +237,5 @@ public class BudgetManager {
 
         return expense;
     }
-    //@@author
 }
+//@@author

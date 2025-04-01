@@ -1,3 +1,4 @@
+//@@author matthewyeo1
 package seedu.duke.summary;
 
 public enum Categories {
@@ -7,3 +8,4 @@ public enum Categories {
     Entertainment,
     Miscellaneous
 }
+//@@author

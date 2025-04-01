@@ -28,21 +28,20 @@ Here is the list of features implemented:
 - **What It Does**: The application contains a list of commands that the user can input, dividers to separate each user command and system output messages for each action.
 - **Justification**: Users can easily navigate through the application using short and concise commands for each feature and understand what is happening for each action.
 
+#### 3. Expense Classification Algorithm
+
+- **What It Does**: An auxiliary function that calculates the relative percentages of each category according to the title and description of the user's expenses. 
+- **Justification**: Users are able to view their expense distribution in number and percentages with visuals and can hence make more informed decisions for future expenditure.
+- 
 ---
 
 ### Enhancements Implemented
 
-#### 1. Unit Tests Across Storage and Expense-Related Classes
+#### Unit Tests Across Storage and Expense-Related Classes
 - **Input Validation**: Test cases validate inputs and ensure that error messages are returned for invalid entries.
 - **Boundary and Edge Case Tests**: Test cases check for negative values, null values, and other edge cases to ensure proper handling.
 - **Error Handling**: Test cases confirm that appropriate error messages are displayed when specific errors occur.
 - **Data Storage and Loading**: Test cases verify that the save file is created correctly and that data is properly saved and loaded.
-
-#### 2. Improved Input Validation for Graph Commands
-- **Details**: Ensures that different input errors in graph commands yield specific error messages relevant to each type of error.
-- **Impact**: This improvement allows users to identify input mistakes immediately and correct them when re-entering commands.
-
----
 
 ### Contributions to User Guide
 
@@ -62,45 +61,32 @@ Here is the list of features implemented:
 
 #### Documented Sections
 - **Documentation in Section 3**:
-    - Section 3.1 `Architecture`
-    - Section 3.2. `Parser Class`
-    - Section 3.3. `UI Class`
-    - Section 3.4 `Command Class`
-    - Section 3.5 `Validator Classes`
+    - Section 3.1 `UI Class`
+    - Section 3.2 `DataStorage Class`
+    - Section 3.4 `Commands Class`
+    - Section 3.8 `BudgetManager Class`
+    - Section 4.4 `Messages Class`
 
 - **Documentation in Section 4**:
     - Section 4.1.5 `Display Monthly Expenses`
     - Section 4.1.6 `Display Expenses for the Month with Categories`
 
-- **Documentation in Section 5**:
-    - Section 5.5.1.1 `Launch`
-    - Section 5.5.2.7 `Display Monthly Expenses Chart`
-    - Section 5.5.2.14 `Display Expenses for the Month with Categories`
-    - Section 5.5.2.15 `Exit BudgetBuddy`
+#### Class & UML Sequence Diagrams
+- Section 4.1: `Application Class Diagram`
+- Section 4.2: `Expense CRUD Feature`
 
-#### UML Sequence Diagrams
-- Section 3.1: `Architecture`
-- Section 3.5: `Validator Classes`
-- Section 4.1.5: `Display Monthly Expenses`
-- Section 4.1.6: `Display Expenses for the Month with Categories`
-
-**Relevant Pull Request:** [PR #89](https://github.com/AY2425S1-CS2113-W10-1/tp/pull/89/files)
+**Relevant Pull Request:** [PR #72](https://github.com/AY2425S2-CS2113-F11-2/tp/pull/72/files)
 
 ---
 
 ### Contributions to Team-Based Tasks
-- **Release Management:** Managed the `v1.0` release.
+- **Release Management:** 
+    - Managed the `v1.0` release.
 - **UG and DG Updates:**
     - Added Table of Contents to both the User Guide and Developer Guide.
-    - Added a FAQ section to the User Guide.
     - Reformatted the User Guide and Developer Guide with more specific subsections.
-- **Useful Libraries:**
-    - Incorporated XChart into Gradle dependencies, ensuring all dependencies are correctly installed.
-    - Utilized JFrame to prevent closing XChart windows from ending the application.
-    - Ensured XChart libraries are correctly built and included in the JAR file.
-
----
-
-### Contributions Beyond the Project Team
-- **Bug Finding and Suggestions:** [Bug Report](https://github.com/Alfred-Goh02/ped/issues)
-- **PR Review for Other Teams:** [Pull Request](https://github.com/nus-cs2113-AY2425S1/tp/pull/2/files/b7aac5a22c63db81288d14b15b5d4cb9ecf65418)
+- **Progress Monitoring:** 
+    - Regularly created GitHub Issues to assign weekly sprints to teammates.
+    - Frequently reviewed and provided comments to teammates' PRs.
+- **Codebase Maintenance:**
+    -  Proactive resolution of Java CI/CD pipeline errors and merging of code.
