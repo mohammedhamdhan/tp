@@ -1,3 +1,4 @@
+//@@author matthewyeo1
 package seedu;
 
 import java.util.Scanner;
@@ -7,7 +8,6 @@ import seedu.duke.commands.SplitCommand;
 import seedu.duke.currency.Currency;
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.friends.GroupManager;
-import seedu.duke.menu.HelpPage;
 import seedu.duke.messages.Messages;
 import seedu.duke.summary.ExpenseClassifier;
 import seedu.duke.ui.UI;
@@ -19,14 +19,12 @@ public class OMPM {
     private UI ui;
     private Scanner scanner;
     private Messages messages;
-    private HelpPage helpPage;
     private Commands commands;
     private ExpenseClassifier expenseClassifier;
 
     public OMPM () {
         scanner = new Scanner(System.in);
         messages = new Messages();
-        helpPage = new HelpPage();
         commands = new Commands();
         expenseClassifier = new ExpenseClassifier();
     }
@@ -45,8 +43,7 @@ public class OMPM {
         ExpenseClassifier expenseClassifier = new ExpenseClassifier();
 
         ui = new UI(scanner, 
-        messages, 
-        helpPage, 
+        messages,
         "data/expenses.txt", 
         expenseCommand, 
         commands, 
@@ -58,9 +55,10 @@ public class OMPM {
 
         // Display welcome message and command list
         messages.displayWelcomeMessage();
-        helpPage.displayCommandList();
+        messages.displayCommandList();
         messages.setDivider();
 
         ui.handleUserInput();
     }
 }
+//@@author

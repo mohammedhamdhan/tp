@@ -6,7 +6,6 @@ import seedu.duke.commands.Commands;
 
 import seedu.duke.currency.Currency;
 import seedu.duke.messages.Messages;
-import seedu.duke.menu.HelpPage;
 
 import seedu.duke.commands.ExpenseCommand;
 import seedu.duke.commands.FriendsCommands;
@@ -17,7 +16,6 @@ import seedu.duke.summary.ExpenseClassifier;
 public class UI {
     private final Scanner scanner;
     private final Messages messages;
-    private final HelpPage helpPage;
     private final String storageFilePath;
     private final ExpenseCommand expenseCommand;
     private final FriendsCommands friendsCommand;
@@ -29,8 +27,7 @@ public class UI {
     private final Currency currency;
 
     public UI(Scanner scanner, 
-            Messages messages, 
-            HelpPage helpPage, 
+            Messages messages,
             String storageFilePath,
             ExpenseCommand expenseCommand, 
             Commands commands, 
@@ -41,7 +38,6 @@ public class UI {
       
         this.scanner = scanner;
         this.messages = messages;
-        this.helpPage = helpPage;
         this.storageFilePath = storageFilePath;
         this.expenseCommand = expenseCommand;
         this.commands = commands;
@@ -79,7 +75,7 @@ public class UI {
         
         switch (command) {
         case Commands.HELP:
-            helpPage.displayCommandList();
+            messages.displayCommandList();
             break;
         case Commands.EXIT:
             // Save expenses before exiting
