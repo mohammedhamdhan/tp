@@ -21,9 +21,26 @@ public class FriendsCommands {
         this.scanner = new Scanner(System.in);
     }
 
+    private boolean isValidName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        // This regex allows letters, numbers, and spaces.
+        return name.matches("[A-Za-z0-9 ]+");
+    }
+
     public void createGroup() {
-        System.out.print("Enter the group name: ");
-        String groupName = scanner.nextLine().trim(); // Get the group name from the user
+        String groupName;
+
+        while (true) {
+            System.out.print("Enter the group name: ");
+            groupName = scanner.nextLine().trim();
+            if (!isValidName(groupName)) {
+                System.out.println("Invalid group name. Name cannot be empty/contain special characters.Try again :)");
+            } else {
+                break;
+            }
+        }
 
         System.out.println("Who would you like to add to the group? (Type 'done' to finish)");
 
@@ -33,13 +50,19 @@ public class FriendsCommands {
             if (name.equalsIgnoreCase("done")) {
                 break; // Exit when 'done' is entered
             }
+
+            if (!isValidName(name)) {
+                System.out.println("Invalid name. It cannot be empty/ contain special characters. Try again :)");
+                continue;
+            }
+
             groupManager.addFriendToGroup(groupName, new Friend(name, groupName));
         }
 
         groupManager.saveGroups(); // Save the updated groups using GroupManager
+        groupManager.saveGroups();  // Save the updated groups using GroupManager
         System.out.println("Group created successfully!");
     }
-    //@@author
 
     //@@author Ashertan256
     // Edited to ensure sum up values from owedAmounts.txt instead of showing the last value
@@ -149,11 +172,27 @@ public class FriendsCommands {
 
 
     public void addMember() {
-        System.out.print("Enter the name of the member to add: ");
-        String name = scanner.nextLine().trim();
+        String name;
+        while (true) {
+            System.out.print("Enter the name of the member to add: ");
+            name = scanner.nextLine().trim();
+            if (!isValidName(name)) {
+                System.out.println("Invalid name. Name cannot be empty/contain special characters.Try again :)");
+            } else {
+                break;
+            }
+        }
 
-        System.out.print("Enter the group name: ");
-        String groupName = scanner.nextLine().trim();
+        String groupName;
+        while (true) {
+            System.out.print("Enter the group name: ");
+            groupName = scanner.nextLine().trim();
+            if (!isValidName(groupName)) {
+                System.out.println("Invalid group name. Name cannot be empty/contain special characters.Try again :)");
+            } else {
+                break;
+            }
+        }
 
         if (groupManager.groupExists(groupName)) {
             groupManager.addFriendToGroup(groupName, new Friend(name, groupName));
