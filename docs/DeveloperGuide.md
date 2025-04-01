@@ -10,24 +10,24 @@
 [2. Setup Guide](#2-setup-guide) <br>
 &nbsp;&nbsp;[2.1 Prerequisites](#21-prerequisites) <br>
 [3. Design](#3-design) <br>
-&nbsp;&nbsp;[3.1.0 UI Class](#31-ui) <br>
-&nbsp;&nbsp;[3.1.1 DataStorage Class](#32-datastorage-class) <br>
-&nbsp;&nbsp;[3.1.2 GroupStorage Class](#33-groupstorage-class) <br>
-&nbsp;&nbsp;[3.1.3 Commands Class](#34-commands-class) <br>
-&nbsp;&nbsp;[3.1.4 ExpenseCommands Classes](#35-expensecommands-classes) <br>
-&nbsp;&nbsp;[3.1.5 FriendsCommands Class](#36-friendscommands-income-and-incomemanager-class) <br>
-&nbsp;&nbsp;[3.1.6 SplitCommand Class](#37-splitcommand-class) <br>
-&nbsp;&nbsp;[3.1.7 BudgetManager Class](#38-budgetmanager-class) <br>
-&nbsp;&nbsp;[3.1.8 Expense Class](#39-expense-class) <br>
-&nbsp;&nbsp;[3.1.9 Friend Class](#40-friend-class) <br>
-&nbsp;&nbsp;[3.2.0 Group Class](#41-group-class) <br>
-&nbsp;&nbsp;[3.2.1 GroupManager Class](#42-groupmanager-class) <br>
-&nbsp;&nbsp;[3.2.2 HelpPage Class](#43-helppage-class) <br>
-&nbsp;&nbsp;[3.2.3 Messages Class](#44-messages-class) <br>
-&nbsp;&nbsp;[3.2.4 ExpenseClassifier Class](#45-expenseclassifier-class) <br>
-&nbsp;&nbsp;[3.2.5 Currency Class](#46-currency-class) <br>
+&nbsp;&nbsp;[3.1.0 UI Class](#310-ui-class) <br>
+&nbsp;&nbsp;[3.1.1 DataStorage Class](#311-datastorage-class) <br>
+&nbsp;&nbsp;[3.1.2 GroupStorage Class](#312-groupstorage-class) <br>
+&nbsp;&nbsp;[3.1.3 Commands Class](#313-commands-class) <br>
+&nbsp;&nbsp;[3.1.4 ExpenseCommands Classes](#314-expensecommands-classes) <br>
+&nbsp;&nbsp;[3.1.5 FriendsCommands Class](#315-friendscommands-class) <br>
+&nbsp;&nbsp;[3.1.6 SplitCommand Class](#316-splitcommand-class) <br>
+&nbsp;&nbsp;[3.1.7 BudgetManager Class](#317-budgetmanager-class) <br>
+&nbsp;&nbsp;[3.1.8 Expense Class](#318-expense-class) <br>
+&nbsp;&nbsp;[3.1.9 Friend Class](#319-friend-class) <br>
+&nbsp;&nbsp;[3.2.0 Group Class](#320-group-class) <br>
+&nbsp;&nbsp;[3.2.1 GroupManager Class](#321-groupmanager-class) <br>
+&nbsp;&nbsp;[3.2.2 Messages Class](#322-messages-class) <br>
+&nbsp;&nbsp;[3.2.3 Summary Class](#323-summary-class) <br>
+&nbsp;&nbsp;[3.2.4 ExpenseClassifier Class](#324-expenseclassifier-class) <br>
+&nbsp;&nbsp;[3.2.5 Currency Class](#325-currency-class) <br>
 [4. Overall Application Architecture](#4-overall-application-architecture) <br>
-&nbsp;&nbsp;[4.1 Application Class Diagram](#41-class-diagram) <br>
+&nbsp;&nbsp;[4.1 Application Class Diagram](#41-application-class-diagram) <br>
 &nbsp;&nbsp;[4.2 Add Expense Feature](#42-add-expense-feature) <br>
 &nbsp;&nbsp;[4.3 Create Group Feature](#43-create-group-feature) <br>
 &nbsp;&nbsp;[4.4 Split Expense Feature](#44-split-expense-feature) <br>
@@ -287,6 +287,8 @@ The class uses assertions to validate:
 
 ### 3.1.5 FriendsCommands Class
 
+#### 
+
 ### 3.1.6 SplitCommand Class
 
 The **SplitCommand** class is responsible for managing the splitting of expenses among group members. 
@@ -491,24 +493,7 @@ The `Group` class in the `seedu.duke.friends` package manages a collection of `F
 
 ### 3.2.1 GroupManager Class
 
-### 3.2.2 HelpPage Class
-
-The `HelpPage` class provides users with a list of available commands and their descriptions when invoked.
-
-#### Functionality
-- Displays a structured list of commands.
-- Categorizes commands based on their purpose.
-- Guides users on input formats and expected responses.
-
-### Methods
-
-#### `displayCommandList()`
-Displays the list of available commands along with their descriptions and usage examples.
-- Prints a formatted command list to the console.
-- Groups related commands for clarity.
-- Provides details about user input expectations.
-
-### 3.2.3 Messages Class
+### 3.2.2 Messages Class
 
 The `Messages` class provides standardized system messages for user interaction within the O$P$ expense-tracker application. It includes messages for system events, errors, user prompts, and notifications.
 
@@ -567,8 +552,13 @@ Handles errors when parsing owed amounts.
 Displays an error message when the specified group is not found.
 - Outputs: "Group not found."
 
+#### `displayCommandList()`
+Displays the list of available commands along with their descriptions and usage examples.
+- Prints a formatted command list to the console.
+- Groups related commands for clarity.
+- Provides details about user input expectations.
 
-### Summary
+### 3.2.3 Summary Class
 This class centralizes user-facing messages, improving consistency and readability within the application. Static methods are used for messages that do not depend on instance data.
 
 ### 3.2.4 ExpenseClassifier Class
