@@ -12,6 +12,10 @@ import java.util.Scanner;
 import seedu.duke.expense.Expense;
 import seedu.duke.messages.Messages;
 
+/**
+ * Handles storage operations for expenses, including saving, loading,
+ * ensuring file existence, and resetting data.
+ */
 public class DataStorage {
     public static String dataFile = "expenses.txt";
     private static final String SEPARATOR = "|";
@@ -28,9 +32,7 @@ public class DataStorage {
         } catch (IOException e) {
             System.out.println(Messages.errorMessageTag() + " Error creating data file: " + e.getMessage());
         }
-        //@@author matthewyeo1
         assert file.exists() : "Data file should exist after ensuring";
-        //@@author
     }
 
     /**
@@ -40,16 +42,12 @@ public class DataStorage {
      * @return true if saving was successful, false otherwise
      */
     public static boolean saveExpenses(List<Expense> expenses) {
-        //@@author matthewyeo1
         assert expenses != null : "Expenses list should not be null";
-        //@@author
         try (FileWriter writer = new FileWriter(dataFile)) {
             for (Expense expense : expenses) {
                 writer.write(expense.getTitle() + SEPARATOR
                         + expense.getDescription() + SEPARATOR
-                        //@@author matthewyeo1
                         + expense.getDate() + SEPARATOR
-                        //@@author
                         + expense.getAmount() + SEPARATOR
                         + expense.getDone() + System.lineSeparator());
             }
@@ -110,9 +108,7 @@ public class DataStorage {
         } catch (IOException e) {
             System.out.println(Messages.errorMessageTag() + " Error resetting expenses: " + e.getMessage());
         }
-        //@@author matthewyeo1
         assert new File(dataFile).length() == 0 : "Data file should be empty after reset";
-        //@@author
     }
 }
 //@@author

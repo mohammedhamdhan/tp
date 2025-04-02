@@ -1,6 +1,11 @@
 //@@author matthewyeo1
 package seedu.duke.commands;
 
+/**
+ * This class contains constant string values representing various commands
+ * used in the application. These commands are used to execute different
+ * functionalities such as adding, deleting, editing, and managing groups.
+ */
 public class Commands {
     public static final String HELP = "help";
     public static final String EXIT = "exit";

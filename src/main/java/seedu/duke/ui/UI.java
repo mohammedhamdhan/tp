@@ -1,3 +1,4 @@
+//@@author matthewyeo1
 package seedu.duke.ui;
 
 import java.util.Scanner;
@@ -13,6 +14,10 @@ import seedu.duke.commands.SplitCommand;
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.summary.ExpenseClassifier;
 
+/**
+ * The UI class handles user interactions by processing input commands
+ * and delegating tasks to respective command handlers.
+ */
 public class UI {
     private final Scanner scanner;
     private final Messages messages;
@@ -26,6 +31,19 @@ public class UI {
     private boolean isRunning;
     private final Currency currency;
 
+    /**
+     * Constructs a UI object for handling user input and interactions.
+     *
+     * @param scanner           Scanner for reading user input.
+     * @param messages          Messages object for displaying messages.
+     * @param storageFilePath   File path for data storage.
+     * @param expenseCommand    Handles expense-related commands.
+     * @param commands          Command constants.
+     * @param friendsCommand    Handles friend group-related commands.
+     * @param splitCommand      Handles expense splitting commands.
+     * @param currency          Handles currency-related operations.
+     * @param expenseClassifier Categorizes expenses for summary.
+     */
     public UI(Scanner scanner, 
             Messages messages,
             String storageFilePath,
@@ -49,6 +67,9 @@ public class UI {
         this.currency = currency;
     }
 
+    /**
+     * Continuously listens for user input and processes commands accordingly.
+     */
     public void handleUserInput() {
         while (isRunning) {
             messages.enterCommandMessage();
@@ -70,6 +91,11 @@ public class UI {
         }
     }
 
+    /**
+     * Processes a user command and executes the corresponding action.
+     *
+     * @param userInput The command entered by the user.
+     */
     public void processCommand(String userInput) {
         String command = userInput.trim().toLowerCase();
         
@@ -149,3 +175,4 @@ public class UI {
         }
     }
 }
+//@@author
