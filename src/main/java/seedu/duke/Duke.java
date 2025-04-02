@@ -22,16 +22,29 @@ public class Duke {
     private final String storageFilePath;
     private final BudgetManager budgetManager;
 
+    /**
+     * Constructs a Duke instance with the specified storage file.
+     *
+     * @param fileName The file path where data is stored.
+     */
     public Duke(String fileName) {
         this.storageFilePath = fileName;
         DataStorage.ensureFileExists();
         this.budgetManager = new BudgetManager();
     }
 
+    /**
+     * The entry point of the application.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         new Duke(DataStorage.dataFile).run();
     }
 
+    /**
+     * Runs the main loop of the application, handling user input.
+     */
     public void run() {
         Scanner scanner = new Scanner(System.in);
         Messages messages = new Messages();
