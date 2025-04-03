@@ -238,9 +238,9 @@ class SplitCommandTest {
         double aliceShare = 200.0 * (20.0 / 100.0);
         double bobShare = 200.0 * (30.0 / 100.0);
         double charlieShare = 200.0 * (50.0 / 100.0);
-        assertTrue(output.contains("Alice owes: " + String.format("%.2f", aliceShare)), "Expected correct share for Alice.");
-        assertTrue(output.contains("Bob owes: " + String.format("%.2f", bobShare)), "Expected correct share for Bob.");
-        assertTrue(output.contains("Charlie owes: " + String.format("%.2f", charlieShare)), "Expected correct share for Charlie.");
+        assertTrue(output.contains("Alice owes: " + String.format("%.2f", aliceShare)), "Incorrect share for Alice.");
+        assertTrue(output.contains("Bob owes: " + String.format("%.2f", bobShare)), "Incorrect share for Bob.");
+        assertTrue(output.contains("Charlie owes: " + String.format("%.2f", charlieShare)), "Incrrect share for Charlie.");
 
         File owesFile = new File(SplitCommand.OwesStorage.owesFile);
         try {
