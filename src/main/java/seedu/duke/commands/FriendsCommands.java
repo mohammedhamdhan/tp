@@ -60,11 +60,9 @@ public class FriendsCommands {
         }
 
         groupManager.saveGroups(); // Save the updated groups using GroupManager
-        groupManager.saveGroups();  // Save the updated groups using GroupManager
         System.out.println("Group created successfully!");
     }
 
-    //@@author Ashertan256
     // Edited to ensure sum up values from owedAmounts.txt instead of showing the last value
     public void viewGroup() {
         System.out.print("Enter the group name to view: ");
@@ -117,6 +115,8 @@ public class FriendsCommands {
             }
         }
     }
+
+    //@@author Ashertan256
     public void viewGroupDirect(String groupName) {
         // Exactly the same as viewGroup but WITHOUT requiring the user to input the group name. 
         //Called directly from the split command, to show the sum of amounts. 

@@ -251,6 +251,16 @@ The `executeUnmarkCommand()` method manages unmarking an expense as unsettled wi
 - Handles non-numeric input with a NumberFormatException
 - Provides clear error messages to guide the user toward valid input
 
+#### Finding specific Expenses
+
+The `findExpense()` method in the `seedu.duke.budget` package is responsible for searching and displaying expenses that match a given keyword. It helps users efficiently locate expenses by title or description.
+
+- Prompts the user to enter a keyword to search for expenses.
+- Validates that the keyword is not empty.
+- Retrieves all stored expenses using `budgetManager.getAllExpenses()`.
+- Filters expenses whose title or description contains the keyword (case-insensitive).
+- Displays the list of matching expenses, if any.
+
 #### Expense Summaries
 
 The class provides comprehensive expense summary functionality:
@@ -295,7 +305,163 @@ The class uses assertions to validate:
 
 ### 3.1.5 FriendsCommands Class
 
-#### 
+The FriendsCommands class handles all friends and groups related operations in the application. It provides functionality for adding, deleting, and managing friend groups.
+
+#### Checking if a group/member name is valid
+The `isValidName()` method is a utility function used to validate input strings for group names and member names. It ensures that the input follows specific naming conventions and helps maintain data integrity.
+- **Input validation:**
+    - Accepts a single `String` parameter `name`.
+
+- **Null and empty check:**
+    - Method checks if the input is `null` or an empty string after trimming the whitespace.
+    - If either condition is met, the method returns `false`.
+
+- **Name format validation**
+    - Uses a regular expression to validate that the name contains only letters (both uppercase and lowercase), numbers, and spaces.
+    - If all conditions are met, the method returns `true`
+    - If even one is violated, it returns `false`.
+
+#### Creating a new group
+
+The `createGroup()` method is responsible for creating a new group within the application. It follows a user-driven input process to define the group name and add members.
+
+- **Group name Input:**
+    - The method prompts the user to enter a group name.
+    - The input is validated using the `isValidName()` method.
+    - If name is invalid, the user is prompted to enter a name again.
+
+- **Adding Group Members:**
+    - Once a valid group name is added, user is prompted to add members.
+    - User can continue to input multiple member names, each name is validated by the `isValidName()` method.
+    - Process continues until user types 'done'.
+    - Each valid member name is used to create a new `Friend` object, which is then added to the group using `groupManager.addFriendToGroup()`.
+
+- **Saving the Group:**
+    - Once the group creation is complete, the method saves the group using `groupManager.saveGroups()`
+    - A success message is displayed upon creation.
+
+#### Remove a Group
+
+The `removeGroup()` is used to delete an entire group from the group management system.
+
+- **Input:**
+    - Prompts the user to enter the name of the group they want to remove.
+    - Trims any leading or trailing whitespaces from the input.
+
+- **Group Existence Check:**
+    - Uses `groupManager.groupExists(groupName)` to verify whether the specified group exists.
+    - If group does not exist, the method prints "Group does not exist."
+
+- **Delete confirmation:**
+    - Before removal, the method prompts the user to confirm: "Are you sure you want to remove [groupName]? (yes/no)"
+    - If the user does not input "yes", the operation to remove is cancelled.
+
+- **Group Removal:**
+    - If confirmed, the method calls `groupManager.removeGroup(groupName)` to remove the group from the group management system. 
+    - The updated group list is saved using `groupManager.saveGroups()`.
+
+
+#### Viewing an existing group
+
+The `viewGroup()` method is responsible for displaying the details of a specific group, it includes its members and associated expenses.
+This method is essential for users who wish to view group details and any expenses related to group members.
+
+- **Input:**
+    - Prompts user to enter the group name that they want to view.
+    - Trims any extra whitespaces from the input.
+
+- **Group Existence Check:**
+    - Uses the `groupManager.groupExists()` method to check whether the specified group exists. 
+    - If the group does not exist, the method prints a "Group not found" message and terminates.
+
+- **Loading Expense Data:**
+    - The method reads from the `owedAmounts.txt` file, which contains expense data.
+    - It loads this data into a map owedAmounts, where:
+      - The key is the member's name.
+      - The value is the accumulated amount they owe. 
+    - The method ensures that the amounts are accumulated for each member instead of being overwritten.
+
+- **Display Group Members and Expenses:**
+    - Uses groupManager.getGroupMembers(groupName) to fetch the list of group members. 
+    - If the group has no members, it displays "No members in this group."
+    - For each member, it:
+      - Retrieves their name. 
+      - Checks the owedAmounts map for any recorded expenses. 
+      - Displays the member’s name along with the accumulated expense amount. 
+    - If a member has no recorded expense, the amount displayed is 0.00.
+
+#### Viewing all user's Groups
+
+The `viewAllGroups()` method is designed to display a list of all the groups that the user has created or is a part of. It provides a quick overview of the existing groups managed by the application.
+
+- **Check for existing groups:**
+    - Uses `groupManager.getGroups()` to retrieve a list of all groups.
+    - If the list is empty, the method prints "You have no groups".
+
+- **Displaying Groups:**
+  - If the list is not empty, the method iterates over each group and prints its details using the `toString()` method of the Group class. 
+  - This allows the user to see a comprehensive list of all group names and any other associated information that the Group class's `toString()` method returns.
+
+#### Viewing group directly
+
+
+#### Add a member
+
+The `addMember()` method allows the user to add a new member to an existing group. If the specified group does not exist, the method offers the option to create the group and add the member simultaneously.
+
+- **Input:**
+  - Member name:
+    - Prompts the user to enter the name of the member they want to add. 
+    - Uses isValidName() to validate the input, ensuring it does not contain special characters or empty spaces.
+    - Repeats the prompt until a valid name is entered.
+  - Group name:
+    - Prompts the user to enter the group name to which the member should be added. 
+    - Similarly, the name is validated to avoid empty or invalid names.
+
+- **Group Existence Check:** 
+  - Uses `groupManager.groupExists(groupName)` to verify whether the specified group already exists.
+
+- **Adding Member to existing group:**
+  - If the group exists:
+    - Uses `groupManager.addFriendToGroup(groupName, new Friend(name, groupName))` to add the member. 
+    - Calls `groupManager.saveGroups()` to save the updated group data. 
+    - Displays a success message indicating that the member has been added to the group.
+
+- **Handling non-existent groups:**
+  - If the group does not exist:
+    - Asks the user if they would like to create the group. 
+  - If the user enters "yes":
+    - Creates the group and adds the member directly.
+    - Saves the new group and member data. 
+    - Displays a message confirming the creation and addition.
+  - If the user enters "no":
+    - Cancels the operation and notifies the user that the member was not added.
+
+#### Remove a member
+
+The `removeMember()` method allows the user to add a new member to an existing group. If the specified group does not exist, the method offers the option to create the group and add the member simultaneously.
+
+- **Input:**
+    - Member name:
+        - Prompts the user to enter the name of the member they want to remove.
+        - Trims any leading or trailing whitespaces from the input.
+    - Group name:
+        - Prompts the user to enter the group name to which the member should be removed.
+        - Trims whitespace for the input.
+
+- **Group Existence Check:**
+    - Uses `groupManager.groupExists(groupName)` to verify whether the specified group exists.
+    - If group does not exist, the method prints "Group does not exist."
+
+- **Delete confirmation:**
+    - Before removal, the method prompts the user to confirm: "Are you sure you want to remove [memberName] from [groupName]? (yes/no)"
+    - If the user does not input "yes", the operation to remove is cancelled. 
+
+- **Member Removal:**
+    - If confirmed, the method iterates through the list of groups returned by `groupManager.getGroups()`. 
+    - Locates the specified group by comparing the group name. 
+    - Uses the `removeFriend()` method to attempt to remove the specified member from the group. 
+    - If successful, it sets the removed flag to true and breaks out of the loop.
 
 ### 3.1.6 SplitCommand Class
 
@@ -457,10 +623,33 @@ Sets an expense's amount to 0.0.
 
 ### 3.1.9 Friend Class
 
+The `Friend` class in the `seedu.duke.friends` package represents an individual member within a group. It stores essential information about the friend, including their name and the group they belong to.
+
+#### Friend Initialization
+- **Constructor:** `Friend(String name, String group)`
+- **Features:**
+  - Initializes the `name` and `group` fields with the provided values.
+  - Represents a friend as part of a specific group.
+
+#### Getting Friend's Name
+- **Method:** `getName()`
+- **Features:**
+  - Returns the name of the friend.
+  - Provides a way to access the friend's name for display or processing.
+
+#### Getting Friend's Group
+- **Method:** `getGroup()`
+- **Features:**
+  - Returns the group to which the friend belongs.
+  - Useful for organizing friends by their associated groups.
+
+#### Design Considerations
+- The class follows the **Single Responsibility Principle (SRP)**, focusing solely on holding friend-related data.
+- Encapsulation is maintained through private attributes and public getter methods.
+- The class is designed to be lightweight and efficient for group management operations.
+
+
 ### 3.2.0 Group Class
-
-
-### Group Class
 
 The `Group` class in the `seedu.duke.friends` package manages a collection of `Friend` objects under a specified group name.
 
@@ -500,6 +689,74 @@ The `Group` class in the `seedu.duke.friends` package manages a collection of `F
    - **Important:** Ensure that the `messages` field is initialized externally to prevent a `NullPointerException`.
 
 ### 3.2.1 GroupManager Class
+
+The `GroupManager` class in the `seedu.duke.friends` package is responsible for managing groups and their members. It provides methods to add members, check group existence, retrieve group members, remove groups, and persist group data.
+
+#### GroupManager Initialization
+- **Constructor:** `GroupManager()`
+- **Features:**
+  - Initializes the list of groups by loading existing groups from the storage using `GroupStorage.loadGroups()`.
+  - Uses the `Messages` object to display user messages.
+
+---
+
+#### Adding a Friend to a Group
+- **Method:** `addFriendToGroup(String groupName, Friend friend)`
+- **Features:**
+  - Searches for an existing group with the given name.
+  - If found, adds the `Friend` object to that group.
+  - If not found, creates a new group with the specified name and adds the friend.
+  - Ensures that the group is updated efficiently by adding the friend directly to the existing group if possible.
+
+---
+
+#### Checking Group Existence
+- **Method:** `groupExists(String groupName)`
+- **Features:**
+  - Iterates through the list of groups to check whether a group with the specified name exists.
+  - Returns `true` if the group is found, otherwise returns `false`.
+
+---
+
+#### Retrieving Group Members
+- **Method:** `getGroupMembers(String groupName)`
+- **Features:**
+  - Searches for the specified group by name.
+  - If found, returns a list of `Friend` objects from that group.
+  - If not found, returns an empty list to indicate that the group does not exist.
+
+---
+
+#### Removing a Group
+- **Method:** `removeGroup(String groupName)`
+- **Features:**
+  - Removes the specified group using a `removeIf` lambda function for efficiency.
+  - If the group is successfully removed, it calls `saveGroups()` to persist changes.
+  - Displays a success message if the group is deleted, otherwise uses `messages.displayMissingGroupMessage()` to indicate that the group was not found.
+
+---
+
+#### Saving Groups
+- **Method:** `saveGroups()`
+- **Features:**
+  - Saves the current list of groups to the storage using `GroupStorage.saveGroups(groups)`.
+  - Ensures that changes made to group structures are persistent across application sessions.
+
+---
+
+#### Retrieving All Groups
+- **Method:** `getGroups()`
+- **Features:**
+  - Returns the current list of groups.
+  - Useful for displaying all available groups in the application.
+
+---
+
+#### Design Considerations
+- The class follows the **Single Responsibility Principle (SRP)**, focusing on group management while delegating storage operations to the `GroupStorage` class.
+- Ensures that any modification to the group list is followed by a save operation to maintain data consistency.
+- Uses the **Strategy Pattern** for loading and saving groups, allowing flexibility in storage implementations.
+- Avoids group duplication by checking for existing groups before adding a
 
 ### 3.2.2 Messages Class
 

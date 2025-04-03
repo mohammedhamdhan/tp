@@ -164,6 +164,19 @@ User can unmark an expense that has been marked already.
   "Enter expense number to unmark"
   User input: 1
   ```
+  
+---
+
+#### Find from previous expenses: `find`
+User can unmark an expense that has been marked already.
+- **Format and Usage:** `find`
+- **Example:**
+  ```
+  "Enter keyword to search for expenses:"
+  User input: taxi
+  ```
+- The application then returns all the expenses that resemble this keyword.
+---
 
 #### Change currency: `change-currency`
 User can change the currency all expenses are in
