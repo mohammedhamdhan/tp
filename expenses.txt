@@ -1,1 +1,0 @@
-breakfast|food|10-10-2025|10.0|false
