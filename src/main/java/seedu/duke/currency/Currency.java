@@ -236,58 +236,98 @@ public class Currency {
     }
 
     /**
-     * Allows the user to change the current currency by either entering their own exchange rate or selecting
-     * an exchange rate from the predefined list.
+     * Prompts the user to change the currency by either entering their own exchange rate
+     * or switching to an estimated exchange rate. The user is required to input a valid
+     * option (1 or 2) and specify a currency in the ISO 4217 standard.
+     *
+     * <p>Option 1: The user enters their own exchange rate.</p>
+     * <p>Option 2: The system estimates an exchange rate.</p>
+     *
+     * <p>If the user inputs an invalid option, an error message is displayed, and the method returns.</p>
+     *
+     * @throws NumberFormatException if the input is not a valid number.
      */
-    public void changeCurrency(){
+    public void changeCurrency() {
         System.out.println("[1] Enter your own exchange rate from the current currency");
         System.out.println("[2] Switch currencies with an estimated exchange rate");
         System.out.print("Enter option: ");
+
         String method = scanner.nextLine().trim();
+        int intMethod;
 
-        try{
-            String newCurrency = null;
-            Double finalExchangeRate = null;
-            Integer intMethod = Integer.parseInt(method);
-
-            if(intMethod != 1 && intMethod != 2){
+        try {
+            intMethod = Integer.parseInt(method);
+            if (intMethod != 1 && intMethod != 2) {
                 System.out.println("Please input either '1' or '2'");
                 return;
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Please input a valid number");
+            return;
+        }
 
-            if(intMethod == 1) {
-                System.out.println("Note: Please enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)");
-                System.out.println("Please enter a currency to change to");
-                newCurrency = scanner.nextLine().trim();
+        System.out.println("Note: Please enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)");
+        System.out.println("Please enter a currency to change to");
+        String newCurrency = scanner.nextLine().trim();
 
-                if(!exchangeRates.containsKey(newCurrency)){
-                    System.out.println("Please provide a valid currency...");
-                    return;
-                }
+        if (intMethod == 1) {
+            handleCustomExchangeRate(newCurrency);
+        } else {
+            handleEstimatedExchangeRate(newCurrency);
+        }
+    }
 
-                System.out.println("Please input your exchange rate from " + getCurrentCurrency() +
-                        " to a new currency");
-                String input = scanner.nextLine().trim();
-                finalExchangeRate = Double.parseDouble(input);
-            }
+    /**
+     * Handles the process of changing the currency using a custom exchange rate provided by the user.
+     *
+     * <p>This method first checks if the specified currency exists in the exchange rates map.
+     * If the currency is not valid, an error message is displayed.</p>
+     *
+     * <p>Next, the user is prompted to input an exchange rate from the current currency to
+     * the new currency. If the input is a valid number, the method updates the expense currency
+     * using {@code editExpenseCurrency}. Otherwise, an error message is displayed.</p>
+     *
+     * @param newCurrency The target currency to which the exchange rate will be applied.
+     * @throws NumberFormatException if the user inputs an invalid exchange rate.
+     */
+    private void handleCustomExchangeRate(String newCurrency) {
+        if (!exchangeRates.containsKey(newCurrency)) {
+            System.out.println("Please provide a valid currency...");
+            return;
+        }
 
-            if(intMethod == 2) {
-                System.out.println("Your current currency is " + currentCurrency);
-                System.out.println("Note: Please enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)");
-                System.out.println("Please enter a currency to change to");
-                newCurrency = scanner.nextLine().trim();
-                Double exchangeRate = getExchangeRate(newCurrency);
-
-                if(exchangeRate == null){
-                    System.out.println("Currency not found!");
-                    return;
-                }
-                finalExchangeRate = exchangeRate/getExchangeRate(currentCurrency);
-            }
+        System.out.println("Please input your exchange rate from " + getCurrentCurrency() + " to the new currency");
+        try {
+            double finalExchangeRate = Double.parseDouble(scanner.nextLine().trim());
             editExpenseCurrency(finalExchangeRate, newCurrency);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("Please input a valid number");
         }
+    }
+
+    /**
+     * Handles the process of changing the currency using an estimated exchange rate.
+     *
+     * <p>This method retrieves the exchange rate for the specified currency and calculates
+     * the conversion rate based on the current currency. If the exchange rate for the
+     * specified currency is not found, an error message is displayed.</p>
+     *
+     * <p>If a valid exchange rate is obtained, the method calculates the final exchange rate
+     * and updates the expense currency using {@code editExpenseCurrency}.</p>
+     *
+     * @param newCurrency The target currency to which the exchange rate will be applied.
+     */
+    private void handleEstimatedExchangeRate(String newCurrency) {
+        System.out.println("Your current currency is " + currentCurrency);
+        Double exchangeRate = getExchangeRate(newCurrency);
+
+        if (exchangeRate == null) {
+            System.out.println("Currency not found!");
+            return;
+        }
+
+        double finalExchangeRate = exchangeRate / getExchangeRate(currentCurrency);
+        editExpenseCurrency(finalExchangeRate, newCurrency);
     }
 
     /**

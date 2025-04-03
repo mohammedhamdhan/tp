@@ -5,7 +5,7 @@
 3.  If you have it installed already, you may check it by running `java -version` in your terminal.
 4.  Download the latest `.jar` file from here. **[link will be updated once v1 is ready]**
 5.  Copy the file to the folder you want to use as the home folder for your **O$P$ budget tracking app** 🙂.
-6.  Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar oSpS.jar` command to run the application.
+6.  Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar o$p$.jar` command to run the application.
 7.  Type the command in the command box and press **Enter** to execute it.
 8.  **Example:** Typing `help` and pressing **Enter** will open a mini window showing a list of all possible commands.
 9.  Refer to the [features](https://docs.google.com/document/d/125Cg7wzuc4XFo3wsziwL2f64KN1uUfvFL5dIm6IQrSk/edit?tab=t.xl7ogrtj0a5q#heading=h.61o02m6y9xrc) section below for details on all commands and functionalities.
@@ -188,6 +188,19 @@ User can unmark an expense that has been marked already.
   "Enter expense number to unmark"
   User input: 1
   ```
+  
+---
+
+#### Find from previous expenses: `find`
+User can unmark an expense that has been marked already.
+- **Format and Usage:** `find`
+- **Example:**
+  ```
+  "Enter keyword to search for expenses:"
+  User input: taxi
+  ```
+- The application then returns all the expenses that resemble this keyword.
+---
 
 #### Change currency: `change-currency`
 
