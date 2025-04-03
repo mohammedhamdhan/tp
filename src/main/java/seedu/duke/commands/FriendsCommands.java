@@ -47,6 +47,7 @@ public class FriendsCommands {
         }
 
         System.out.println("Who would you like to add to the group? (Type 'done' to finish)");
+        boolean hasMembers = false;
 
         while (true) {
             System.out.print("Enter name: ");
@@ -61,8 +62,12 @@ public class FriendsCommands {
             }
 
             groupManager.addFriendToGroup(groupName, new Friend(name, groupName));
+            hasMembers = true;
         }
-
+        if (!hasMembers) {
+            System.out.println("Operation cancelled. Group must have at least one member.");
+            return; // Cancel the operation if no members were added
+        }
 
         groupManager.saveGroups(); // Save the updated groups using GroupManager
         System.out.println("Group created successfully!");
@@ -101,7 +106,7 @@ public class FriendsCommands {
             }
         } catch (FileNotFoundException e) {
             // Exception for file not found
-            System.out.println("owedAmounts.txt file not found. No expense data available.");
+            System.out.println("Owed amounts file not found. No expense data available.");
         } catch (NumberFormatException e) {
             System.out.println("Error parsing expense data.");
         }
@@ -270,7 +275,6 @@ public class FriendsCommands {
 
         groupManager.removeGroup(groupName);
         groupManager.saveGroups(); // Save the updated groups list
-        System.out.println("Group '" + groupName + "' has been removed successfully.");
     }
 
 }
