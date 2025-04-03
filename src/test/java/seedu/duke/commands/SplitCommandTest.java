@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,14 +39,14 @@ class SplitCommandTest {
      * A simple test implementation for GroupManager that stores groups in a list.
      */
     class TestGroupManager extends GroupManager {
-        private List<Group> groups = new ArrayList<>();
+        private List < Group > groups = new ArrayList < > ();
 
         /**
          * Adds a group with the given name and members.
          */
-        public void addGroup(String groupName, List<Friend> members) {
+        public void addGroup(String groupName, List < Friend > members) {
             Group group = new Group(groupName);
-            for (Friend friend : members) {
+            for (Friend friend: members) {
                 group.addFriend(friend);
             }
             groups.add(group);
@@ -53,7 +54,7 @@ class SplitCommandTest {
 
         @Override
         public boolean groupExists(String groupName) {
-            for (Group group : groups) {
+            for (Group group: groups) {
                 if (group.getName().equals(groupName)) {
                     return true;
                 }
@@ -62,13 +63,13 @@ class SplitCommandTest {
         }
 
         @Override
-        public List<Friend> getGroupMembers(String groupName) {
-            for (Group group : groups) {
+        public List < Friend > getGroupMembers(String groupName) {
+            for (Group group: groups) {
                 if (group.getName().equals(groupName)) {
                     return group.getFriends();
                 }
             }
-            return new ArrayList<>();
+            return new ArrayList < > ();
         }
     }
 
@@ -117,7 +118,7 @@ class SplitCommandTest {
      */
     void provideInput(String input) {
         InputStream in = new ByteArrayInputStream(input.getBytes());
-        Scanner scanner = new Scanner(in);
+        Scanner scanner = new Scanner( in );
         // Initialize friendsCommands using the groupManager.
         friendsCommand = new FriendsCommands(groupManager);
         splitCommand = new SplitCommand(scanner, groupManager, friendsCommand);
@@ -147,7 +148,7 @@ class SplitCommandTest {
         budgetManager.addExpense(expense);
 
         // Create a group "friends" with two members.
-        List<Friend> members = Arrays.asList(new Friend("Alice", "friends"), new Friend("Bob", "friends"));
+        List < Friend > members = Arrays.asList(new Friend("Alice", "friends"), new Friend("Bob", "friends"));
         ((TestGroupManager) groupManager).addGroup("friends", members);
 
         // Provide input:
@@ -161,7 +162,7 @@ class SplitCommandTest {
         // Both friends should owe 50.00 each.
         assertTrue(output.contains("Alice owes: 50.00"), "Expected Alice to owe 50.00.");
         assertTrue(output.contains("Bob owes: 50.00"), "Expected Bob to owe 50.00.");
-        
+
         // Additional asserts:
         File owesFile = new File(SplitCommand.OwesStorage.owesFile);
         assertTrue(owesFile.exists(), "Expected owes file to exist after equal split.");
@@ -183,7 +184,7 @@ class SplitCommandTest {
         budgetManager.addExpense(expense);
 
         // Create a group "friends" with two members.
-        List<Friend> members = Arrays.asList(new Friend("Alice", "friends"), new Friend("Bob", "friends"));
+        List < Friend > members = Arrays.asList(new Friend("Alice", "friends"), new Friend("Bob", "friends"));
         ((TestGroupManager) groupManager).addGroup("friends", members);
 
         // Provide input for manual split:
@@ -193,15 +194,15 @@ class SplitCommandTest {
         // For Alice: choose flat amount (/a) with value 30,
         // For Bob: choose percentage (/p) with value 70.
         String input = "2\n1\nfriends\n" +
-                       "/a\n30\n" +
-                       "/p\n70\n";
+            "/a\n30\n" +
+            "/p\n70\n";
         provideInput(input);
         splitCommand.executeSplit();
 
         String output = outContent.toString();
         assertTrue(output.contains("Alice owes: 30.00"), "Expected Alice to owe 30.00.");
         assertTrue(output.contains("Bob owes: 70.00"), "Expected Bob to owe 70.00.");
-        
+
         // New assertEquals to check the exact file content for manual split.
         File owesFile = new File(SplitCommand.OwesStorage.owesFile);
         try {
@@ -212,11 +213,71 @@ class SplitCommandTest {
             e.printStackTrace();
         }
     }
+    @Test
+    void testExecuteSplitManualSplitPercentage() {
+        // Add an expense so that DataStorage.loadExpenses() returns it.
+        Expense expense = new Expense("Brunch", "Late morning meal", "15-02-2025", 200.0);
+        budgetManager.addExpense(expense);
+
+        // Create a group "friends" with three members.
+        List < Friend > members = Arrays.asList(
+            new Friend("Alice", "friends"),
+            new Friend("Bob", "friends"),
+            new Friend("Charlie", "friends"));
+        ((TestGroupManager) groupManager).addGroup("friends", members);
+
+        // Test manual split using percentage.
+        // For each member, provide percentages that sum to 100.
+        // For example, assign: Alice 20%, Bob 30%, Charlie 50%.
+        String input = "2\n1\nfriends\n/p\n20\n/p\n30\n/p\n50\n";
+        provideInput(input);
+        splitCommand.executeSplit();
+
+        String output = outContent.toString();
+        // Calculate assigned amounts.
+        double aliceShare = 200.0 * (20.0 / 100.0);
+        double bobShare = 200.0 * (30.0 / 100.0);
+        double charlieShare = 200.0 * (50.0 / 100.0);
+        assertTrue(output.contains("Alice owes: " + String.format("%.2f", aliceShare)), "Expected correct share for Alice.");
+        assertTrue(output.contains("Bob owes: " + String.format("%.2f", bobShare)), "Expected correct share for Bob.");
+        assertTrue(output.contains("Charlie owes: " + String.format("%.2f", charlieShare)), "Expected correct share for Charlie.");
+
+        File owesFile = new File(SplitCommand.OwesStorage.owesFile);
+        try {
+            String fileContent = new String(Files.readAllBytes(owesFile.toPath()));
+            String expectedContent =
+                " - Alice owes: " + String.format("%.2f", aliceShare) + "\n" +
+                " - Bob owes: " + String.format("%.2f", bobShare) + "\n" +
+                " - Charlie owes: " + String.format("%.2f", charlieShare) + "\n";
+            assertEquals(expectedContent, fileContent, "File content does not match for manual percentage split.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    void testExecuteSplitManualSplitInvalidMethod() {
+        // Add an expense so that DataStorage.loadExpenses() returns it.
+        Expense expense = new Expense("Snack", "Light bite", "10-03-2025", 50.0);
+        budgetManager.addExpense(expense);
+
+        // Create a group "friends" with one member.
+        List < Friend > members = Arrays.asList(new Friend("Alice", "friends"));
+        ((TestGroupManager) groupManager).addGroup("friends", members);
+
+        // Provide an invalid method (not /a or /p). The assertion in production code should trigger.
+        // However, since assertions are generally disabled at runtime, we simulate by checking the output message.
+        provideInput("2\n1\nfriends\ninvalid_method\n");
+        splitCommand.executeSplit();
+
+        String output = outContent.toString();
+        // Expect the output to mention "Invalid method. Cancelling split." due to the check.
+        assertTrue(output.contains("Invalid method. Cancelling split."), "Expected cancellation due to invalid method input.");
+    }
 
     @Test
     void testExecuteSplitInvalidExpenseSelection() {
         // Add a single expense.
-        Expense expense = new Expense("Snack", "Small bite", "23-08-2025",20.0);
+        Expense expense = new Expense("Snack", "Small bite", "23-08-2025", 20.0);
         budgetManager.addExpense(expense);
 
         // Provide an invalid expense number "5".
@@ -225,5 +286,26 @@ class SplitCommandTest {
 
         String output = outContent.toString();
         assertTrue(output.contains("Invalid expense number."), "Expected message for invalid expense selection.");
+    }
+    @Test
+    void testExecuteSplitWithInvalidNumericInputForAmount() {
+        // Test that if the user enters non-numeric values during manual absolute splitting,
+        // the program prompts for re-entry.
+        Expense expense = new Expense("Dinner", "Evening meal", "31-12-2025", 100.0);
+        budgetManager.addExpense(expense);
+        List < Friend > members = Arrays.asList(new Friend("Alice", "friends"), new Friend("Bob", "friends"));
+        ((TestGroupManager) groupManager).addGroup("friends", members);
+
+        // For manual absolute splitting, simulate an invalid amount for the first member followed by a valid one.
+        String input = "2\n1\nfriends\n/a\nabc\n30\n/a\n70\n";
+        provideInput(input);
+        splitCommand.executeSplit();
+
+        String output = outContent.toString();
+        // Check that the output contains a prompt for "Invalid amount. Please try again."
+        assertTrue(output.contains("Invalid amount. Please try again."), "Expected message for invalid numeric input.");
+        // Also check that final amounts are correctly processed.
+        assertTrue(output.contains("Alice owes: 30.00"), "Expected Alice to owe 30.00 after re-entry.");
+        assertTrue(output.contains("Bob owes: 70.00"), "Expected Bob to owe 70.00 after re-entry.");
     }
 }

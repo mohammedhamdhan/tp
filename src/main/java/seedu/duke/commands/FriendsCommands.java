@@ -34,13 +34,17 @@ public class FriendsCommands {
 
         while (true) {
             System.out.print("Enter the group name: ");
-            groupName = scanner.nextLine().trim();
-            if (!isValidName(groupName)) {
-                System.out.println("Invalid group name. Name cannot be empty/contain special characters.Try again :)");
-            } else {
-                break;
-            }
+        if (!scanner.hasNextLine()) {
+            System.out.println("[ERROR] Unexpected end of input while reading group name.");
+            return;
         }
+        groupName = scanner.nextLine().trim();
+        if (!isValidName(groupName)) {
+            System.out.println("Invalid group name. Name cannot be empty/contain special characters. Try again :)");
+        } else {
+            break;
+        }
+    }
 
         System.out.println("Who would you like to add to the group? (Type 'done' to finish)");
 
@@ -58,6 +62,7 @@ public class FriendsCommands {
 
             groupManager.addFriendToGroup(groupName, new Friend(name, groupName));
         }
+        
 
         groupManager.saveGroups(); // Save the updated groups using GroupManager
         System.out.println("Group created successfully!");

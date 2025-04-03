@@ -33,6 +33,9 @@ public class SplitCommand {
      * @param groupManager the GroupManager to retrieve group information.
      */
     public SplitCommand(Scanner scanner, GroupManager groupManager, FriendsCommands friendsCommands) {
+        assert scanner != null : "Scanner must not be null";
+        assert groupManager != null : "GroupManager must not be null";
+        assert friendsCommands != null : "FriendsCommands must not be null";
         this.scanner = scanner;
         this.groupManager = groupManager;
         this.friendsCommands = friendsCommands;
@@ -61,6 +64,7 @@ public class SplitCommand {
 
         // Load existing expenses from storage.
         List < Expense > expenses = DataStorage.loadExpenses();
+        assert expenses != null : "Expenses list should not be null";
         if (expenses == null || expenses.isEmpty()) {
             System.out.println("No expenses available to split.");
             return;
@@ -70,6 +74,7 @@ public class SplitCommand {
         System.out.println("Available expenses:");
         for (int i = 0; i < expenses.size(); i++) {
             Expense exp = expenses.get(i);
+            assert exp != null : "Expense at index " + i + " should not be null";
             System.out.println((i + 1) + ". " +
                 exp.getTitle() + " | Amount: " +
                 String.format("%.2f", exp.getAmount()));
@@ -97,6 +102,7 @@ public class SplitCommand {
             // Equal split option.
             System.out.print("Enter group name for equal split: ");
             String groupName = scanner.nextLine().trim();
+            assert !groupName.isEmpty() : "Group name must not be empty";
             if (!groupManager.groupExists(groupName)) {
                 System.out.println("Group not found.");
                 return;
@@ -109,6 +115,7 @@ public class SplitCommand {
 
             int numMembers = members.size();
             double share = totalAmount / numMembers;
+            assert share >= 0 : "Calculated share must be non-negative";
             System.out.println("Splitting " + totalAmount + " equally among " + numMembers +
                 " members of group \"" + groupName + "\":");
             for (Friend member: members) {
@@ -127,6 +134,7 @@ public class SplitCommand {
             // Manual split option.
             System.out.print("Enter group name for manual split: ");
             String groupName = scanner.nextLine().trim();
+            assert !groupName.isEmpty() : "Group name must not be empty";
             if (!groupManager.groupExists(groupName)) {
                 System.out.println("Group not found.");
                 return;
