@@ -363,6 +363,86 @@ Removes an entire group.
 
 #### Select split method: `split`
 
+Splits an expense among members of a group either equally or manually (via absolute amounts or percentages).
+
+- **Usage:**
+
+  ```
+  split
+  [1] Split equally among all members of the selected group
+  [2] Manually assign amounts for each member in a group
+  [x]: Cancel
+  Enter option: 1
+
+  Available expenses:
+  1. Lunch | Amount: 100.00
+  Enter expense number to split: 1
+
+  Enter group name for equal split: friends
+  Splitting 100.00 equally among 2 members of group "friends":
+  - Alice owes: 50.00
+  - Bob owes: 50.00
+
+  Updated list of transactions!
+  Here is the updated balance for group: friends
+  ```
+
+- **Manual Split (absolute amounts):**
+
+  ```
+  split
+  [1] Split equally among all members of the selected group
+  [2] Manually assign amounts for each member in a group
+  [x]: Cancel
+  Enter option: 2
+
+  Available expenses:
+  1. Dinner | Amount: 100.00
+  Enter expense number to split: 1
+
+  Enter group name for manual split: friends
+  Type '/a' for absolute amounts OR '/p' for percentages: /a
+
+  Total expense amount to split: 100.00
+  You can assign up to 100.00 in total.
+  Enter amount for Alice: 30
+  Remaining expense: 70.00
+  Enter amount for Bob: 70
+
+  Updated list of transactions!
+  ```
+
+- **Manual Split (percentages):**
+
+  ```
+  split
+  [1] Split equally among all members of the selected group
+  [2] Manually assign amounts for each member in a group
+  [x]: Cancel
+  Enter option: 2
+
+  Available expenses:
+  1. Brunch | Amount: 200.00
+  Enter expense number to split: 1
+
+  Enter group name for manual split: friends
+  Type '/a' for absolute amounts OR '/p' for percentages: /p
+
+  Total expense is 200.00. You can assign up to 100% in total.
+  Enter percentage for Alice: 40
+  Remaining percentage: 60.00%
+  Enter percentage for Bob: 60
+
+  - Alice owes: 80.00
+  - Bob owes: 120.00
+
+  Updated list of transactions!
+  Here is the updated balance for group: friends
+  ```
+
+---
+### Select split method: `split`
+
 Allows an expense to be split among a certain group, either equally or via manually specified amounts/percentages.
 
 - **Format:** `split`
@@ -382,6 +462,7 @@ Allows an expense to be split among a certain group, either equally or via manua
   ```
 
 ---
+
 
 ## Expense Analytics:
 

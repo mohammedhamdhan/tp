@@ -492,84 +492,66 @@ The `removeMember()` method allows the user to add a new member to an existing g
 
 ### 3.1.6 SplitCommand Class
 
-The **SplitCommand** class is responsible for managing the splitting of expenses among group members.
-It enables users to select an expense from a list and split that expense among a group either equally or through a manual assignment, either via absolute amounts or percentages.
+The `SplitCommand` class handles the logic for dividing an expense among members of a user-defined group. It supports equal splits and manual splits using either absolute amounts or percentages. Results are saved to the transaction log and reflected in the group balances.
 
----
+#### Split Management
 
-#### Key Features
+- **Group Integration:** Uses `GroupManager` to retrieve group and member data.
+- **Expense Selection:** Allows the user to select an existing expense for splitting.
+- **Transaction Logging:** Uses `OwesStorage` to persist the results of each split.
+- **User Flow:** Offers a command-line guided interaction with validation at each step.
 
-- **Expense Selection:**
+- **Assertions:** Used to verify that splitting operations are valid
 
-  - Displays a list of available expenses.
-  - Allows the user to choose an expense by entering its corresponding number.
+#### Methods
 
-- **Splitting Options:**
+#### `SplitCommand(Scanner scanner, GroupManager groupManager, FriendsCommands friendsCommands)`
 
-  - **Equal Split:**  
-    Divides the selected expense evenly among all members of the chosen group.
-  - **Manual Split:**  
-    Requires the user to select a single splitting mode for the entire group:
-    - **Absolute Mode:**
-      - The user assigns a fixed monetary amount to each member.
-    - **Percentage Mode:**
-      - The user assigns a percentage for each member.
+Initializes the `SplitCommand` instance with the provided dependencies.
 
-- **Automatic Balance Display:**
-  - Once the split is completed, the command automatically shows cumilatively how much each member of the group owes, including from past splitting.
-  - It uses the `owedAmounts.txt` file to sum all owed amounts for each member. It also displays the updated cumulative balance.
+- Asserts that all constructor arguments are non-null.
+- Stores references to interact with groups and prompt the user.
 
----
+#### `executeSplit()`
 
-#### Implementation Details
+Executes the flow for splitting an expense.
 
-- **User Input Validation:**
+- Prompts the user to choose:
+  - `[1]` Equal Split
+  - `[2]` Manual Split
+  - `[x]` Cancel
+- Displays available expenses and validates the selected index.
+- Retrieves group and validates its existence and membership.
+- Delegates to the chosen split method:
+  - **Equal Split:** 
+    - Divides total amount equally among all members.
+    - Appends individual owed shares to the transaction log.
+  - **Manual Split:**
+    - Prompts user to choose between absolute amounts (`/a`) or percentages (`/p`).
+    - Accepts user-defined shares for each member.
+    - Validates that total amount or percentage is fully allocated.
+- Calls `friendsCommands.viewGroupDirect()` to update group display after split.
 
-  - Validates the selected expense index and group name.
-  - Ensures numeric inputs for amounts and percentages are valid.
-  - Prevents assignments that exceed the remaining expense (in absolute mode) or cumulative percentage (in percentage mode).
+#### Internal Logic (within `executeSplit()`)
 
-- **File Handling and Persistence:**
+- **Equal Split:**
+  - Computes `share = totalAmount / numMembers`.
+  - Loops through group members and logs each person's owed amount.
+  - Writes each owed entry to `OwesStorage`.
 
-  - Each valid assignment is appended in real time to the `owedAmounts.txt` file using a helper method.
-  - The file maintains a persistent record of all split transactions.
-  - When viewing a group, the system aggregates all entries per member to count the cumulative balance.
+- **Manual Split – Absolute:**
+  - Prompts for each member’s assigned amount.
+  - Tracks remaining amount and prevents over-allocation.
+  - Logs each owed amount to storage.
 
-- **Integration with FriendsCommands:**
+- **Manual Split – Percentage:**
+  - Prompts for each member’s share percentage.
+  - Computes owed amount as `totalAmount * (percentage / 100)`.
+  - Validates total assigned percentages.
 
-  - The SplitCommand class holds a reference to the **FriendsCommands** instance.
-  - After completing the split, it calls the `viewGroupDirect(String groupName)` method to display the updated balances immediately.
+Below is the UML sequence diagram for the `SplitCommand` class.
 
-- **Error Handling:**
-  - Gracefully handles input errors (e.g., non-numeric values, attempts to over-assign amounts or percentages).
-  - Provides clear error messages and re-prompts the user for valid input.
-
----
-
-#### Workflow Summary
-
-1. **Expense Selection:**
-
-   - The user is presented with a list of expenses and selects one to split.
-
-2. **Choosing a Split Option:**
-
-   - **Equal Split:**
-     - The expense is divided equally among the members of the specified group.
-   - **Manual Split:**
-     - The user selects one split method for the entire group (absolute or percentage).
-     - **Absolute Mode:**
-       - Each assignment reduces the remaining available amount.
-       - The system displays the remaining unassigned amount after each entry.
-     - **Percentage Mode:**
-       - Each assignment reduces the available percentage from the total 100%.
-       - The system displays the remaining percentage after each entry.
-
-3. **Automatic Balance Update:**
-   - After completing the split, the command automatically calls the view-group method to show each member's cumulative owed balance.
-   - This balance is computed by aggregating all past and current assignments from `owedAmounts.txt`.
-
----
+![SplitClassSequenceDiagram.png](diagrams/SplitClassSequenceDiagram.png)
 
 ### 3.1.7 BudgetManager Class
 
