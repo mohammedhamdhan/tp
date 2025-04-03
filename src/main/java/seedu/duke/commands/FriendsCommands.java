@@ -275,7 +275,6 @@ public class FriendsCommands {
 
         groupManager.removeGroup(groupName);
         groupManager.saveGroups(); // Save the updated groups list
-        System.out.println("Group '" + groupName + "' has been removed successfully.");
     }
 
 }
