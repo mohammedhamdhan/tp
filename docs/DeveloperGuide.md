@@ -243,6 +243,16 @@ The `executeUnmarkCommand()` method manages unmarking an expense as unsettled wi
 - Handles non-numeric input with a NumberFormatException
 - Provides clear error messages to guide the user toward valid input
 
+#### Finding specific Expenses
+
+The `findExpense()` method in the `seedu.duke.budget` package is responsible for searching and displaying expenses that match a given keyword. It helps users efficiently locate expenses by title or description.
+
+- Prompts the user to enter a keyword to search for expenses.
+- Validates that the keyword is not empty.
+- Retrieves all stored expenses using `budgetManager.getAllExpenses()`.
+- Filters expenses whose title or description contains the keyword (case-insensitive).
+- Displays the list of matching expenses, if any.
+
 #### Expense Summaries
 
 The class provides comprehensive expense summary functionality:
@@ -605,6 +615,32 @@ Sets an expense's amount to 0.0.
 
 ### 3.1.9 Friend Class
 
+The `Friend` class in the `seedu.duke.friends` package represents an individual member within a group. It stores essential information about the friend, including their name and the group they belong to.
+
+#### Friend Initialization
+- **Constructor:** `Friend(String name, String group)`
+- **Features:**
+  - Initializes the `name` and `group` fields with the provided values.
+  - Represents a friend as part of a specific group.
+
+#### Getting Friend's Name
+- **Method:** `getName()`
+- **Features:**
+  - Returns the name of the friend.
+  - Provides a way to access the friend's name for display or processing.
+
+#### Getting Friend's Group
+- **Method:** `getGroup()`
+- **Features:**
+  - Returns the group to which the friend belongs.
+  - Useful for organizing friends by their associated groups.
+
+#### Design Considerations
+- The class follows the **Single Responsibility Principle (SRP)**, focusing solely on holding friend-related data.
+- Encapsulation is maintained through private attributes and public getter methods.
+- The class is designed to be lightweight and efficient for group management operations.
+
+
 ### 3.2.0 Group Class
 
 The `Group` class in the `seedu.duke.friends` package manages a collection of `Friend` objects under a specified group name.
@@ -645,6 +681,74 @@ The `Group` class in the `seedu.duke.friends` package manages a collection of `F
    - **Important:** Ensure that the `messages` field is initialized externally to prevent a `NullPointerException`.
 
 ### 3.2.1 GroupManager Class
+
+The `GroupManager` class in the `seedu.duke.friends` package is responsible for managing groups and their members. It provides methods to add members, check group existence, retrieve group members, remove groups, and persist group data.
+
+#### GroupManager Initialization
+- **Constructor:** `GroupManager()`
+- **Features:**
+  - Initializes the list of groups by loading existing groups from the storage using `GroupStorage.loadGroups()`.
+  - Uses the `Messages` object to display user messages.
+
+---
+
+#### Adding a Friend to a Group
+- **Method:** `addFriendToGroup(String groupName, Friend friend)`
+- **Features:**
+  - Searches for an existing group with the given name.
+  - If found, adds the `Friend` object to that group.
+  - If not found, creates a new group with the specified name and adds the friend.
+  - Ensures that the group is updated efficiently by adding the friend directly to the existing group if possible.
+
+---
+
+#### Checking Group Existence
+- **Method:** `groupExists(String groupName)`
+- **Features:**
+  - Iterates through the list of groups to check whether a group with the specified name exists.
+  - Returns `true` if the group is found, otherwise returns `false`.
+
+---
+
+#### Retrieving Group Members
+- **Method:** `getGroupMembers(String groupName)`
+- **Features:**
+  - Searches for the specified group by name.
+  - If found, returns a list of `Friend` objects from that group.
+  - If not found, returns an empty list to indicate that the group does not exist.
+
+---
+
+#### Removing a Group
+- **Method:** `removeGroup(String groupName)`
+- **Features:**
+  - Removes the specified group using a `removeIf` lambda function for efficiency.
+  - If the group is successfully removed, it calls `saveGroups()` to persist changes.
+  - Displays a success message if the group is deleted, otherwise uses `messages.displayMissingGroupMessage()` to indicate that the group was not found.
+
+---
+
+#### Saving Groups
+- **Method:** `saveGroups()`
+- **Features:**
+  - Saves the current list of groups to the storage using `GroupStorage.saveGroups(groups)`.
+  - Ensures that changes made to group structures are persistent across application sessions.
+
+---
+
+#### Retrieving All Groups
+- **Method:** `getGroups()`
+- **Features:**
+  - Returns the current list of groups.
+  - Useful for displaying all available groups in the application.
+
+---
+
+#### Design Considerations
+- The class follows the **Single Responsibility Principle (SRP)**, focusing on group management while delegating storage operations to the `GroupStorage` class.
+- Ensures that any modification to the group list is followed by a save operation to maintain data consistency.
+- Uses the **Strategy Pattern** for loading and saving groups, allowing flexibility in storage implementations.
+- Avoids group duplication by checking for existing groups before adding a
 
 ### 3.2.2 Messages Class
 
