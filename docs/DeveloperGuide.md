@@ -42,7 +42,6 @@
 &nbsp;&nbsp;[5.4 Glossary](#54-glossary) <br>
 &nbsp;&nbsp;[5.5 Test Cases](#55-test-cases) <br>
 
-
 ## Acknowledgements
 
 ---
@@ -319,58 +318,66 @@ The class uses assertions to validate:
 The FriendsCommands class handles all friends and groups related operations in the application. It provides functionality for adding, deleting, and managing friend groups.
 
 #### Checking if a group/member name is valid
+
 The `isValidName()` method is a utility function used to validate input strings for group names and member names. It ensures that the input follows specific naming conventions and helps maintain data integrity.
+
 - **Input validation:**
-    - Accepts a single `String` parameter `name`.
+
+  - Accepts a single `String` parameter `name`.
 
 - **Null and empty check:**
-    - Method checks if the input is `null` or an empty string after trimming the whitespace.
-    - If either condition is met, the method returns `false`.
+
+  - Method checks if the input is `null` or an empty string after trimming the whitespace.
+  - If either condition is met, the method returns `false`.
 
 - **Name format validation**
-    - Uses a regular expression to validate that the name contains only letters (both uppercase and lowercase), numbers, and spaces.
-    - If all conditions are met, the method returns `true`
-    - If even one is violated, it returns `false`.
+  - Uses a regular expression to validate that the name contains only letters (both uppercase and lowercase), numbers, and spaces.
+  - If all conditions are met, the method returns `true`
+  - If even one is violated, it returns `false`.
 
 #### Creating a new group
 
 The `createGroup()` method is responsible for creating a new group within the application. It follows a user-driven input process to define the group name and add members.
 
 - **Group name Input:**
-    - The method prompts the user to enter a group name.
-    - The input is validated using the `isValidName()` method.
-    - If name is invalid, the user is prompted to enter a name again.
+
+  - The method prompts the user to enter a group name.
+  - The input is validated using the `isValidName()` method.
+  - If name is invalid, the user is prompted to enter a name again.
 
 - **Adding Group Members:**
-    - Once a valid group name is added, user is prompted to add members.
-    - User can continue to input multiple member names, each name is validated by the `isValidName()` method.
-    - Process continues until user types 'done'.
-    - Each valid member name is used to create a new `Friend` object, which is then added to the group using `groupManager.addFriendToGroup()`.
+
+  - Once a valid group name is added, user is prompted to add members.
+  - User can continue to input multiple member names, each name is validated by the `isValidName()` method.
+  - Process continues until user types 'done'.
+  - Each valid member name is used to create a new `Friend` object, which is then added to the group using `groupManager.addFriendToGroup()`.
 
 - **Saving the Group:**
-    - Once the group creation is complete, the method saves the group using `groupManager.saveGroups()`
-    - A success message is displayed upon creation.
+  - Once the group creation is complete, the method saves the group using `groupManager.saveGroups()`
+  - A success message is displayed upon creation.
 
 #### Remove a Group
 
 The `removeGroup()` is used to delete an entire group from the group management system.
 
 - **Input:**
-    - Prompts the user to enter the name of the group they want to remove.
-    - Trims any leading or trailing whitespaces from the input.
+
+  - Prompts the user to enter the name of the group they want to remove.
+  - Trims any leading or trailing whitespaces from the input.
 
 - **Group Existence Check:**
-    - Uses `groupManager.groupExists(groupName)` to verify whether the specified group exists.
-    - If group does not exist, the method prints "Group does not exist."
+
+  - Uses `groupManager.groupExists(groupName)` to verify whether the specified group exists.
+  - If group does not exist, the method prints "Group does not exist."
 
 - **Delete confirmation:**
-    - Before removal, the method prompts the user to confirm: "Are you sure you want to remove [groupName]? (yes/no)"
-    - If the user does not input "yes", the operation to remove is cancelled.
+
+  - Before removal, the method prompts the user to confirm: "Are you sure you want to remove [groupName]? (yes/no)"
+  - If the user does not input "yes", the operation to remove is cancelled.
 
 - **Group Removal:**
-    - If confirmed, the method calls `groupManager.removeGroup(groupName)` to remove the group from the group management system. 
-    - The updated group list is saved using `groupManager.saveGroups()`.
-
+  - If confirmed, the method calls `groupManager.removeGroup(groupName)` to remove the group from the group management system.
+  - The updated group list is saved using `groupManager.saveGroups()`.
 
 #### Viewing an existing group
 
@@ -378,72 +385,78 @@ The `viewGroup()` method is responsible for displaying the details of a specific
 This method is essential for users who wish to view group details and any expenses related to group members.
 
 - **Input:**
-    - Prompts user to enter the group name that they want to view.
-    - Trims any extra whitespaces from the input.
+
+  - Prompts user to enter the group name that they want to view.
+  - Trims any extra whitespaces from the input.
 
 - **Group Existence Check:**
-    - Uses the `groupManager.groupExists()` method to check whether the specified group exists. 
-    - If the group does not exist, the method prints a "Group not found" message and terminates.
+
+  - Uses the `groupManager.groupExists()` method to check whether the specified group exists.
+  - If the group does not exist, the method prints a "Group not found" message and terminates.
 
 - **Loading Expense Data:**
-    - The method reads from the `owedAmounts.txt` file, which contains expense data.
-    - It loads this data into a map owedAmounts, where:
-      - The key is the member's name.
-      - The value is the accumulated amount they owe. 
-    - The method ensures that the amounts are accumulated for each member instead of being overwritten.
+
+  - The method reads from the `owedAmounts.txt` file, which contains expense data.
+  - It loads this data into a map owedAmounts, where:
+    - The key is the member's name.
+    - The value is the accumulated amount they owe.
+  - The method ensures that the amounts are accumulated for each member instead of being overwritten.
 
 - **Display Group Members and Expenses:**
-    - Uses groupManager.getGroupMembers(groupName) to fetch the list of group members. 
-    - If the group has no members, it displays "No members in this group."
-    - For each member, it:
-      - Retrieves their name. 
-      - Checks the owedAmounts map for any recorded expenses. 
-      - Displays the member’s name along with the accumulated expense amount. 
-    - If a member has no recorded expense, the amount displayed is 0.00.
+  - Uses groupManager.getGroupMembers(groupName) to fetch the list of group members.
+  - If the group has no members, it displays "No members in this group."
+  - For each member, it:
+    - Retrieves their name.
+    - Checks the owedAmounts map for any recorded expenses.
+    - Displays the member's name along with the accumulated expense amount.
+  - If a member has no recorded expense, the amount displayed is 0.00.
 
 #### Viewing all user's Groups
 
 The `viewAllGroups()` method is designed to display a list of all the groups that the user has created or is a part of. It provides a quick overview of the existing groups managed by the application.
 
 - **Check for existing groups:**
-    - Uses `groupManager.getGroups()` to retrieve a list of all groups.
-    - If the list is empty, the method prints "You have no groups".
+
+  - Uses `groupManager.getGroups()` to retrieve a list of all groups.
+  - If the list is empty, the method prints "You have no groups".
 
 - **Displaying Groups:**
-  - If the list is not empty, the method iterates over each group and prints its details using the `toString()` method of the Group class. 
+  - If the list is not empty, the method iterates over each group and prints its details using the `toString()` method of the Group class.
   - This allows the user to see a comprehensive list of all group names and any other associated information that the Group class's `toString()` method returns.
 
 #### Viewing group directly
-
 
 #### Add a member
 
 The `addMember()` method allows the user to add a new member to an existing group. If the specified group does not exist, the method offers the option to create the group and add the member simultaneously.
 
 - **Input:**
+
   - Member name:
-    - Prompts the user to enter the name of the member they want to add. 
+    - Prompts the user to enter the name of the member they want to add.
     - Uses isValidName() to validate the input, ensuring it does not contain special characters or empty spaces.
     - Repeats the prompt until a valid name is entered.
   - Group name:
-    - Prompts the user to enter the group name to which the member should be added. 
+    - Prompts the user to enter the group name to which the member should be added.
     - Similarly, the name is validated to avoid empty or invalid names.
 
-- **Group Existence Check:** 
+- **Group Existence Check:**
+
   - Uses `groupManager.groupExists(groupName)` to verify whether the specified group already exists.
 
 - **Adding Member to existing group:**
+
   - If the group exists:
-    - Uses `groupManager.addFriendToGroup(groupName, new Friend(name, groupName))` to add the member. 
-    - Calls `groupManager.saveGroups()` to save the updated group data. 
+    - Uses `groupManager.addFriendToGroup(groupName, new Friend(name, groupName))` to add the member.
+    - Calls `groupManager.saveGroups()` to save the updated group data.
     - Displays a success message indicating that the member has been added to the group.
 
 - **Handling non-existent groups:**
   - If the group does not exist:
-    - Asks the user if they would like to create the group. 
+    - Asks the user if they would like to create the group.
   - If the user enters "yes":
     - Creates the group and adds the member directly.
-    - Saves the new group and member data. 
+    - Saves the new group and member data.
     - Displays a message confirming the creation and addition.
   - If the user enters "no":
     - Cancels the operation and notifies the user that the member was not added.
@@ -453,26 +466,29 @@ The `addMember()` method allows the user to add a new member to an existing grou
 The `removeMember()` method allows the user to add a new member to an existing group. If the specified group does not exist, the method offers the option to create the group and add the member simultaneously.
 
 - **Input:**
-    - Member name:
-        - Prompts the user to enter the name of the member they want to remove.
-        - Trims any leading or trailing whitespaces from the input.
-    - Group name:
-        - Prompts the user to enter the group name to which the member should be removed.
-        - Trims whitespace for the input.
+
+  - Member name:
+    - Prompts the user to enter the name of the member they want to remove.
+    - Trims any leading or trailing whitespaces from the input.
+  - Group name:
+    - Prompts the user to enter the group name to which the member should be removed.
+    - Trims whitespace for the input.
 
 - **Group Existence Check:**
-    - Uses `groupManager.groupExists(groupName)` to verify whether the specified group exists.
-    - If group does not exist, the method prints "Group does not exist."
+
+  - Uses `groupManager.groupExists(groupName)` to verify whether the specified group exists.
+  - If group does not exist, the method prints "Group does not exist."
 
 - **Delete confirmation:**
-    - Before removal, the method prompts the user to confirm: "Are you sure you want to remove [memberName] from [groupName]? (yes/no)"
-    - If the user does not input "yes", the operation to remove is cancelled. 
+
+  - Before removal, the method prompts the user to confirm: "Are you sure you want to remove [memberName] from [groupName]? (yes/no)"
+  - If the user does not input "yes", the operation to remove is cancelled.
 
 - **Member Removal:**
-    - If confirmed, the method iterates through the list of groups returned by `groupManager.getGroups()`. 
-    - Locates the specified group by comparing the group name. 
-    - Uses the `removeFriend()` method to attempt to remove the specified member from the group. 
-    - If successful, it sets the removed flag to true and breaks out of the loop.
+  - If confirmed, the method iterates through the list of groups returned by `groupManager.getGroups()`.
+  - Locates the specified group by comparing the group name.
+  - Uses the `removeFriend()` method to attempt to remove the specified member from the group.
+  - If successful, it sets the removed flag to true and breaks out of the loop.
 
 ### 3.1.6 SplitCommand Class
 
@@ -677,30 +693,33 @@ Sets an expense's amount to 0.0.
 The `Friend` class in the `seedu.duke.friends` package represents an individual member within a group. It stores essential information about the friend, including their name and the group they belong to.
 
 #### Friend Initialization
+
 - **Constructor:** `Friend(String name, String group)`
 - **Features:**
   - Initializes the `name` and `group` fields with the provided values.
   - Represents a friend as part of a specific group.
 
 #### Getting Friend's Name
+
 - **Method:** `getName()`
 - **Features:**
   - Returns the name of the friend.
   - Provides a way to access the friend's name for display or processing.
 
 #### Getting Friend's Group
+
 - **Method:** `getGroup()`
 - **Features:**
   - Returns the group to which the friend belongs.
   - Useful for organizing friends by their associated groups.
 
 #### Design Considerations
+
 - The class follows the **Single Responsibility Principle (SRP)**, focusing solely on holding friend-related data.
 - Encapsulation is maintained through private attributes and public getter methods.
 - The class is designed to be lightweight and efficient for group management operations.
 
 ### 3.2.0 Group Class
-
 
 The `Group` class in the `seedu.duke.friends` package manages a collection of `Friend` objects under a specified group name.
 
@@ -750,6 +769,7 @@ The `Group` class in the `seedu.duke.friends` package manages a collection of `F
 The `GroupManager` class in the `seedu.duke.friends` package is responsible for managing groups and their members. It provides methods to add members, check group existence, retrieve group members, remove groups, and persist group data.
 
 #### GroupManager Initialization
+
 - **Constructor:** `GroupManager()`
 - **Features:**
   - Initializes the list of groups by loading existing groups from the storage using `GroupStorage.loadGroups()`.
@@ -758,6 +778,7 @@ The `GroupManager` class in the `seedu.duke.friends` package is responsible for 
 ---
 
 #### Adding a Friend to a Group
+
 - **Method:** `addFriendToGroup(String groupName, Friend friend)`
 - **Features:**
   - Searches for an existing group with the given name.
@@ -768,6 +789,7 @@ The `GroupManager` class in the `seedu.duke.friends` package is responsible for 
 ---
 
 #### Checking Group Existence
+
 - **Method:** `groupExists(String groupName)`
 - **Features:**
   - Iterates through the list of groups to check whether a group with the specified name exists.
@@ -776,6 +798,7 @@ The `GroupManager` class in the `seedu.duke.friends` package is responsible for 
 ---
 
 #### Retrieving Group Members
+
 - **Method:** `getGroupMembers(String groupName)`
 - **Features:**
   - Searches for the specified group by name.
@@ -785,6 +808,7 @@ The `GroupManager` class in the `seedu.duke.friends` package is responsible for 
 ---
 
 #### Removing a Group
+
 - **Method:** `removeGroup(String groupName)`
 - **Features:**
   - Removes the specified group using a `removeIf` lambda function for efficiency.
@@ -794,6 +818,7 @@ The `GroupManager` class in the `seedu.duke.friends` package is responsible for 
 ---
 
 #### Saving Groups
+
 - **Method:** `saveGroups()`
 - **Features:**
   - Saves the current list of groups to the storage using `GroupStorage.saveGroups(groups)`.
@@ -802,6 +827,7 @@ The `GroupManager` class in the `seedu.duke.friends` package is responsible for 
 ---
 
 #### Retrieving All Groups
+
 - **Method:** `getGroups()`
 - **Features:**
   - Returns the current list of groups.
@@ -810,6 +836,7 @@ The `GroupManager` class in the `seedu.duke.friends` package is responsible for 
 ---
 
 #### Design Considerations
+
 - The class follows the **Single Responsibility Principle (SRP)**, focusing on group management while delegating storage operations to the `GroupStorage` class.
 - Ensures that any modification to the group list is followed by a save operation to maintain data consistency.
 - Uses the **Strategy Pattern** for loading and saving groups, allowing flexibility in storage implementations.
@@ -929,6 +956,8 @@ The Summary class manages the visualization and analysis of expense data. It pro
 - Provides both textual and graphical representation options
 - Maintains data integrity through proper validation
 - Supports multiple currency representations
+
+![SummarySequenceDiagram.png](diagrams/SummarySequenceDiagram.png)
 
 ### 3.2.4 ExpenseClassifier Class
 
@@ -1057,26 +1086,28 @@ The data visualization feature provides users with interactive and informative v
 5. UI layer presents the visualization
 6. User can interact with the visualization
 
-[5. Appendix](#5-appendix) <br>
-=======
+# [5. Appendix](#5-appendix) <br>
+
 # 5. Appendix
 
 ## 5.1 Product scope
 
 ### 5.1.1 Target user profile
-Groups of students traveling together who need a straightforward and accurate way to split costs and track their overall trip budget. Whether paying for accommodations, 
-dining, transportation, or activities, these users want a single, hassle‐free solution to manage shared expenses, keep everyone on the same page, even across multiple 
+
+Groups of students traveling together who need a straightforward and accurate way to split costs and track their overall trip budget. Whether paying for accommodations,
+dining, transportation, or activities, these users want a single, hassle‐free solution to manage shared expenses, keep everyone on the same page, even across multiple
 currencies and minimize time spent on complicated payment calculations.
 
 ### 5.1.2 Value proposition
-When friends travel together, they often struggle to split costs and track expenses for accommodations, dining, transportation, and activities. Relying on makeshift spreadsheets, 
-group chat records, or mental math leads to confusion about who owes what, resulting in financial strain and potential conflict. Travelers need a unified budgeting and expense‐splitting 
+
+When friends travel together, they often struggle to split costs and track expenses for accommodations, dining, transportation, and activities. Relying on makeshift spreadsheets,
+group chat records, or mental math leads to confusion about who owes what, resulting in financial strain and potential conflict. Travelers need a unified budgeting and expense‐splitting
 solution that accurately records costs, updates balances in real time, and keeps everyone informed—allowing them to focus on enjoying their trip rather than worrying about the numbers.
 
 ## 5.2 User Stories
 
 | As a...                                       | I want...                                                                                                     | So that I can...                                                             |
-|-----------------------------------------------|---------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | traveler                                      | add expenses easily with categories                                                                           | keep track of spending                                                       |
 | traveler                                      | enter expenses in different currencies                                                                        | accurately track international transactions                                  |
 | traveler                                      | see a summary of all expenses                                                                                 | understand the total trip cost at a glance                                   |
@@ -1088,7 +1119,7 @@ solution that accurately records costs, updates balances in real time, and keeps
 | traveler                                      | enter expenses in multiple currencies                                                                         | track spending across different countries                                    |
 | traveler                                      | the system to convert expenses to a base currency                                                             | see all amounts in a consistent format                                       |
 | traveler                                      | manually update exchange rates                                                                                | adjust based on real-time rates when needed                                  |
-| traveler                                      | save all my expenses to a .txt file                                                                           | keep a record of my trip’s finances                                          |
+| traveler                                      | save all my expenses to a .txt file                                                                           | keep a record of my trip's finances                                          |
 | traveler                                      | reload past trips from a .txt file                                                                            | review old expenses                                                          |
 | traveler                                      | export a final balance report                                                                                 | share it with my group members                                               |
 | traveler                                      | a simple and intuitive interface                                                                              | quickly add and manage expenses                                              |
@@ -1102,7 +1133,7 @@ solution that accurately records costs, updates balances in real time, and keeps
 | traveler                                      | filter expenses by payer                                                                                      | see who has spent the most                                                   |
 | traveler                                      | filter expenses by a specific date range                                                                      | track spending over time                                                     |
 | traveler                                      | view a summary of total expenses                                                                              | see my trip's overall cost                                                   |
-| student traveler                              | label expenses under custom categories like “museum tickets,” “school supplies,” or “night out”               | see where I’m spending the most and adjust my budget accordingly             |
+| student traveler                              | label expenses under custom categories like "museum tickets," "school supplies," or "night out"               | see where I'm spending the most and adjust my budget accordingly             |
 | traveler                                      | the system to calculate how much each person owes after an expense is added                                   | not have to do the math myself                                               |
 | traveler                                      | see an individual balance for each person                                                                     | check who owes whom                                                          |
 | traveler                                      | manually mark/unmark an amount as settled                                                                     | keep track of paid debts                                                     |
@@ -1113,7 +1144,7 @@ solution that accurately records costs, updates balances in real time, and keeps
 | traveler who might explore multiple countries | the option to enter expenses in different currencies                                                          | track international spending                                                 |
 | traveler                                      | the system to store exchange rates                                                                            | convert expenses accurately and do not need to enter exchange rates manually |
 | traveler                                      | see all expenses converted to a single base currency                                                          | compare costs consistently                                                   |
-| traveler                                      | export my trip’s expense data to a .txt file                                                                  | keep a record                                                                |
+| traveler                                      | export my trip's expense data to a .txt file                                                                  | keep a record                                                                |
 | traveler                                      | import a .txt file to reload past trips                                                                       | review previous expenses                                                     |
 | traveler                                      | save my progress automatically                                                                                | not lose my data when I close the app                                        |
 | traveler                                      | view a summary report of all expenses in multiple views (monthly, category-wise) before exporting             | review it first                                                              |
@@ -1132,17 +1163,21 @@ solution that accurately records costs, updates balances in real time, and keeps
 | traveler                                      | delete a trip along with its expenses                                                                         | remove old or test data                                                      |
 
 ## 5.3 Non-Functional Requirements
-This application can be run on any *mainstream OS* as long as it has java`17` or above installed.
+
+This application can be run on any _mainstream OS_ as long as it has java`17` or above installed.
 
 ## 5.4 Glossary
-* *Mainstream OS* - Windows, Linux, Unix, macOS
+
+- _Mainstream OS_ - Windows, Linux, Unix, macOS
 
 ## 5.5 Test Cases
+
 This section documents the test cases for the application. Each test case describes the input commands, the expected behavior, and the corresponding output from the system.
 
 ---
 
 ### **Test Case 1: Adding a New Expense**
+
 - **Purpose**: Verify that the user can successfully add a new expense.
 - **Input**:
   ```
@@ -1161,12 +1196,13 @@ This section documents the test cases for the application. Each test case descri
   Amount: 10.00
   ```
 - **Behavior**:
-    - The program prompts the user for the title, description, date, and amount of the expense.
-    - Upon successful addition, the program confirms the details of the newly added expense.
+  - The program prompts the user for the title, description, date, and amount of the expense.
+  - Upon successful addition, the program confirms the details of the newly added expense.
 
 ---
 
 ### **Test Case 2: Listing All Expenses**
+
 - **Purpose**: Verify that the program correctly lists all expenses.
 - **Input**:
   ```
@@ -1183,12 +1219,13 @@ This section documents the test cases for the application. Each test case descri
   Amount: 10.00
   ```
 - **Behavior**:
-    - The program displays all stored expenses with their respective details.
-    - If no expenses exist, the program outputs "No expenses found."
+  - The program displays all stored expenses with their respective details.
+  - If no expenses exist, the program outputs "No expenses found."
 
 ---
 
 ### **Test Case 3: Editing an Existing Expense**
+
 - **Purpose**: Verify that the user can edit an existing expense.
 - **Input**:
   ```
@@ -1208,13 +1245,14 @@ This section documents the test cases for the application. Each test case descri
   Amount: 9.00
   ```
 - **Behavior**:
-    - The program prompts the user to select an expense by index.
-    - The user can modify the title, description, date, and amount or press Enter to retain the current value.
-    - Upon successful editing, the program confirms the updated details.
+  - The program prompts the user to select an expense by index.
+  - The user can modify the title, description, date, and amount or press Enter to retain the current value.
+  - Upon successful editing, the program confirms the updated details.
 
 ---
 
 ### **Test Case 4: Deleting an Expense**
+
 - **Purpose**: Verify that the user can delete an existing expense.
 - **Input**:
   ```
@@ -1236,12 +1274,13 @@ This section documents the test cases for the application. Each test case descri
   Amount: 25.00
   ```
 - **Behavior**:
-    - The program prompts the user to confirm the deletion of the selected expense.
-    - Upon confirmation, the expense is removed, and the program confirms the deletion.
+  - The program prompts the user to confirm the deletion of the selected expense.
+  - Upon confirmation, the expense is removed, and the program confirms the deletion.
 
 ---
 
 ### **Test Case 5: Viewing Balance Overview**
+
 - **Purpose**: Verify that the program displays the balance overview correctly.
 - **Input**:
   ```
@@ -1255,11 +1294,12 @@ This section documents the test cases for the application. Each test case descri
   Total amount owed: $25.00
   ```
 - **Behavior**:
-    - The program calculates and displays the total number of unsettled expenses and the total amount owed.
+  - The program calculates and displays the total number of unsettled expenses and the total amount owed.
 
 ---
 
 ### **Test Case 6: Handling Invalid Commands**
+
 - **Purpose**: Verify that the program handles invalid commands gracefully.
 - **Input**:
   ```
@@ -1270,11 +1310,12 @@ This section documents the test cases for the application. Each test case descri
   Invalid command.
   ```
 - **Behavior**:
-    - The program informs the user that the entered command is invalid and does not crash.
+  - The program informs the user that the entered command is invalid and does not crash.
 
 ---
 
 ### **Test Case 7: Exiting the Program**
+
 - **Purpose**: Verify that the program exits cleanly when the user issues the `exit` command.
 - **Input**:
   ```
@@ -1285,11 +1326,12 @@ This section documents the test cases for the application. Each test case descri
   Thank you for using the Expense Manager. Goodbye!
   ```
 - **Behavior**:
-    - The program terminates after displaying a farewell message.
+  - The program terminates after displaying a farewell message.
 
 ---
 
 ### **Test Case 8: Displaying Help Information**
+
 - **Purpose**: Verify that the program provides a comprehensive help message.
 - **Input**:
   ```
@@ -1305,11 +1347,12 @@ This section documents the test cases for the application. Each test case descri
   ...
   ```
 - **Behavior**:
-    - The program lists all available commands along with their descriptions and usage instructions.
+  - The program lists all available commands along with their descriptions and usage instructions.
 
 ---
 
 ### **Test Case 9: Editing an Expense with Invalid Index**
+
 - **Purpose**: Verify that the program handles invalid expense indices during editing.
 - **Input**:
   ```
@@ -1321,11 +1364,12 @@ This section documents the test cases for the application. Each test case descri
   Please enter a valid expense number.
   ```
 - **Behavior**:
-    - The program prompts the user to enter a valid expense index.
+  - The program prompts the user to enter a valid expense index.
 
 ---
 
 ### **Test Case 10: Deleting an Expense with Invalid Index**
+
 - **Purpose**: Verify that the program handles invalid expense indices during deletion.
 - **Input**:
   ```
@@ -1337,7 +1381,6 @@ This section documents the test cases for the application. Each test case descri
   Please enter a valid expense number.
   ```
 - **Behavior**:
-    - The program prompts the user to enter a valid expense index.
+  - The program prompts the user to enter a valid expense index.
 
 ---
-
