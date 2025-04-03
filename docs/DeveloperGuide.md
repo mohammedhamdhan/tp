@@ -372,8 +372,8 @@ The `removeGroup()` is used to delete an entire group from the group management 
 
 - **Delete confirmation:**
 
-  - Before removal, the method prompts the user to confirm: "Are you sure you want to remove [groupName]? (yes/no)"
-  - If the user does not input "yes", the operation to remove is cancelled.
+  - Before removal, the method prompts the user to confirm: "Are you sure you want to remove [groupName]? (y/n)"
+  - If the user does not input "y", the operation to remove is cancelled.
 
 - **Group Removal:**
   - If confirmed, the method calls `groupManager.removeGroup(groupName)` to remove the group from the group management system.
@@ -454,7 +454,7 @@ The `addMember()` method allows the user to add a new member to an existing grou
 - **Handling non-existent groups:**
   - If the group does not exist:
     - Asks the user if they would like to create the group.
-  - If the user enters "yes":
+  - If the user enters "y":
     - Creates the group and adds the member directly.
     - Saves the new group and member data.
     - Displays a message confirming the creation and addition.
@@ -481,8 +481,8 @@ The `removeMember()` method allows the user to add a new member to an existing g
 
 - **Delete confirmation:**
 
-  - Before removal, the method prompts the user to confirm: "Are you sure you want to remove [memberName] from [groupName]? (yes/no)"
-  - If the user does not input "yes", the operation to remove is cancelled.
+  - Before removal, the method prompts the user to confirm: "Are you sure you want to remove [memberName] from [groupName]? (y/n)"
+  - If the user does not input "y", the operation to remove is cancelled.
 
 - **Member Removal:**
   - If confirmed, the method iterates through the list of groups returned by `groupManager.getGroups()`.
@@ -1240,11 +1240,11 @@ This section documents the test cases for the application. Each test case descri
   ```
   delete
   1
-  yes
+  y
   ```
 - **Expected Output**:
   ```
-  Are you sure you want to delete this expense? (yes/no)
+  Are you sure you want to delete this expense? (y/n)
   Title: Supper
   Description: 10x Egg Prata from SpringLeaf
   Date: 02-01-2025

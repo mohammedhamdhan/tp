@@ -139,7 +139,6 @@ Enter command: Enter expense title:
 Enter expense description:
 Enter date of expense (DD-MM-YYYY):
 Enter expense amount:
-Enter :
 Expense added successfully:
 Title: Breakfast
 Description: 1x Big Breakfast from McDonald's
@@ -242,7 +241,7 @@ Date: 02-01-2025
 Amount: 25.00
 
 Enter the index of the expense to delete:
-Are you sure you want to delete this expense? (yes/no)
+Are you sure you want to delete this expense? (y/n)
 Title: Supper
 Description: 10x Egg Prata from SpringLeaf
 Date: 02-01-2025

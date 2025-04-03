@@ -116,8 +116,6 @@ public class ExpenseCommand {
 
             double amount = Double.parseDouble(amountStr);
 
-            System.out.println("Enter :");
-
             if (amount < 0) {
                 System.out.println("Amount cannot be negative.");
                 return;
@@ -164,11 +162,11 @@ public class ExpenseCommand {
 
             //@@author nandhananm7
             Expense expenseToDelete = budgetManager.getExpense(index);
-            System.out.println("Are you sure you want to delete this expense? (yes/no)");
+            System.out.println("Are you sure you want to delete this expense? (y/n)");
             System.out.println(expenseToDelete);
             String confirmation = scanner.nextLine().trim().toLowerCase();
 
-            if (!confirmation.equals("yes")) {
+            if (!confirmation.equals("y")) {
                 System.out.println("Deletion Aborted.");
                 return;
             }
@@ -528,7 +526,7 @@ public class ExpenseCommand {
         System.out.println("\nDo you want to see a pie chart visualization? (y/n)");
         String response = scanner.nextLine().trim().toLowerCase();
         
-        if (response.equals("y") || response.equals("yes")) {
+        if (response.equals("y")) {
             showPieChart(categoryNames, categoryValues);
         }
     }

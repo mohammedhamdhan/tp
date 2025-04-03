@@ -204,10 +204,10 @@ public class FriendsCommands {
             groupManager.saveGroups(); // Save the updated group data
             System.out.println(name + " has been added to " + groupName);
         } else {
-            System.out.print("Group does not exist. Would you like to create this group first? (yes/no): ");
+            System.out.print("Group does not exist. Would you like to create this group first? (y/n): ");
             String response = scanner.nextLine().trim().toLowerCase();
 
-            if (response.equals("yes")) {
+            if (response.equals("y")) {
                 groupManager.addFriendToGroup(groupName, new Friend(name, groupName)); // Directly add the friend
                 groupManager.saveGroups(); // Save the new group and member
                 System.out.println("Group " + groupName + " has been created and " + name + " has been added.");
@@ -229,9 +229,9 @@ public class FriendsCommands {
             return;
         }
 
-        System.out.print("Are you sure you want to remove " + memberName + " from " + groupName + "? (yes/no): ");
+        System.out.print("Are you sure you want to remove " + memberName + " from " + groupName + "? (y/n): ");
         String confirm = scanner.nextLine().trim().toLowerCase();
-        if (!confirm.equals("yes")) {
+        if (!confirm.equals("y")) {
             System.out.println("Operation cancelled. " + memberName + " was not removed from " + groupName);
             return;
         }
@@ -261,9 +261,9 @@ public class FriendsCommands {
             return;
         }
 
-        System.out.print("Are you sure you want to remove the group " + groupName + "? (yes/no): ");
+        System.out.print("Are you sure you want to remove the group " + groupName + "? (y/n): ");
         String confirm = scanner.nextLine().trim().toLowerCase();
-        if (!confirm.equals("yes")) {
+        if (!confirm.equals("y")) {
             System.out.println("Operation cancelled. Group " + groupName + " was not removed.");
             return;
         }
