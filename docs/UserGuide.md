@@ -318,7 +318,6 @@ Removes an entire group.
 
 ## Manage Payments:
 
-
 #### Select split method: `split`
 Allows an expense to be split among a certain group, either equally or via manually specified amounts/percentages.
 - **Format:** `split`
