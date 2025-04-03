@@ -32,7 +32,7 @@ Here is the list of features implemented:
 
 - **What It Does**: An auxiliary function that calculates the relative percentages of each category according to the title and description of the user's expenses. 
 - **Justification**: Users are able to view their expense distribution in number and percentages with visuals and can hence make more informed decisions for future expenditure.
-- 
+
 ---
 
 ### Enhancements Implemented
@@ -71,11 +71,32 @@ Here is the list of features implemented:
     - Section 4.1.5 `Display Monthly Expenses`
     - Section 4.1.6 `Display Expenses for the Month with Categories`
 
+- **Documentation in Section 5**:
+  - Section 5 `Appendix`
+  - Section 5.1 `Product Scope`
+  - Section 5.1.1 `Target User Profile`
+  - Section 5.1.2 `Value Proposition`
+  - Section 5.2 `User Stories`
+  - Section 5.3 `Non-Functional Requirements`
+  - Section 5.4 `Glossary`
+  - Section 5.5 `Test Cases`
+
 #### Class & UML Sequence Diagrams
-- Section 4.1: `Application Class Diagram`
+- Section 3.1.7: `BudgetManager Class Diagram`
 - Section 4.2: `Expense CRUD Feature`
 
-**Relevant Pull Request:** [PR #72](https://github.com/AY2425S2-CS2113-F11-2/tp/pull/72/files)
+**Relevant Pull Request:**
+    - [PR #82](https://github.com/AY2425S2-CS2113-F11-2/tp/pull/82/files)
+    - [PR #72](https://github.com/AY2425S2-CS2113-F11-2/tp/pull/72/files)
+    - [PR #86](https://github.com/AY2425S2-CS2113-F11-2/tp/pull/86/files)
+
+---
+
+### Review/Mentoring contributions:
+- **Bug Finding and Suggestions:** 
+    - [PR #73](https://github.com/AY2425S2-CS2113-F11-2/tp/pull/73/files)
+    - [PR #67](https://github.com/AY2425S2-CS2113-F11-2/tp/pull/67/files)
+    - [PR #34](https://github.com/AY2425S2-CS2113-F11-2/tp/pull/34/files)
 
 ---
 
@@ -89,4 +110,4 @@ Here is the list of features implemented:
     - Regularly created GitHub Issues to assign weekly sprints to teammates.
     - Frequently reviewed and provided comments to teammates' PRs.
 - **Codebase Maintenance:**
-    -  Proactive resolution of Java CI/CD pipeline errors and merging of code.
+    - Proactive resolution of Java CI/CD pipeline errors and merging of code.
