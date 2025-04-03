@@ -17,25 +17,31 @@
 ### Admin:
 
 #### Viewing help: `help`
+
 Lists the commands available to the user.
+
 - **Usage:** `help`
-- **Expected output:** *[To insert list of commands that will be returned]*
+- **Expected output:** _[To insert list of commands that will be returned]_
 
 ---
 
 #### Exiting the program: `exit`
-Terminates the program and saves the user’s data, such as their payee list, groups, balance, and transaction information to a `.csv` file.
+
+Terminates the program and saves the user's data, such as their payee list, groups, balance, and transaction information to a `.csv` file.
+
 - **Usage:** `exit`
-- **Expected output:** *[Save aforementioned data into file and produce an exit message]*
+- **Expected output:** _[Save aforementioned data into file and produce an exit message]_
 
 ---
 
 ## Manage Balance:
 
 #### Add an expense: `add`
+
 Add an expense with a title, description, date, amount.
 
 - **Usage:**
+
   ```
   add
   Enter expense title:
@@ -46,25 +52,30 @@ Add an expense with a title, description, date, amount.
   User input: 01-01-2025
   Enter expense amount:
   10
-  
+
   ```
 
-- **Expected output:** *[A short summary of the added expense will appear]*
+- **Expected output:** _[A short summary of the added expense will appear]_
 
   The entry will automatically be tagged with a unique expense ID.
 
 ---
 
 #### Delete an expense: `delete`
+
 Delete expenses to remove unwanted expenses.
+
 - **Format:** `delete <expense ID>`
 - **Usage:** `delete 2`
 
 ---
 
 #### Edit an expense: `edit`
+
 Edit an existing expense.
+
 - **Format:**
+
   ```
   edit
   "Enter the index of the expense to edit" <index of expense>
@@ -76,9 +87,10 @@ Edit an existing expense.
   ```
 
 - **Usage:**
+
   ```
   edit
-  "Enter the index of the expense to edit" 
+  "Enter the index of the expense to edit"
   User input:1
   "Enter the expense details"
   "Enter new title (press Enter to keep current):"
@@ -87,16 +99,18 @@ Edit an existing expense.
   User input: New description
   "Enter new date (press Enter to keep current):"
   User input: 02-01-2025
-  "Enter new amount (press Enter to keep current):" 
+  "Enter new amount (press Enter to keep current):"
   20
   ```
 
-- **Expected output:** *[A short summary of the edited expense will appear]*
+- **Expected output:** _[A short summary of the edited expense will appear]_
 
 ---
 
 #### View all expenses: `list`
+
 View all the expenses.
+
 - **Format:** `list`
 - **Usage:** `list`
 - **Example:**
@@ -112,9 +126,12 @@ View all the expenses.
 ---
 
 #### View unsettled expenses: `list-unsettled`
+
 View expenses you owe or is owed to you.
+
 - **Format and Usage:** `list-unsettled`
 - **Example:**
+
   ```
   All expenses are in SGD
   Expense #1
@@ -128,9 +145,12 @@ View expenses you owe or is owed to you.
 ---
 
 #### View settled expenses: `list-settled`
+
 View expenses that are marked as settled using "mark" command.
+
 - **Format and Usage:** `list-settled`
 - **Example:**
+
   ```
   All expenses are in SGD
   Expense #1
@@ -145,7 +165,9 @@ View expenses that are marked as settled using "mark" command.
 ---
 
 #### Mark settled expenses: `mark`
+
 Once a transaction is made, the user can mark it as paid.
+
 - **Format and Usage:** `mark`
 - **Example:**
   ```
@@ -157,7 +179,9 @@ Once a transaction is made, the user can mark it as paid.
 ---
 
 #### Unmark settled expenses: `unmark`
+
 User can unmark an expense that has been marked already.
+
 - **Format and Usage:** `unmark`
 - **Example:**
   ```
@@ -166,7 +190,9 @@ User can unmark an expense that has been marked already.
   ```
 
 #### Change currency: `change-currency`
+
 User can change the currency all expenses are in
+
 - **Format and Usage:** `change-currency`
 - **Example 1:**
   ```
@@ -196,10 +222,10 @@ User can change the currency all expenses are in
 
 ---
 
-
-
 #### View balance in wallet: `balance`
+
 Shows total money to be paid and total money to pay.
+
 - **Output:**
   ```
   Total money to pay: <total amount user owes>
@@ -211,8 +237,11 @@ Shows total money to be paid and total money to pay.
 ## Manage Group Members:
 
 #### View Friends in a group: `create-group`
+
 Create a new group to split expenses with.
+
 - **Usage:**
+
   ```
   create-group
   "Enter the group name:" test group
@@ -222,14 +251,17 @@ Create a new group to split expenses with.
   "Enter name:" carrot
   "Enter name:" done
   Group created successfully!
-  
+
   ```
 
 ---
 
 #### Add Friends to a group: `view-group`
+
 View a specific group and see how much each member owes.
+
 - **Usage:**
+
   ```
   view-group
   Enter the group name to view: TestGroup
@@ -237,39 +269,48 @@ View a specific group and see how much each member owes.
   Members of group "TestGroup":
   - Alice owes: 25.00
   - Bob owes: 25.00
-  
-    ```
+
+  ```
 
 ---
 
 #### Add Friends to a group: `add-member`
+
 Adds a user to a group.
+
 - **Usage:**
+
   ```
   add-member
   Enter the name of the member to add: natasha
   Enter the group name: TestGroup
   natasha has been added to TestGroup
-  
-    ```
+
+  ```
 
 ---
 
 #### Add Friends to a group: `remove-member`
+
 Removes a member from a group
+
 - **Usage:**
+
   ```
   remove-member
   Enter the name of the member to remove: natasha
   Enter name of group to remove member from: TestGroup
-  
-    ```
+
+  ```
 
 ---
 
 #### Add Friends to a group: `my-groups`
+
 Shows all the user's groups.
+
 - **Usage:**
+
   ```
   my-groups
   Group Name: TestGroup
@@ -277,7 +318,7 @@ Shows all the user's groups.
   - Alice
   - Bob
   - natasha
-  
+
   Group Name: NewGroup
   Members:
   - Charlie
@@ -292,22 +333,25 @@ Shows all the user's groups.
 ---
 
 #### Add Friends to a group: `remove-group`
+
 Removes an entire group.
 
 - **Usage:**
+
   ```
   remove-group
   Enter the name of the group to remove: TestGroup
-  
+
   ```
 
 ---
 
 ## Manage Payments:
 
-
 #### Select split method: `split`
+
 Allows an expense to be split among a certain group, either equally or via manually specified amounts/percentages.
+
 - **Format:** `split`
 
 - **Example output:**
@@ -323,27 +367,48 @@ Allows an expense to be split among a certain group, either equally or via manua
   *If selected [2] before, choose whether to split via absolute amounts or via percentage
   Will display the total amounts owed by each member
   ```
+
 ---
 
 ## Expense Analytics:
 
 #### View summary of expenses: `summary`
-Displays a chart of the chosen user's expense distribution 
-among the Food, Travel, Entertainment, Shopping and Miscellaneous
-categories.
 
-- **Usage:**
+Displays comprehensive analytics of your expenses through different visualization options. This command helps you track and analyze your spending patterns.
+
+- **Usage:** `summary`
+
+- **Options:**
+
+  1. **Monthly Summary**
+
+     - Shows total expenses for each month
+     - Displays a month-by-month comparison
+     - Includes percentage changes between months
+
+  2. **Category-wise Summary**
+
+     - Breaks down expenses into categories (Food, Travel, Entertainment, Shopping, Miscellaneous)
+     - Shows percentage distribution across categories
+     - Highlights your highest spending category
+     - Provides month-to-month category comparison
+
+  3. **Back to main menu**
+     - Returns to the main interface
+
+- **Example output:**
+
   ```
-  summary
-  Choose summary view:
-  1. Monthly Summary
-  2. Category-wise Summary
-  3. Back to main menu
-  
+  === Monthly Summary ===
+  January 2024: $1,200
+  - Food: 40%
+  - Travel: 25%
+  - Entertainment: 15%
+  - Shopping: 10%
+  - Miscellaneous: 10%
+
+  Total Expenses: $1,200
+  Highest Category: Food ($480)
   ```
+
 ---
-
-
-
-
-

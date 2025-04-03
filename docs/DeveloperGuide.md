@@ -33,8 +33,7 @@
 &nbsp;&nbsp;[4.4 Split Expense Feature](#44-split-expense-feature) <br>
 &nbsp;&nbsp;[4.5 Change Currency Feature](#45-change-currency-feature) <br>
 &nbsp;&nbsp;[4.6 Data Visualization Feature](#46-data-visualization-feature) <br>
-[5. Appendix](#5-appendix)  <br>
-
+[5. Appendix](#5-appendix) <br>
 
 ## Acknowledgements
 
@@ -79,9 +78,11 @@ This class displays system output messages whenever an action has occurred or in
 ### Methods
 
 #### `handleUserInput()`
+
 This method continuously prompts the user for input and processes commands accordingly. It ensures that the application runs until the user chooses to exit.
 
 #### Functionality:
+
 1. Displays a prompt for the user to enter a command.
 2. Reads user input if available.
 3. Calls `processCommand` to handle the command.
@@ -93,6 +94,7 @@ This method continuously prompts the user for input and processes commands accor
 This method processes user input by mapping commands to their corresponding functionalities. The commands are predefined in the `Commands` class.
 
 #### Functionality:
+
 1. Trims and converts user input to lowercase.
 2. Uses a `switch` statement to execute the appropriate method based on the input.
 3. Handles multiple functionalities, including expense management, group operations, currency conversion, and data export.
@@ -104,6 +106,7 @@ The data storage class initializes the expense.txt file to store expenses create
 are saved upon exit.
 
 ### File Handling
+
 - **Data File:** The expense data is stored in `expenses.txt`.
 - **Separator:** Each entry in the file is delimited using `|`.
 - **Assertions:** Used to ensure correct program behavior.
@@ -111,14 +114,18 @@ are saved upon exit.
 ### Methods
 
 #### `ensureFileExists()`
+
 Ensures that the data file exists. If the file does not exist, it is created.
+
 - Uses `File.createNewFile()`.
 - Prints a message if a new file is created.
 - Handles `IOException` in case of errors.
 - Assertion: Checks that the file exists after execution.
 
 #### `saveExpenses(List<Expense> expenses)`
+
 Saves a list of expenses to the data file.
+
 - Iterates through `expenses` and writes each expense to `expenses.txt`.
 - Each expense is stored with attributes separated by `|`.
 - Returns `true` if saving is successful, `false` otherwise.
@@ -126,14 +133,18 @@ Saves a list of expenses to the data file.
 - Assertion: Ensures `expenses` is not null before execution.
 
 #### `loadExpenses()`
+
 Loads expenses from the data file.
+
 - Reads each line and splits it using `|`.
 - Extracts attributes and creates `Expense` objects.
 - Returns a list of `Expense` objects.
 - Handles `FileNotFoundException`.
 
 #### `resetExpenses()`
+
 Clears all data in `expenses.txt`. Used mainly for testing.
+
 - Writes an empty string to the file.
 - Handles `IOException`.
 - Assertion: Ensures the file is empty after reset.
@@ -148,32 +159,33 @@ All approved commands that can be used within the application are stored here as
 that checks if the user input matches any of these commands and handles invalid commands.
 
 #### Command List
+
 Below are the commands supported by the application:
 
-| Command             | Description |
-|---------------------|-------------|
-| `HELP`             | Displays the list of available commands. |
-| `EXIT`             | Exits the application. |
-| `ADD`              | Adds a new expense. |
-| `LIST`             | Displays all recorded expenses. |
-| `DELETE`           | Deletes an expense. |
-| `EDIT`             | Edits an existing expense. |
-| `BALANCE`          | Shows the balance overview. |
-| `SETTLED_LIST`     | Displays a list of settled expenses. |
-| `UNSETTLED_LIST`   | Displays a list of unsettled expenses. |
-| `MARK`             | Marks an expense as settled. |
-| `UNMARK`           | Unmarks an expense as unsettled. |
-| `CREATE_GROUP`     | Creates a new group for expense sharing. |
-| `VIEW_GROUP`       | Views details of a specific group. |
-| `ADD_MEMBER`       | Adds a member to an existing group. |
-| `REMOVE_MEMBER`    | Removes a member from a group. |
-| `REMOVE_GROUP`     | Deletes an entire group. |
-| `VIEW_ALL_GROUPS`  | Displays all user-created groups. |
-| `SPLIT`            | Splits expenses among group members. |
+| Command            | Description                                    |
+| ------------------ | ---------------------------------------------- |
+| `HELP`             | Displays the list of available commands.       |
+| `EXIT`             | Exits the application.                         |
+| `ADD`              | Adds a new expense.                            |
+| `LIST`             | Displays all recorded expenses.                |
+| `DELETE`           | Deletes an expense.                            |
+| `EDIT`             | Edits an existing expense.                     |
+| `BALANCE`          | Shows the balance overview.                    |
+| `SETTLED_LIST`     | Displays a list of settled expenses.           |
+| `UNSETTLED_LIST`   | Displays a list of unsettled expenses.         |
+| `MARK`             | Marks an expense as settled.                   |
+| `UNMARK`           | Unmarks an expense as unsettled.               |
+| `CREATE_GROUP`     | Creates a new group for expense sharing.       |
+| `VIEW_GROUP`       | Views details of a specific group.             |
+| `ADD_MEMBER`       | Adds a member to an existing group.            |
+| `REMOVE_MEMBER`    | Removes a member from a group.                 |
+| `REMOVE_GROUP`     | Deletes an entire group.                       |
+| `VIEW_ALL_GROUPS`  | Displays all user-created groups.              |
+| `SPLIT`            | Splits expenses among group members.           |
 | `CHANGE_CURRENCY`  | Changes the default currency for transactions. |
-| `DEFAULT_CURRENCY` | The default currency (SGD). |
-| `SUMMARY`          | Displays an expense summary. |
-| `EXPORT`           | Exports expense data. |
+| `DEFAULT_CURRENCY` | The default currency (SGD).                    |
+| `SUMMARY`          | Displays an expense summary.                   |
+| `EXPORT`           | Exports expense data.                          |
 
 ### 3.1.4 ExpenseCommands Classes
 
@@ -197,7 +209,6 @@ The `executeDeleteExpense()` method manages expense deletion with these features
 - Updates owed amounts in the owesData.txt file
 - Handles invalid indices gracefully
 - Uses assertions to ensure valid state
-
 
 #### Displaying Settled Expenses
 
@@ -287,28 +298,31 @@ The class uses assertions to validate:
 
 ### 3.1.5 FriendsCommands Class
 
-#### 
+####
 
 ### 3.1.6 SplitCommand Class
 
-The **SplitCommand** class is responsible for managing the splitting of expenses among group members. 
+The **SplitCommand** class is responsible for managing the splitting of expenses among group members.
 It enables users to select an expense from a list and split that expense among a group either equally or through a manual assignment, either via absolute amounts or percentages.
+
 ---
 
 #### Key Features
 
 - **Expense Selection:**
+
   - Displays a list of available expenses.
   - Allows the user to choose an expense by entering its corresponding number.
 
 - **Splitting Options:**
+
   - **Equal Split:**  
     Divides the selected expense evenly among all members of the chosen group.
   - **Manual Split:**  
     Requires the user to select a single splitting mode for the entire group:
-    - **Absolute Mode:**  
+    - **Absolute Mode:**
       - The user assigns a fixed monetary amount to each member.
-    - **Percentage Mode:**  
+    - **Percentage Mode:**
       - The user assigns a percentage for each member.
 
 - **Automatic Balance Display:**
@@ -320,16 +334,19 @@ It enables users to select an expense from a list and split that expense among a
 #### Implementation Details
 
 - **User Input Validation:**
+
   - Validates the selected expense index and group name.
   - Ensures numeric inputs for amounts and percentages are valid.
   - Prevents assignments that exceed the remaining expense (in absolute mode) or cumulative percentage (in percentage mode).
 
 - **File Handling and Persistence:**
+
   - Each valid assignment is appended in real time to the `owedAmounts.txt` file using a helper method.
   - The file maintains a persistent record of all split transactions.
   - When viewing a group, the system aggregates all entries per member to count the cumulative balance.
 
 - **Integration with FriendsCommands:**
+
   - The SplitCommand class holds a reference to the **FriendsCommands** instance.
   - After completing the split, it calls the `viewGroupDirect(String groupName)` method to display the updated balances immediately.
 
@@ -341,23 +358,25 @@ It enables users to select an expense from a list and split that expense among a
 
 #### Workflow Summary
 
-1. **Expense Selection:**  
+1. **Expense Selection:**
+
    - The user is presented with a list of expenses and selects one to split.
 
 2. **Choosing a Split Option:**
-   - **Equal Split:**  
+
+   - **Equal Split:**
      - The expense is divided equally among the members of the specified group.
-   - **Manual Split:**  
+   - **Manual Split:**
      - The user selects one split method for the entire group (absolute or percentage).
-     - **Absolute Mode:**  
+     - **Absolute Mode:**
        - Each assignment reduces the remaining available amount.
        - The system displays the remaining unassigned amount after each entry.
-     - **Percentage Mode:**  
+     - **Percentage Mode:**
        - Each assignment reduces the available percentage from the total 100%.
        - The system displays the remaining percentage after each entry.
 
-3. **Automatic Balance Update:**  
-   - After completing the split, the command automatically calls the view-group method to show each member’s cumulative owed balance.
+3. **Automatic Balance Update:**
+   - After completing the split, the command automatically calls the view-group method to show each member's cumulative owed balance.
    - This balance is computed by aggregating all past and current assignments from `owedAmounts.txt`.
 
 ---
@@ -367,6 +386,7 @@ It enables users to select an expense from a list and split that expense among a
 The `BudgetManager` class manages a collection of expenses and provides operations to add, delete, edit, and retrieve expenses. It also integrates with the `DataStorage` class to persist expense data.
 
 #### Expense Management
+
 - **Storage:** Expenses are stored in a list and persisted in `expenses.txt` via `DataStorage`.
 - **Validation:** Index checks ensure operations are performed on valid expenses.
 - **Assertions:** Used to verify that expense counts and modifications are logically sound.
@@ -374,73 +394,100 @@ The `BudgetManager` class manages a collection of expenses and provides operatio
 #### Methods
 
 #### `BudgetManager()`
+
 Initializes the `BudgetManager` with a list of expenses loaded from storage.
+
 - Calls `DataStorage.loadExpenses()` to retrieve stored expenses.
 - Initializes the `expenses` list.
 
 #### `addExpense(Expense expense)`
+
 Adds an expense to the list and saves it to storage.
+
 - Appends the given `Expense` object to `expenses`.
 - Calls `DataStorage.saveExpenses(expenses)`.
 
 #### `deleteExpense(int index)`
+
 Deletes an expense at the specified index.
+
 - Validates the index before removal.
 - Calls `DataStorage.saveExpenses(expenses)` after deletion.
 - Returns the deleted `Expense`.
 - Throws `IndexOutOfBoundsException` for invalid indices.
 
 #### `editExpense(int index, String title, String description, String date, double amount)`
+
 Modifies the attributes of an expense at the given index.
+
 - Updates only non-null fields (title, description, date, amount).
 - Calls `DataStorage.saveExpenses(expenses)` after modification.
 - Throws `IndexOutOfBoundsException` if the index is invalid.
 
 #### `getAllExpenses()`
+
 Returns a copy of the list of all stored expenses.
+
 - Prevents direct modification by returning a new `ArrayList`.
 
 #### `getExpenseCount()`
+
 Returns the total number of recorded expenses.
 
 #### `getUnsettledExpenseCount()`
+
 Counts the number of unsettled expenses.
+
 - Iterates through `expenses` and counts those where `getDone()` is false.
 - Assertion: Ensures count is non-negative.
 
 #### `getTotalBalance()`
+
 Calculates the total amount of unsettled expenses.
+
 - Sums up the amounts of expenses where `getDone()` is false.
 - Returns the total balance.
 
 #### `getExpense(int index)`
+
 Retrieves an expense at the specified index.
+
 - Throws `IndexOutOfBoundsException` if index is invalid.
 
 #### `markExpense(int index)`
+
 Marks an expense as settled.
+
 - Updates `setDone(true)` for the given expense.
 - Saves the updated list using `saveAllExpenses()`.
 - Throws `IndexOutOfBoundsException` for invalid indices.
 
 #### `unmarkExpense(int index)`
+
 Unmarks an expense, making it unsettled.
+
 - Updates `setDone(false)` for the given expense.
 - Saves the updated list using `saveAllExpenses()`.
 - Throws `IndexOutOfBoundsException` for invalid indices.
 
 #### `editExpenseCurrency(Double finalExchangeRate)`
+
 Applies a currency exchange rate to all expenses.
-- Multiplies each expense’s amount by the exchange rate.
+
+- Multiplies each expense's amount by the exchange rate.
 - Calls `editExpense()` to update each expense.
 - Skips execution if `expenses` is empty.
 
 #### `saveAllExpenses()`
+
 Saves all expenses to persistent storage.
+
 - Calls `DataStorage.saveExpenses(expenses)`.
 
 #### `setExpenseAmountToZero(int index)`
+
 Sets an expense's amount to 0.0.
+
 - Retrieves the expense at `index`.
 - Calls `setAmount(0.0)` and saves changes.
 - Throws `IndexOutOfBoundsException` if the index is invalid.
@@ -451,45 +498,50 @@ Sets an expense's amount to 0.0.
 
 ### 3.2.0 Group Class
 
-
 ### Group Class
 
 The `Group` class in the `seedu.duke.friends` package manages a collection of `Friend` objects under a specified group name.
 
 #### Group Initialization
+
 - **Constructor:** `Group(String name)`
 - **Features:**
-   - Sets the group name.
-   - Initializes an empty list of `Friend` objects.
+  - Sets the group name.
+  - Initializes an empty list of `Friend` objects.
 
 #### Adding Friends
+
 - **Method:** `addFriend(Friend friend)`
 - **Features:**
-   - Adds a `Friend` object to the group.
+  - Adds a `Friend` object to the group.
 
 #### Removing Friends
+
 - **Method:** `removeFriend(String friendName)`
 - **Features:**
-   - Searches for the first friend with a matching name and removes them.
-   - Returns `true` if removal is successful; otherwise returns `false`.
-   - Note: Uses a for-each loop for removal, which may require caution regarding concurrent modifications.
+  - Searches for the first friend with a matching name and removes them.
+  - Returns `true` if removal is successful; otherwise returns `false`.
+  - Note: Uses a for-each loop for removal, which may require caution regarding concurrent modifications.
 
 #### Retrieving Friends
+
 - **Method:** `getFriends()`
 - **Features:**
-   - Returns the list of `Friend` objects in the group.
+  - Returns the list of `Friend` objects in the group.
 
 #### Getting Group Name
+
 - **Method:** `getName()`
 - **Features:**
-   - Returns the group’s name.
+  - Returns the group's name.
 
 #### String Representation
+
 - **Method:** `toString()`
 - **Features:**
-   - Constructs a formatted string showing the group name and member names.
-   - If the group is empty, calls `messages.displayEmptyGroupMessage()` to display an appropriate message.
-   - **Important:** Ensure that the `messages` field is initialized externally to prevent a `NullPointerException`.
+  - Constructs a formatted string showing the group name and member names.
+  - If the group is empty, calls `messages.displayEmptyGroupMessage()` to display an appropriate message.
+  - **Important:** Ensure that the `messages` field is initialized externally to prevent a `NullPointerException`.
 
 ### 3.2.1 GroupManager Class
 
@@ -500,74 +552,137 @@ The `Messages` class provides standardized system messages for user interaction 
 ### Methods
 
 #### `displayWelcomeMessage()`
+
 Displays a welcome message when the application starts.
+
 - Outputs: "Welcome to O$P$ expense-tracker! How can I help you?"
 - Calls `setDivider()` to format the output.
 
 #### `enterCommandMessage()`
+
 Prompts the user to enter a command.
+
 - Outputs: "Enter command: "
 
 #### `emptyInputMessage()`
+
 Handles cases where the user provides no input.
+
 - Outputs: "No input detected. Exiting program..."
 
 #### `setDivider()`
+
 Displays a horizontal divider for visual separation.
+
 - Outputs: A line of 80 underscores.
 
-#### `errorMessageTag()` *(static)*
+#### `errorMessageTag()` _(static)_
+
 Returns the error message prefix.
+
 - Returns: "ERROR: "
 
 #### `invalidIndexMessage()`
+
 Displays an error message for an invalid expense index.
+
 - Returns: "Invalid expense index."
 
 #### `displayExitMessage()`
+
 Displays a farewell message when the user exits the application.
+
 - Outputs: "Thank you for using the Expense Manager. Goodbye!"
 
 #### `displayInvalidCommandMessage()`
+
 Displays an error message for invalid user commands.
+
 - Outputs: "Invalid command."
 
-#### `createNewFileMessage()` *(static)*
+#### `createNewFileMessage()` _(static)_
+
 Notifies the user when a new file is created.
+
 - Outputs: "Created a new file!"
 
 #### `displayEmptyGroupMessage()`
+
 Displays a message when attempting to access a group with no members.
+
 - Returns: "No members in this group."
 
 #### `displayMissingFileExceptionMessage()`
+
 Displays an error message when the owed amounts file is missing.
+
 - Outputs: "Owed amounts file not found. No amounts to display."
 
 #### `displayInvalidAmountExceptionMessage()`
+
 Handles errors when parsing owed amounts.
+
 - Outputs: "Error parsing owed amounts. Some amounts may not be displayed."
 
 #### `displayMissingGroupMessage()`
+
 Displays an error message when the specified group is not found.
+
 - Outputs: "Group not found."
 
 #### `displayCommandList()`
+
 Displays the list of available commands along with their descriptions and usage examples.
+
 - Prints a formatted command list to the console.
 - Groups related commands for clarity.
 - Provides details about user input expectations.
 
 ### 3.2.3 Summary Class
-This class centralizes user-facing messages, improving consistency and readability within the application. Static methods are used for messages that do not depend on instance data.
+
+The Summary class manages the visualization and analysis of expense data. It provides comprehensive analytics through different views and formats.
+
+#### Key Features:
+
+- Generates monthly expense summaries with trend analysis
+- Creates category-wise breakdowns of expenses
+- Calculates percentage distributions across expense categories
+- Provides comparative analysis between different time periods
+- Supports data export functionality for external analysis
+- Integrates with ExpenseClassifier for accurate categorization
+- Maintains historical data for trend analysis
+
+#### Implementation:
+
+- Uses Java's built-in charting libraries for visualization
+- Implements data aggregation algorithms for summary generation
+- Provides both textual and graphical representation options
+- Maintains data integrity through proper validation
+- Supports multiple currency representations
 
 ### 3.2.4 ExpenseClassifier Class
 
-The auxiliary class for calculating the relative percentages of the expense categories: Food, Travel, Shopping, Entertainment and Miscellaneous by checking if the expense titles
-and descriptions in the expense.txt file contain certain keywords related to the aforementioned categories. These percentages will then be displayed in charts upon request by the
-user.
+The ExpenseClassifier class implements intelligent expense categorization through keyword analysis and pattern matching.
+
+#### Categories and Keywords:
+
+- Food: restaurant, cafe, grocery, meal, dinner, lunch, breakfast
+- Travel: flight, hotel, taxi, transport, uber, grab
+- Shopping: mall, store, shop, retail, clothing, electronics
+- Entertainment: movie, concert, game, theatre, park
+- Miscellaneous: other, misc, general, utility, service
+
+#### Classification Logic:
+
+- Primary keyword matching in expense titles
+- Secondary context analysis in descriptions
+- Fuzzy matching for similar terms
+- Default categorization for unmatched expenses
+- Confidence scoring for categorization accuracy
+- Machine learning integration capability for improved accuracy
 
 ### 3.2.5 Currency Class
+
 The Currency class handles all currency-related operations within the application. It provides functionality for managing currency codes, conversion rates, and performing currency conversions.
 
 #### Currency Constructor
@@ -607,7 +722,7 @@ The `editExpenseCurrency()` method manages the process of updating the expense c
 - Calls the budgetManager.editExpenseCurrency() method to apply the new exchange rate.
 - Updates the currentCurrency to the new currency.
 - Attempts to write the new currency to a file using the writeToFile() method.
-- Handles potential IOException by catching the error and displaying a message if there’s an issue with recording the change.
+- Handles potential IOException by catching the error and displaying a message if there's an issue with recording the change.
 - Prints a success message confirming that the currency has been successfully changed to the new currency.
 
 #### Write to File Method
@@ -631,3 +746,45 @@ for the UI class, which calls its own method `processCommand()` that processes t
 as shown in the diagram.
 
 ![ExpenseCRUDFeatureSequenceDiagram.drawio.png](diagrams/ExpenseCRUDFeatureSequenceDiagram.drawio.png)
+
+### 4.3 Create Group Feature
+
+### 4.4 Split Expense Feature
+
+### 4.5 Change Currency Feature
+
+### 4.6 Data Visualization Feature
+
+The data visualization feature provides users with interactive and informative views of their expense patterns.
+
+#### Architecture Components:
+
+1. **Data Processing Layer**
+
+   - Aggregates expense data from storage
+   - Performs statistical calculations
+   - Prepares data for visualization
+
+2. **Visualization Engine**
+
+   - Generates charts and graphs
+   - Supports multiple visualization types
+   - Handles currency formatting
+   - Manages color schemes and layouts
+
+3. **User Interface Layer**
+   - Provides interactive controls
+   - Handles view selection
+   - Manages display preferences
+   - Supports export functionality
+
+#### Sequence Flow:
+
+1. User requests visualization
+2. System aggregates relevant data
+3. Data is processed and categorized
+4. Visualization engine generates appropriate charts
+5. UI layer presents the visualization
+6. User can interact with the visualization
+
+[5. Appendix](#5-appendix) <br>
