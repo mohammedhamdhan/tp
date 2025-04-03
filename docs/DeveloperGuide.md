@@ -158,30 +158,30 @@ that checks if the user input matches any of these commands and handles invalid 
 #### Command List
 Below are the commands supported by the application:
 
-| Command             | Description |
-|---------------------|-------------|
-| `HELP`             | Displays the list of available commands. |
-| `EXIT`             | Exits the application. |
-| `ADD`              | Adds a new expense. |
-| `LIST`             | Displays all recorded expenses. |
-| `DELETE`           | Deletes an expense. |
-| `EDIT`             | Edits an existing expense. |
-| `BALANCE`          | Shows the balance overview. |
-| `SETTLED_LIST`     | Displays a list of settled expenses. |
-| `UNSETTLED_LIST`   | Displays a list of unsettled expenses. |
-| `MARK`             | Marks an expense as settled. |
-| `UNMARK`           | Unmarks an expense as unsettled. |
-| `CREATE_GROUP`     | Creates a new group for expense sharing. |
-| `VIEW_GROUP`       | Views details of a specific group. |
-| `ADD_MEMBER`       | Adds a member to an existing group. |
-| `REMOVE_MEMBER`    | Removes a member from a group. |
-| `REMOVE_GROUP`     | Deletes an entire group. |
-| `VIEW_ALL_GROUPS`  | Displays all user-created groups. |
-| `SPLIT`            | Splits expenses among group members. |
+| Command            | Description                                    |
+|--------------------|------------------------------------------------|
+| `HELP`             | Displays the list of available commands.       |
+| `EXIT`             | Exits the application.                         |
+| `ADD`              | Adds a new expense.                            |
+| `LIST`             | Displays all recorded expenses.                |
+| `DELETE`           | Deletes an expense.                            |
+| `EDIT`             | Edits an existing expense.                     |
+| `BALANCE`          | Shows the balance overview.                    |
+| `SETTLED_LIST`     | Displays a list of settled expenses.           |
+| `UNSETTLED_LIST`   | Displays a list of unsettled expenses.         |
+| `MARK`             | Marks an expense as settled.                   |
+| `UNMARK`           | Unmarks an expense as unsettled.               |
+| `CREATE_GROUP`     | Creates a new group for expense sharing.       |
+| `VIEW_GROUP`       | Views details of a specific group.             |
+| `ADD_MEMBER`       | Adds a member to an existing group.            |
+| `REMOVE_MEMBER`    | Removes a member from a group.                 |
+| `REMOVE_GROUP`     | Deletes an entire group.                       |
+| `VIEW_ALL_GROUPS`  | Displays all user-created groups.              |
+| `SPLIT`            | Splits expenses among group members.           |
 | `CHANGE_CURRENCY`  | Changes the default currency for transactions. |
-| `DEFAULT_CURRENCY` | The default currency (SGD). |
-| `SUMMARY`          | Displays an expense summary. |
-| `EXPORT`           | Exports expense data. |
+| `DEFAULT_CURRENCY` | The default currency (SGD).                    |
+| `SUMMARY`          | Displays an expense summary.                   |
+| `EXPORT`           | Exports expense data.                          |
 
 ### 3.1.4 ExpenseCommands Classes
 
@@ -618,6 +618,10 @@ Sets an expense's amount to 0.0.
 - Retrieves the expense at `index`.
 - Calls `setAmount(0.0)` and saves changes.
 - Throws `IndexOutOfBoundsException` if the index is invalid.
+
+#### BudgetManager Class Diagram
+
+![diagrams/BudgetManagerClass.drawio.png](diagrams/BudgetManagerClass.drawio.png)
 
 ### 3.1.8 Expense Class
 
