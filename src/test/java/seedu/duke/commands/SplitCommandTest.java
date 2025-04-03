@@ -240,7 +240,7 @@ class SplitCommandTest {
         double charlieShare = 200.0 * (50.0 / 100.0);
         assertTrue(output.contains("Alice owes: " + String.format("%.2f", aliceShare)), "Incorrect share for Alice.");
         assertTrue(output.contains("Bob owes: " + String.format("%.2f", bobShare)), "Incorrect share for Bob.");
-        assertTrue(output.contains("Charlie owes: " + String.format("%.2f", charlieShare)), "Incrrect share for Charlie.");
+        assertTrue(output.contains("Charlie owes: " + String.format("%.2f", charlieShare)), "Incorrect for Charlie.");
 
         File owesFile = new File(SplitCommand.OwesStorage.owesFile);
         try {
@@ -271,7 +271,7 @@ class SplitCommandTest {
 
         String output = outContent.toString();
         // Expect the output to mention "Invalid method. Cancelling split." due to the check.
-        assertTrue(output.contains("Invalid method. Cancelling split."), "Expected cancellation due to invalid method input.");
+        assertTrue(output.contains("Invalid method. Cancelling split."), "Expected cancellation.");
     }
 
     @Test
