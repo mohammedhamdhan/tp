@@ -1,4 +1,3 @@
-//@@author matthewyeo1
 package seedu.duke.expense;
 
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class BudgetManager {
     /**
      * Edits an expense at the specified index.
      *
-     * @param index   the index of the expense to edit
+     * @param index  the index of the expense to edit
      * @param title   the new title (null to keep existing)
      * @param description the new description (null to keep existing)
      * @param amount  the new amount (negative to keep existing)
@@ -102,6 +101,7 @@ public class BudgetManager {
         return expenses.size();
     }
 
+    //@@author NandhithaShree
     /**
      * Gets the number of unsettled expenses.
      *
@@ -118,6 +118,7 @@ public class BudgetManager {
         assert numberOfUnsettledExpenses >= 0 : "number of unsettled expenses should not be negative";
         return numberOfUnsettledExpenses;
     }
+    //@@author
 
     /**
      * Calculates the total balance (sum of all unsettled expense amounts).
@@ -213,6 +214,7 @@ public class BudgetManager {
         DataStorage.saveExpenses(expenses);
     }
 
+    //@@author matthewyeo1
     /**
      * Sets the amount of an expense at the given index to 0.0.
      *
@@ -237,5 +239,6 @@ public class BudgetManager {
 
         return expense;
     }
+    //@@author
 }
-//@@author
+
