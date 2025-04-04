@@ -217,32 +217,6 @@ public class BudgetManager {
     public void saveAllExpenses() {
         DataStorage.saveExpenses(expenses);
     }
-
-    //@@author matthewyeo1
-    /**
-     * Sets the amount of an expense at the given index to 0.0.
-     *
-     * @param index the index of the expense to update
-     * @return the updated expense
-     * @throws IndexOutOfBoundsException if the index is invalid
-     */
-    public Expense setExpenseAmountToZero(int index) throws IndexOutOfBoundsException {
-        List<Expense> expenses = getAllExpenses(); // Get the current list of expenses
-        if (index < 0 || index >= expenses.size()) {
-            throw new IndexOutOfBoundsException("Invalid expense index.");
-        }
-
-        // Retrieve the expense at the given index
-        Expense expense = expenses.get(index);
-
-        // Set the expense amount to 0.0
-        expense.setAmount(0.0);
-
-        // Save the updated expenses to the file
-        saveAllExpenses();
-
-        return expense;
-    }
-    //@@author
 }
+//@@author
 

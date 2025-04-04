@@ -99,152 +99,151 @@ public class Messages {
      * Displays the list of available commands.
      */
     public void displayCommandList() {
-        System.out.println("AVAILABLE COMMANDS:");
-        System.out.println("------------------");
+        System.out.println("""
+            AVAILABLE COMMANDS:
+            ------------------
+            help
+              Description: Displays this help message
+              Usage: help
 
-        System.out.println("help");
-        System.out.println("  Description: Displays this help message");
-        System.out.println("  Usage: help");
-        System.out.println();
+            add
+              Description: Add a new expense
+              Usage: add
+              You will be prompted to enter:
+                - Title: Short name for the expense
+                - Description: Detailed information about the expense
+                - Amount: The monetary value (must be a positive number)
 
-        System.out.println("add");
-        System.out.println("  Description: Add a new expense");
-        System.out.println("  Usage: add");
-        System.out.println("  You will be prompted to enter:");
-        System.out.println("    - Title: Short name for the expense");
-        System.out.println("    - Description: Detailed information about the expense");
-        System.out.println("    - Amount: The monetary value (must be a positive number)");
-        System.out.println();
+            mark
+              Description: Mark an expense as settled
+              Usage: mark
+              You will be prompted to enter: expense number
 
-        System.out.println("mark");
-        System.out.println("  Description: mark an expense as settled");
-        System.out.println("  Usage: mark");
-        System.out.println("  You will be prompted to enter: expense number");
-        System.out.println();
+            unmark
+              Description: Unmark an expense to become an unsettled expense
+              Usage: unmark
+              You will be prompted to enter: expense number
 
-        System.out.println("unmark");
-        System.out.println("  Description: unmark an expense to become an unsettled expense");
-        System.out.println("  Usage: unmark");
-        System.out.println("  You will be prompted to enter: expense number");
-        System.out.println();
+            list
+              Description: List all expenses
+              Usage: list
 
-        System.out.println("list");
-        System.out.println("  Description: List all expenses");
-        System.out.println("  Usage: list");
-        System.out.println();
+            list-settled
+              Description: List all settled expenses
+              Usage: list-settled
 
-        System.out.println("list-settled");
-        System.out.println("  Description: List all settled expenses");
-        System.out.println("  Usage: list-settled");
-        System.out.println();
+            list-unsettled
+              Description: List all unsettled expenses
+              Usage: list-unsettled
 
-        System.out.println("list-unsettled");
-        System.out.println("  Description: List all unsettled expenses");
-        System.out.println("  Usage: list-unsettled");
-        System.out.println();
+            delete
+              Description: Delete an existing expense
+              Usage: delete
+              You will be shown the list of expenses and prompted to enter
+              the index of the expense to delete
 
-        System.out.println("delete");
-        System.out.println("  Description: Delete an existing expense");
-        System.out.println("  Usage: delete");
-        System.out.println("  You will be shown the list of expenses and prompted to enter");
-        System.out.println("  the index of the expense to delete");
-        System.out.println();
+            edit
+              Description: Edit an existing expense
+              Usage: edit
+              You will be shown the list of expenses and prompted to enter:
+                - Index of the expense to edit
+                - New title (press Enter to keep current)
+                - New description (press Enter to keep current)
+                - New amount (press Enter to keep current)
 
-        System.out.println("edit");
-        System.out.println("  Description: Edit an existing expense");
-        System.out.println("  Usage: edit");
-        System.out.println("  You will be shown the list of expenses and prompted to enter:");
-        System.out.println("    - Index of the expense to edit");
-        System.out.println("    - New title (press Enter to keep current)");
-        System.out.println("    - New description (press Enter to keep current)");
-        System.out.println("    - New amount (press Enter to keep current)");
-        System.out.println();
+            balance
+              Description: Show the balance overview (total expenses and amount owed)
+              Usage: balance
 
-        System.out.println("balance");
-        System.out.println("  Description: Show the balance overview (total expenses and amount owed)");
-        System.out.println("  Usage: balance");
-        System.out.println();
+            create-group
+              Description: Create a new group and add members to it
+              Usage: create-group
+              You will be prompted to:
+                - Enter group name
+                - Enter members to add one by one
+                - Enter done to create and save the group
 
-        System.out.println("create-group");
-        System.out.println("  Description: Create a new group and add members to it");
-        System.out.println("  Usage: create-group");
-        System.out.println("  You will be prompted to:");
-        System.out.println("    - Enter group name");
-        System.out.println("    - Enter members to add one by one");
-        System.out.println("    - Enter done to create and save the group");
-        System.out.println();
+            view-group
+              Description: View the members of a specific group
+              Usage: view-group
+              You will be prompted to enter:
+                - Enter group name
 
-        System.out.println("view-group");
-        System.out.println("  Description: view the members of a specific group");
-        System.out.println("  Usage: view-group");
-        System.out.println("  You will be prompted to enter:");
-        System.out.println("    - Enter group name");
-        System.out.println();
+            add-member
+              Description: Add a member to an existing group/ create a new group and add
+              Usage: add-member
+              You will be prompted to enter:
+                - Enter name of new member
+                - Enter name group to add to
+                    If the group exists, adds to group. Else prompts the user to create a new group first
 
-        System.out.println("add-member");
-        System.out.println("  Description: add a member to an existing group/ create a new group and add");
-        System.out.println("  Usage: add-member");
-        System.out.println("  You will be prompted to enter:");
-        System.out.println("    - Enter name of new member");
-        System.out.println("    - Enter name group to add to");
-        System.out.println("        If the group exists, adds to group. " +
-                "Else prompts the user to create a new group first");
-        System.out.println();
+            remove-group
+              Description: Remove a member from a group
+              Usage: remove-group
+              You will be prompted to enter:
+                - Enter name of member to remove
+                - Enter group to remove member from
 
-        System.out.println("remove-group");
-        System.out.println("  Description: remove a member from a group");
-        System.out.println("  Usage: remove-group");
-        System.out.println("  You will be prompted to enter:");
-        System.out.println("    - Enter name of member to remove");
-        System.out.println("    - Enter group to remove member from");
-        System.out.println();
+            my-groups
+              Description: View the members of a specific group
+              Usage: view-group
+              Shows all the members and groups
 
-        System.out.println("my-groups");
-        System.out.println("  Description: view the members of a specific group");
-        System.out.println("  Usage: view-group");
-        System.out.println("  Shows all the members and groups");
-        System.out.println();
+            split
+              Description: Split an expense between the members of an existing group
+              Usage: split
+              You will be prompted to enter:
+                - Expense
+                - Group to split it among
 
-        System.out.println("split");
-        System.out.println("  Description: Split an expense between the members of an existing group");
-        System.out.println("  Usage: split");
-        System.out.println("  You will be prompted to enter:");
-        System.out.println("    - Expense");
-        System.out.println("    - Group to split it among");
-        System.out.println();
+            summary
+              Description: View expense summaries in different formats
+              Usage: summary
+              You will be prompted to choose:
+                - Monthly Summary: Shows total expenses and count per month
+                - Category-wise Summary: Shows total expenses and count per category
 
-        System.out.println("summary");
-        System.out.println("  Description: View expense summaries in different formats");
-        System.out.println("  Usage: summary");
-        System.out.println("  You will be prompted to choose:");
-        System.out.println("    - Monthly Summary: Shows total expenses and count per month");
-        System.out.println("    - Category-wise Summary: Shows total expenses and count per category");
-        System.out.println();
+            export
+              Description: Export expense summaries to text files
+              Usage: export
+              You will be prompted to choose:
+                - Monthly Summary: Exports to monthly_summary.txt
+                - Category-wise Summary: Exports to category_summary.txt
 
-        System.out.println("export");
-        System.out.println("  Description: Export expense summaries to text files");
-        System.out.println("  Usage: export");
-        System.out.println("  You will be prompted to choose:");
-        System.out.println("    - Monthly Summary: Exports to monthly_summary.txt");
-        System.out.println("    - Category-wise Summary: Exports to category_summary.txt");
+            change-currency
+              Description: Change all your expenses to a different currency
+              Usage: change-currency
+              You will be prompted to enter:
+                - Please enter a number
+              Enter 1 to enter your own exchange rate
+              Enter 2 to use an estimated exchange rate
+                - Please enter a currency to change to
+              Enter currency based on ISO 4217 standard (e.g., SGD, USD, JPY)
+                - Please input your exchange rate from USD to a new currency (if you picked 1)
+              Enter the exchange rate you'd like to use
 
-        System.out.println("change-currency");
-        System.out.println("  Description: Change all you expenses to a different currency");
-        System.out.println("  Usage: change currency");
-        System.out.println("  You will be prompted to enter:");
-        System.out.println("    -Please enter a number");
-        System.out.println("  Enter 1 to enter your own exchange rate");
-        System.out.println("  Enter 2 to use an estimated exchange rate");
-        System.out.println("    -Please enter a currency to change to");
-        System.out.println("  Enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)");
-        System.out.println("    -Please input your exchange rate from USD to a new currency (if you picked 1)");
-        System.out.println("  Enter the exchange rate you'd like to use");
+            sort-list
+              Description: Choose how you would like to view your expenses
+              Usage: sort-list
+              You will be prompted to enter:
+                - Sort expenses for viewing by:
+                [1] Date added (latest expense at the top)
+                [2] Title (ascending alphabetically)
+                [3] Title (descending alphabetically)
+                [4] Amount (ascending)
+                [5] Amount (descending)
+                [X] Cancel
+              Enter 1 to show the latest expense added on top
+              Enter 2 to show the expense of which the first letter of the title comes last lexicographically on top
+              Enter 3 to show the expense of which the first letter of the title comes first lexicographically on top
+              Enter 4 to show the expense with the smallest amount on top
+              Enter 5 to show the expense with the largest amount on top
+              Enter X to cancel sorting operation
 
-        System.out.println();
-
-        System.out.println("exit");
-        System.out.println("  Description: Exit the program");
-        System.out.println("  Usage: exit");
+            exit
+              Description: Exit the program
+              Usage: exit
+            """);
     }
 }
 //@@author

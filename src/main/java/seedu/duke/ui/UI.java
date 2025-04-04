@@ -169,6 +169,9 @@ public class UI {
         case Commands.FIND:
             expenseCommand.findExpense();
             break;
+        case Commands.SORT_LIST:
+            expenseCommand.sortExpenses();
+            break;
         default:
             messages.displayInvalidCommandMessage();
             break;

@@ -8,8 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -178,7 +178,6 @@ public class ExpenseCommand {
             }
             //@@author
 
-            //@@author matthewyeo1
             assert index >= 0 && index < budgetManager.getExpenseCount() : "Index should be within valid range";
             Expense deletedExpense = budgetManager.deleteExpense(index);
             // Update the owesData.txtfile
@@ -285,8 +284,6 @@ public class ExpenseCommand {
         }
 
         System.out.println("All expenses are in " + currency.getCurrentCurrency());
-      
-        expenses.sort(Comparator.comparing(Expense::getDate).reversed());
 
         System.out.println("List of Expenses:");
         for (int i = 0; i < expenses.size(); i++) {
@@ -313,8 +310,6 @@ public class ExpenseCommand {
 
 
         System.out.println("All expenses are in " + currency.getCurrentCurrency());
-
-        expenses.sort(Comparator.comparing(Expense::getDate).reversed());
 
         for (int i = 0; i < expenses.size(); i++) {
             while(i < expenses.size() && !expenses.get(i).getDone()) {
@@ -348,8 +343,6 @@ public class ExpenseCommand {
         }
 
         System.out.println("All expenses are in " + currency.getCurrentCurrency());
-      
-        expenses.sort(Comparator.comparing(Expense::getDate).reversed());
 
         for (int i = 0; i < expenses.size(); i++) {
             while (i < expenses.size() && expenses.get(i).getDone()) {
@@ -842,5 +835,62 @@ public class ExpenseCommand {
     }
     //@@author
 
+    //@@author matthewyeo1
+    public void sortExpenses() {
+        List<Expense> expenses = budgetManager.getAllExpenses();
+
+        if (expenses.isEmpty()) {
+            System.out.println("No expenses to sort.");
+            return;
+        }
+
+        System.out.println("Sort expenses for viewing by:");
+        System.out.println("[1] Date added (latest expense at the top)");
+        System.out.println("[2] Title (ascending alphabetically)");
+        System.out.println("[3] Title (descending alphabetically)");
+        System.out.println("[4] Amount (ascending)");
+        System.out.println("[5] Amount (descending)");
+        System.out.println("[X] Cancel");
+        String option = scanner.nextLine().trim();
+
+        if (option.equalsIgnoreCase("x")) {
+            System.out.println("Sorting canceled.");
+            return;
+        }
+
+        switch (option) {
+            case "1":
+                expenses.sort(Comparator.comparing(Expense::getDate).reversed());
+                System.out.println("Expenses sorted by date added (latest first):");
+                break;
+            case "2":
+                expenses.sort(Comparator.comparing(Expense::getTitle));
+                System.out.println("Expenses sorted by title (ascending):");
+                break;
+            case "3":
+                expenses.sort(Comparator.comparing(Expense::getTitle).reversed());
+                System.out.println("Expenses sorted by title (descending):");
+                break;
+            case "4":
+                expenses.sort(Comparator.comparing(Expense::getAmount));
+                System.out.println("Expenses sorted by amount (ascending):");
+                break;
+            case "5":
+                expenses.sort(Comparator.comparing(Expense::getAmount).reversed());
+                System.out.println("Expenses sorted by amount (descending):");
+                break;
+            default:
+                System.out.println("Invalid option. Please try again.");
+                sortExpenses();
+                return;
+        }
+
+        for (Expense expense : expenses) {
+            System.out.println();
+            System.out.println(expense);
+        }
+    }
+    //@@author
 }
+//@@author
 

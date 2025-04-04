@@ -30,6 +30,7 @@ public class Commands {
     public static final String SUMMARY = "summary";
     public static final String EXPORT = "export";
     public static final String FIND = "find";
+    public static final String SORT_LIST = "sort-list";
 }
 //@@author
 
