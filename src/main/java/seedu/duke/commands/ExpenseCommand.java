@@ -57,6 +57,7 @@ public class ExpenseCommand {
         this.scanner = scanner;
         this.currency = currency;
     }
+    //@@author
 
     //@@author matthewyeo1
     public static boolean isValidDate(String date) {
@@ -84,6 +85,7 @@ public class ExpenseCommand {
     }
     //@@author
 
+    //@@author mohammedhamdhan
     /**
      * Executes the add expense command.
      */
@@ -134,6 +136,9 @@ public class ExpenseCommand {
         }
     }
 
+    //@@author
+
+    //@@author matthewyeo1
     /**
      * Executes the delete expense command by setting the expense amount to 0.0.
      */
@@ -159,6 +164,7 @@ public class ExpenseCommand {
                 System.out.println("Please enter a valid expense number.");
                 return;
             }
+            //@@author
 
             //@@author nandhananm7
             Expense expenseToDelete = budgetManager.getExpense(index);
@@ -172,6 +178,7 @@ public class ExpenseCommand {
             }
             //@@author
 
+            //@@author matthewyeo1
             assert index >= 0 && index < budgetManager.getExpenseCount() : "Index should be within valid range";
             Expense deletedExpense = budgetManager.deleteExpense(index);
             // Update the owesData.txtfile
@@ -186,7 +193,9 @@ public class ExpenseCommand {
             System.out.println("Error deleting expense: " + e.getMessage());
         }
     }
+    //@@author
 
+    //@@author mohammedhamdhan
     /**
      * Executes the edit expense command.
      */
@@ -287,6 +296,7 @@ public class ExpenseCommand {
             System.out.println();
         }
     }
+    //@@author
 
     //@@author NandhithaShree
     /**
@@ -361,6 +371,7 @@ public class ExpenseCommand {
     }
     //@@author
 
+    //@@author mohammedhamdhan
     /**
      * Shows the balance overview.
      */
@@ -371,7 +382,9 @@ public class ExpenseCommand {
         System.out.println("Total number of unsettled expenses: " + budgetManager.getUnsettledExpenseCount());
         System.out.println("Total amount owed: $" + String.format("%.2f", totalBalance));
     }
+    //@@author
 
+    //@@author NandhithaShree
     /**
      * Executes the mark expense command.
      */
@@ -406,6 +419,7 @@ public class ExpenseCommand {
             System.out.println("Please enter a number.");
         }
     }
+    //@@author
 
     //@@author mohammedhamdhan
     /**
@@ -699,7 +713,9 @@ public class ExpenseCommand {
             System.out.println("Error exporting category summary: " + e.getMessage());
         }
     }
+    //@@author
 
+    //@@author matthewyeo1
     /**
      * Gets the budget manager.
      *
@@ -781,6 +797,7 @@ public class ExpenseCommand {
         }
         return groupManager.getGroupMembers(groupName);
     }
+    //@@author
 
     //@@author nandhananm7
     /**
@@ -826,4 +843,4 @@ public class ExpenseCommand {
     //@@author
 
 }
-//@@author
+

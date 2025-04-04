@@ -5,6 +5,7 @@ import java.util.List;
 import seedu.duke.messages.Messages;
 import seedu.duke.storage.DataStorage;
 
+//@@author mohammedhamdhan
 /**
  * Manages a collection of expenses and provides operations on them.
  */
@@ -100,6 +101,7 @@ public class BudgetManager {
     public int getExpenseCount() {
         return expenses.size();
     }
+    //@@author
 
     //@@author NandhithaShree
     /**
@@ -120,6 +122,7 @@ public class BudgetManager {
     }
     //@@author
 
+    //@@author mohammedhamdhan
     /**
      * Calculates the total balance (sum of all unsettled expense amounts).
      *
@@ -152,6 +155,7 @@ public class BudgetManager {
 
         return expenses.get(index);
     }
+    //@@author
 
     //@@author NandhithaShree
     /**
