@@ -664,10 +664,6 @@ Sets an expense's amount to 0.0.
 - Calls `setAmount(0.0)` and saves changes.
 - Throws `IndexOutOfBoundsException` if the index is invalid.
 
-#### BudgetManager Class Diagram
-
-![diagrams/BudgetManagerClass.drawio.png](diagrams/BudgetManagerClass.drawio.png)
-
 ### 3.1.8 Expense Class
 
 ### 3.1.9 Friend Class
@@ -1154,7 +1150,7 @@ This application can be run on any _mainstream OS_ as long as it has java`17` or
 
 ## 5.5 Test Cases
 
-This section documents the test cases for the application. Each test case describes the input commands, the expected behavior, and the corresponding output from the system.
+This section documents some test cases for the application. Each test case describes the input commands, the expected behavior, and the corresponding output from the system.
 
 ---
 
