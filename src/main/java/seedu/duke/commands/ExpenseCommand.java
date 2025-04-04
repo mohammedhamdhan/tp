@@ -859,30 +859,30 @@ public class ExpenseCommand {
         }
 
         switch (option) {
-            case "1":
-                expenses.sort(Comparator.comparing(Expense::getDate).reversed());
-                System.out.println("Expenses sorted by date added (latest first):");
-                break;
-            case "2":
-                expenses.sort(Comparator.comparing(Expense::getTitle));
-                System.out.println("Expenses sorted by title (ascending):");
-                break;
-            case "3":
-                expenses.sort(Comparator.comparing(Expense::getTitle).reversed());
-                System.out.println("Expenses sorted by title (descending):");
-                break;
-            case "4":
-                expenses.sort(Comparator.comparing(Expense::getAmount));
-                System.out.println("Expenses sorted by amount (ascending):");
-                break;
-            case "5":
-                expenses.sort(Comparator.comparing(Expense::getAmount).reversed());
-                System.out.println("Expenses sorted by amount (descending):");
-                break;
-            default:
-                System.out.println("Invalid option. Please try again.");
-                sortExpenses();
-                return;
+        case "1":
+            expenses.sort(Comparator.comparing(Expense::getDate).reversed());
+            System.out.println("Expenses sorted by date added (latest first):");
+            break;
+        case "2":
+            expenses.sort(Comparator.comparing(Expense::getTitle));
+            System.out.println("Expenses sorted by title (ascending):");
+            break;
+        case "3":
+            expenses.sort(Comparator.comparing(Expense::getTitle).reversed());
+            System.out.println("Expenses sorted by title (descending):");
+            break;
+        case "4":
+            expenses.sort(Comparator.comparing(Expense::getAmount));
+            System.out.println("Expenses sorted by amount (ascending):");
+            break;
+        case "5":
+            expenses.sort(Comparator.comparing(Expense::getAmount).reversed());
+            System.out.println("Expenses sorted by amount (descending):");
+            break;
+        default:
+            System.out.println("Invalid option. Please try again.");
+            sortExpenses();
+            return;
         }
 
         for (Expense expense : expenses) {
