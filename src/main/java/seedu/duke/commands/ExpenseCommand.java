@@ -300,7 +300,18 @@ public class ExpenseCommand {
 
     //@@author NandhithaShree
     /**
-     * Displays all settled expenses.
+     * Displays all settled (completed) expenses sorted by date in descending order.
+     * <p>
+     * Retrieves expenses from {@code budgetManager}, filters those marked as done,
+     * and prints them along with their details. If no expenses exist, a message is displayed.
+     * </p>
+     * <p>
+     * The method first checks if the list is empty. It iterates through the expenses, skipping unsettled ones. Each
+     * settle expense is printed with a numerical identifier.
+     * </p>
+     * <p>
+     * Finally, the total count of settled expenses is displayed.
+     * </p>
      */
     public void displaySettledExpenses(){
         List<Expense> expenses = budgetManager.getAllExpenses();
@@ -336,7 +347,18 @@ public class ExpenseCommand {
     }
 
     /**
-     * Displays all unsettled expenses.
+     * Displays all unsettled (pending) expenses sorted by date in descending order.
+     * <p>
+     * Retrieves expenses from {@code budgetManager}, filters those not marked as done,
+     * and prints them along with their details. If no expenses exist, a message is displayed.
+     * </p>
+     * <p>
+     * The method first checks if the list is empty. It then iterates through the expenses, skipping settled ones.
+     * Each unsettled expense is printed with a numerical identifier.
+     * </p>
+     * <p>
+     * Finally, the total count of unsettled expenses is displayed.
+     * </p>
      */
     public void displayUnsettledExpenses() {
         List<Expense> expenses = budgetManager.getAllExpenses();
@@ -386,7 +408,18 @@ public class ExpenseCommand {
 
     //@@author NandhithaShree
     /**
-     * Executes the mark expense command.
+     * Marks an expense as settled based on user input.
+     * <p>
+     * Prompts the user to enter an expense number, retrieves the input, and attempts
+     * to mark the corresponding expense as done via {@code budgetManager}.
+     * </p>
+     * <p>
+     * If the input is not a valid number, an error message is displayed.
+     * If the number is out of bounds, a different error message is shown.
+     * </p>
+     *
+     * @throws NumberFormatException if the input is not a valid number
+     * @throws IndexOutOfBoundsException if the input is out of range
      */
     public void executeMarkCommand() {
         System.out.println("Enter expense number to mark");
@@ -405,7 +438,18 @@ public class ExpenseCommand {
     }
 
     /**
-     * Executes the mark expense command.
+     * Unmarks an expense as unsettled based on user input.
+     * <p>
+     * Prompts the user to enter an expense number, retrieves the input, and attempts
+     * to unmark the corresponding expense via {@code budgetManager}.
+     * </p>
+     * <p>
+     * If the input is not a valid number, an error message is displayed.
+     * If the number is out of bounds, a different error message is shown.
+     * </p>
+     *
+     * @throws NumberFormatException if the input is not a valid number
+     * @throws IndexOutOfBoundsException if the input is out of range
      */
     public void executeUnmarkCommand() {
         System.out.println("Enter expense number to mark");
