@@ -105,9 +105,14 @@ public class BudgetManager {
 
     //@@author NandhithaShree
     /**
-     * Gets the number of unsettled expenses.
+     * Returns the count of unsettled (pending) expenses.
+     * <p>
+     * Iterates through the list of expenses and counts how many expenses are not marked as done.
+     * An assertion is included to ensure that the number of unsettled expenses is non-negative.
+     * </p>
      *
      * @return the number of unsettled expenses
+     * @throws AssertionError if the number of unsettled expenses is negative
      */
     public int getUnsettledExpenseCount() {
         int numberOfUnsettledExpenses = 0;
@@ -159,10 +164,15 @@ public class BudgetManager {
 
     //@@author NandhithaShree
     /**
-     * Marks an expense at the specified index.
+     * Marks an expense as settled (done) based on its index.
+     * <p>
+     * The method checks if the provided index is valid. If the index is out of bounds, an
+     * {@code IndexOutOfBoundsException} is thrown.
+     * If the index is valid, the corresponding expense's status is updated to done, and all expenses are saved.
+     * </p>
      *
-     * @param index the index of the expense to mark
-     * @throws IndexOutOfBoundsException if the index is out of range
+     * @param index the index of the expense to mark as done
+     * @throws IndexOutOfBoundsException if the provided index is invalid (out of range)
      */
     public void markExpense(int index) throws IndexOutOfBoundsException {
 
@@ -175,10 +185,15 @@ public class BudgetManager {
     }
 
     /**
-     * Unmarks an expense at the specified index.
+     * Unmarks an expense as unsettled (not done) based on its index.
+     * <p>
+     * The method checks if the provided index is valid. If the index is out of bounds, an
+     * {@code IndexOutOfBoundsException} is thrown.
+     * If the index is valid, the corresponding expense's status is updated to not done, and all expenses are saved.
+     * </p>
      *
-     * @param index the index of the expense to unmark
-     * @throws IndexOutOfBoundsException if the index is out of range
+     * @param index the index of the expense to unmark as unsettled
+     * @throws IndexOutOfBoundsException if the provided index is invalid (out of range)
      */
     public void unmarkExpense(int index) throws IndexOutOfBoundsException {
 
@@ -191,11 +206,15 @@ public class BudgetManager {
     }
 
     /**
-     * Updates the amounts of all expenses by applying the given exchange rate to each expense.
-     * This method multiplies the amount of each expense by the provided exchange rate and updates the expense.
+     * Edits the currency of all expenses based on a given exchange rate.
+     * <p>
+     * The method iterates through all expenses and adjusts their amounts by multiplying
+     * each expense's amount with the provided {@code finalExchangeRate}. It calls {@code editExpense}
+     * for each expense to update its details, including the new amount in the converted currency.
+     * If no expenses are present, the method returns early without making any changes.
+     * </p>
      *
-     * @param finalExchangeRate The exchange rate to be applied to the expense amounts.
-     *                         The expense amount will be multiplied by this rate.
+     * @param finalExchangeRate the exchange rate used to convert each expense amount
      */
     public void editExpenseCurrency(Double finalExchangeRate){
 
