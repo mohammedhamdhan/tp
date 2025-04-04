@@ -166,7 +166,8 @@ public class BudgetManager {
     /**
      * Marks an expense as settled (done) based on its index.
      * <p>
-     * The method checks if the provided index is valid. If the index is out of bounds, an {@code IndexOutOfBoundsException} is thrown.
+     * The method checks if the provided index is valid. If the index is out of bounds, an
+     * {@code IndexOutOfBoundsException} is thrown.
      * If the index is valid, the corresponding expense's status is updated to done, and all expenses are saved.
      * </p>
      *
@@ -186,7 +187,8 @@ public class BudgetManager {
     /**
      * Unmarks an expense as unsettled (not done) based on its index.
      * <p>
-     * The method checks if the provided index is valid. If the index is out of bounds, an {@code IndexOutOfBoundsException} is thrown.
+     * The method checks if the provided index is valid. If the index is out of bounds, an
+     * {@code IndexOutOfBoundsException} is thrown.
      * If the index is valid, the corresponding expense's status is updated to not done, and all expenses are saved.
      * </p>
      *
