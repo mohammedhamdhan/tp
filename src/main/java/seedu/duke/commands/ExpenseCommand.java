@@ -311,7 +311,6 @@ public class ExpenseCommand {
             return;
         }
 
-
         System.out.println("All expenses are in " + currency.getCurrentCurrency());
 
         expenses.sort(Comparator.comparing(Expense::getDate).reversed());
@@ -348,7 +347,7 @@ public class ExpenseCommand {
         }
 
         System.out.println("All expenses are in " + currency.getCurrentCurrency());
-      
+
         expenses.sort(Comparator.comparing(Expense::getDate).reversed());
 
         for (int i = 0; i < expenses.size(); i++) {
@@ -391,13 +390,22 @@ public class ExpenseCommand {
      * @throws NumberFormatException if the input is not a valid number
      * @throws IndexOutOfBoundsException if the input is out of range
      */
-    public void executeMarkCommand() {
-        System.out.println("Enter expense number to mark");
-        String expenseNumberToMark = scanner.nextLine().trim();
-
+    public void executeMarkCommand(String command) {
         try{
+            String[] splitInput = command.split("/");
+            if(splitInput.length != 2){
+                System.out.println("Please provide input in correct format");
+                return;
+            }
+            String expenseNumberToMark = splitInput[1];
             int indexToMark = Integer.parseInt(expenseNumberToMark) - 1;
+            if(budgetManager.getExpense(indexToMark).getDone()){
+                System.out.println("Expense was already marked before!");
+                return;
+            }
+
             budgetManager.markExpense(indexToMark);
+            System.out.println("Expense " + expenseNumberToMark + " successfully marked!");
 
         } catch(IndexOutOfBoundsException e){
             System.out.println("Please enter a valid expense number.");
@@ -413,12 +421,22 @@ public class ExpenseCommand {
      * @throws NumberFormatException if the input is not a valid number
      * @throws IndexOutOfBoundsException if the input is out of range
      */
-    public void executeUnmarkCommand() {
-        System.out.println("Enter expense number to mark");
-        String expenseNumberToMark = scanner.nextLine().trim();
+    public void executeUnmarkCommand(String command) {
         try {
-            int indexToUnmark = Integer.parseInt(expenseNumberToMark) - 1;
+            String[] splitInput = command.split("/");
+            if(splitInput.length != 2){
+                System.out.println("Please provide input in correct format");
+                return;
+            }
+            String expenseNumberToUnmark = splitInput[1];
+            int indexToUnmark = Integer.parseInt(expenseNumberToUnmark) - 1;
+            if(!budgetManager.getExpense(indexToUnmark).getDone()){
+                System.out.println("Expense was already unmarked!");
+                return;
+            }
+
             budgetManager.unmarkExpense(indexToUnmark);
+            System.out.println("Expense " + expenseNumberToUnmark + " successfully unmarked!");
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Please enter a valid expense number.");
         } catch(NumberFormatException e){

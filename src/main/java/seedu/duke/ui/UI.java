@@ -107,7 +107,7 @@ public class UI {
             isRunning = false;
         } else if(command.startsWith(Commands.ADD)){
             expenseCommand.executeAddExpense();
-        } else if(command.startsWith(Commands.LIST)){
+        } else if(command.equals(Commands.LIST)){
             expenseCommand.displayAllExpenses();
         } else if(command.startsWith(Commands.DELETE)){
             expenseCommand.executeDeleteExpense();
@@ -116,9 +116,9 @@ public class UI {
         } else if(command.equals(Commands.BALANCE)) {
             expenseCommand.showBalanceOverview();
         } else if (command.startsWith(Commands.MARK)){
-            expenseCommand.executeMarkCommand();
+            expenseCommand.executeMarkCommand(command);
         } else if (command.startsWith(Commands.UNMARK)) {
-            expenseCommand.executeUnmarkCommand();
+            expenseCommand.executeUnmarkCommand(command);
         } else if (command.equals(Commands.SETTLED_LIST)) {
             expenseCommand.displaySettledExpenses();
         } else if (command.equals(Commands.UNSETTLED_LIST)) {
