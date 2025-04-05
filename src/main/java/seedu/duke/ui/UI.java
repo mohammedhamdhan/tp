@@ -115,8 +115,8 @@ public class UI {
             budgetManager.saveAllExpenses();
             messages.displayExitMessage();
             isRunning = false;
-        } else if(command.startsWith(Commands.ADD)){
-            expenseCommand.executeAddExpense(command);
+        } else if(command.startsWith(Commands.ADD_MEMBER)){
+            friendsCommand.addMember(command);
         } else if(command.equals(Commands.LIST)){
             expenseCommand.displayAllExpenses();
         } else if(command.startsWith(Commands.DELETE)){
@@ -134,19 +134,19 @@ public class UI {
         } else if (command.equals(Commands.UNSETTLED_LIST)) {
             expenseCommand.displayUnsettledExpenses();
         } else if (command.startsWith(Commands.CREATE_GROUP)) {
-            friendsCommand.createGroup();
+            friendsCommand.createGroup(command);
         } else if (command.startsWith(Commands.VIEW_GROUP)) {
-            friendsCommand.viewGroup();
-        } else if (command.startsWith(Commands.ADD_MEMBER)) {
-            friendsCommand.addMember();
+            friendsCommand.viewGroup(command);
+        } else if (command.startsWith(Commands.ADD)) {
+            expenseCommand.executeAddExpense(command);
         } else if (command.startsWith(Commands.REMOVE_MEMBER)) {
-            friendsCommand.removeMember();
+            friendsCommand.removeMember(command);
         } else if (command.startsWith(Commands.VIEW_ALL_GROUPS)) {
             friendsCommand.viewAllGroups();
         } else if(command.startsWith(Commands.SPLIT)) {
             splitCommand.executeSplit();
         } else if(command.startsWith(Commands.REMOVE_GROUP)) {
-            friendsCommand.removeGroup();
+            friendsCommand.removeGroup(command);
         } else if(command.startsWith(Commands.CHANGE_CURRENCY)){
             currency.changeCurrency();
         } else if (command.startsWith(Commands.SUMMARY)){
