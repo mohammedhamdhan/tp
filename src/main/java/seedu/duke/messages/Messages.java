@@ -28,7 +28,7 @@ public class Messages {
     /**
      * Displays a broken line separating each user input command.
      */
-    public void setDivider() {
+    public static void setDivider() {
         System.out.println("\n" + "_".repeat(80) + "\n");
     }
 
@@ -224,21 +224,17 @@ public class Messages {
 
             sort-list
               Description: Choose how you would like to view your expenses
-              Usage: sort-list
-              You will be prompted to enter:
+              Usage: sort-list N, where N is 1,2,3 or 4
                 - Sort expenses for viewing by:
-                [1] Date added (latest expense at the top)
-                [2] Title (ascending alphabetically)
-                [3] Title (descending alphabetically)
-                [4] Amount (ascending)
-                [5] Amount (descending)
-                [X] Cancel
-              Enter 1 to show the latest expense added on top
-              Enter 2 to show the expense of which the first letter of the title comes last lexicographically on top
-              Enter 3 to show the expense of which the first letter of the title comes first lexicographically on top
-              Enter 4 to show the expense with the smallest amount on top
-              Enter 5 to show the expense with the largest amount on top
-              Enter X to cancel sorting operation
+                [1] Title (ascending alphabetically)
+                [2] Title (descending alphabetically)
+                [3] Amount (ascending)
+                [4] Amount (descending)
+    
+              Enter 1 to show the expense of which the first letter of the title comes last lexicographically on top
+              Enter 2 to show the expense of which the first letter of the title comes first lexicographically on top
+              Enter 3 to show the expense with the smallest amount on top
+              Enter 4 to show the expense with the largest amount on top
 
             exit
               Description: Exit the program

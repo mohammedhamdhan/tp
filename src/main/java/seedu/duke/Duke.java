@@ -69,6 +69,13 @@ public class Duke {
             expenseClassifier
         );
 
+        // Add a shutdown hook
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Shutting down gracefully...");
+            budgetManager.saveAllExpenses(); // Save all expenses before exiting
+            System.out.println("All expenses have been saved!");
+        }));
+
         messages.displayWelcomeMessage();
         messages.displayCommandList();
         messages.setDivider();

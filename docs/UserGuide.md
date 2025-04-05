@@ -4,8 +4,8 @@
 2.  You may download [here](https://se-education.org/guides/tutorials/javaInstallationMac.html) for Mac users and [here](https://www.oracle.com/sg/java/technologies/downloads/) for Windows users.
 3.  If you have it installed already, you may check it by running `java -version` in your terminal.
 4.  Download the latest `.jar` file from here. **[link will be updated once v1 is ready]**
-5.  Copy the file to the folder you want to use as the home folder for your **O$P$ budget tracking app** 🙂.
-6.  Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar o$p$.jar` command to run the application.
+5.  Copy the file to the folder you want to use as the home folder for your **O\$P$ budget tracking app** 🙂.
+6.  Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar tp.jar` command to run the application.
 7.  Type the command in the command box and press **Enter** to execute it.
 8.  **Example:** Typing `help` and pressing **Enter** will open a mini window showing a list of all possible commands.
 9.  Refer to the [features](https://docs.google.com/document/d/125Cg7wzuc4XFo3wsziwL2f64KN1uUfvFL5dIm6IQrSk/edit?tab=t.xl7ogrtj0a5q#heading=h.61o02m6y9xrc) section below for details on all commands and functionalities.
@@ -13,6 +13,9 @@
 ---
 
 ## Feature List
+
+These are all the available commands that the user can input while navigating through the O\$P\$ application.
+
 
 ### Admin:
 
@@ -38,74 +41,129 @@ Terminates the program and saves the user's data, such as their payee list, grou
 
 #### Add an expense: `add`
 
-Add an expense with a title, description, date, amount.
+Add an expense with a title, description, date, amount. You have to first enter
+the `add` keyword, followed by the `title`, `date` and `amount`, each separated by a `/`.
 
-- **Usage:**
+After that, you will be prompted to optionally add a `description` of maximum 200 characters.
 
-  ```
-  add
-  Enter expense title:
-  User input: Breakfast
-  Enter expense description:
-  User input: 1x Big Breakfast from McDonald's
-  Enter date of expense (DD-MM-YYYY):
-  User input: 01-01-2025
-  Enter expense amount:
-  10
+The `date` field has to follow the DD-MM-YYYY format. You can choose the date to be in the past (earliest 2000),
+present and future, as long as it is a legitimate date (e.g. NOT 99-99-9999).
 
-  ```
+Once the expense has been added, it is unsettled. Typing `list-unsettled` will allow you to view
+your newly added expense, just like `list`.
 
-- **Expected output:** _[A short summary of the added expense will appear]_
+The `amount` can be entered as a whole number or floating-point number. The result will be rounded off to 2 decimal
+places. The `amount` is capped at 50,000SGD or its equivalent if your expenses are in another currency.
 
-  The entry will automatically be tagged with a unique expense ID.
+- **Format:** `add/<title>/<date>/<amount>`
 
----
+- **Example Usage:** 
+```
+add/breakfast/23-08-2002/10.00
+```
+- **Output:**
+```
+Enter the description (press Enter to skip): 
+```
+If you choose to add a description within 200 characters:
+```
+Expense added successfully:
+Title: breakfast
+Description: McDonald's
+Date: 23-08-2002
+Amount: 10.00
+```
+If you skip the description part, the description field will be replaced with 'nil':
+```
+Expense added successfully:
+Title: breakfast
+Description: nil
+Date: 23-08-2002
+Amount: 10.00
+```
+The entry will automatically be tagged with a unique expense ID.
 
-#### Delete an expense: `delete`
-
-Delete expenses to remove unwanted expenses.
-
-- **Format:** `delete <expense ID>`
-- **Usage:** `delete 2`
+You are not allowed to add an expense containing a `title` of an
+expense that already exists.
 
 ---
 
 #### Edit an expense: `edit`
 
-Edit an existing expense.
+Edit an existing expense. Follows the same constraints and parameter-filling procedure as the `add` command.
 
-- **Format:**
+- **Format:** `edit/<expense ID>/<new title>/<new date>/<new amount>`
 
-  ```
-  edit
-  "Enter the index of the expense to edit" <index of expense>
-  "Enter the expense details"
-  "Title:" <New title>
-  "Description:" <New description>
-  "Date:" <New date>
-  "Amount:" <New amount>
-  ```
+If you do not wish to change the `title`, `date` or/and `amount`, type `X` (both lowercase and uppercase accepted)
+in the respective fields. Suppose you only want to change the `amount`:
 
-- **Usage:**
+- **Example Usage:**
+```
+edit/1/x/X/10
+```
 
-  ```
-  edit
-  "Enter the index of the expense to edit"
-  User input:1
-  "Enter the expense details"
-  "Enter new title (press Enter to keep current):"
-  User input: Edited expense 1
-  "Enter new description (press Enter to keep current):"
-  User input: New description
-  "Enter new date (press Enter to keep current):"
-  User input: 02-01-2025
-  "Enter new amount (press Enter to keep current):"
-  20
-  ```
+- **Output:**
+```
+Enter the description (press Enter to skip): 
+```
+If you choose to change the description within 200 characters:
+```
+Expense edited successfully:
+Title: breakfast
+Description: Technoedge Canteen
+Date: 23-08-2002
+Amount: 10.00
+```
+If you choose to keep the current description:
+```
+Expense added successfully:
+Title: breakfast
+Description: McDonald's
+Date: 23-08-2002
+Amount: 10.00
+```
+---
 
-- **Expected output:** _[A short summary of the edited expense will appear]_
+#### Delete an expense: `delete`
+
+Delete an expense followed by the desired expense index to remove it from the `list`.
+You will see the title, description, date and amount of the to-be-deleted expense and
+be prompted to confirm the deletion.
+
+Expense ID is 1-index, so to delete your second expense, type `delete/2`.
+
+- **Format:** `delete/<expense ID>`
+
+- **Example Usage:**
+```
+delete/1
+```
+
+- **Output:**
+```
+Are you sure you want to delete this expense? (y/n)
+Title: breakfast
+Description: Technoedge Canteen
+Date: 23-08-2002
+Amount: 10.00
+```
+Typing 'n' (both lowercase and uppercase accepted) aborts the function.
+```
+Deletion aborted.
+```
+Typing 'y' (both lowercase and uppercase accepted) will display the title, description, date and amount of the to-be-deleted expense
+and execute the delete function.
+```
+Updated owed amounts written to file successfully.
+Expense deleted successfully:
+Title: breakfast
+Description: Technoedge Canteen
+Date: 23-08-2002
+Amount: 10.00
+```
 
 ---
+
 
 #### View all expenses: `list`
 
@@ -122,7 +180,6 @@ View all the expenses.
   Date: 01-01-2025
   Amount: $50.00
   ```
-
 ---
 
 #### View unsettled expenses: `list-unsettled`
@@ -506,3 +563,117 @@ Displays comprehensive analytics of your expenses through different visualizatio
   ```
 
 ---
+
+## Viewing Method for Expenses:
+
+#### Select Viewing Method: `sort-list`
+
+Allows the user to choose a method to view their expenses with the following options:
+
+[1] Title (ascending alphabetically)
+[2] Title (descending alphabetically)
+[3] Amount (ascending)
+[4] Amount (descending)
+
+- **Format:** `sort-list/N`, where N = 1,2,3 or 4
+
+- **Example Usage:**
+```
+sort-list/1
+```
+- **Output:** 
+
+```
+Expenses sorted by title (ascending):
+
+Title: breakfast
+Description: McDonald's
+Date: 01-01-2025
+Amount: 10.00
+
+Title: hihi
+Description: pe
+Date: 04-01-2024
+Amount: 90.00
+
+Title: ye
+Description: yes
+Date: 01-01-2025
+Amount: 10.00
+```
+
+- **Example Usage:**
+```
+sort-list/2
+```
+- **Output:**
+
+```
+Expenses sorted by title (descending):
+
+Title: ye
+Description: yes
+Date: 01-01-2025
+Amount: 10.00
+
+Title: hihi
+Description: pe
+Date: 04-01-2024
+Amount: 90.00
+
+Title: breakfast
+Description: McDonald's
+Date: 01-01-2025
+Amount: 10.00
+```
+
+- **Example Usage:**
+```
+sort-list/3
+```
+
+- **Output:**
+
+```
+Expenses sorted by amount (ascending):
+
+Title: breakfast
+Description: McDonald's
+Date: 01-01-2025
+Amount: 10.00
+
+Title: ye
+Description: yes
+Date: 01-01-2025
+Amount: 10.00
+
+Title: hihi
+Description: pe
+Date: 04-01-2024
+Amount: 90.00
+```
+
+- **Example Usage:**
+```
+sort-list/4
+```
+- **Output:**
+
+```
+Expenses sorted by amount (descending):
+
+Title: hihi
+Description: pe
+Date: 04-01-2024
+Amount: 90.00
+
+Title: breakfast
+Description: McDonald's
+Date: 01-01-2025
+Amount: 10.00
+
+Title: ye
+Description: yes
+Date: 01-01-2025
+Amount: 10.00
+```

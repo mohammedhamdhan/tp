@@ -98,7 +98,33 @@ public class UI {
      */
     public void processCommand(String userInput) {
         String command = userInput.trim().toLowerCase();
-        
+
+        if (command.startsWith(Commands.SORT_LIST)) {
+            String[] parts = command.split("/", 2);
+            if (parts.length < 2 || parts[1].trim().isEmpty()) {
+                System.out.println("Invalid format. Usage: sort-list/<1,2,3,4>");
+                return;
+            }
+            String sortOption = parts[1].trim();
+            expenseCommand.sortExpenses(sortOption);
+            return;
+        }
+
+        if (command.startsWith(Commands.ADD)) {
+            expenseCommand.executeAddExpense(command);
+            return;
+        }
+
+        if (command.startsWith(Commands.DELETE)) {
+            expenseCommand.executeDeleteExpense(command);
+            return;
+        }
+
+        if (command.startsWith(Commands.EDIT)) {
+            expenseCommand.executeEditExpense(command);
+            return;
+        }
+
         switch (command) {
         case Commands.HELP:
             messages.displayCommandList();
@@ -109,17 +135,8 @@ public class UI {
             messages.displayExitMessage();
             isRunning = false;
             break;
-        case Commands.ADD:
-            expenseCommand.executeAddExpense();
-            break;
         case Commands.LIST:
             expenseCommand.displayAllExpenses();
-            break;
-        case Commands.DELETE:
-            expenseCommand.executeDeleteExpense();
-            break;
-        case Commands.EDIT:
-            expenseCommand.executeEditExpense();
             break;
         case Commands.BALANCE:
             expenseCommand.showBalanceOverview();
@@ -168,9 +185,6 @@ public class UI {
             break;
         case Commands.FIND:
             expenseCommand.findExpense();
-            break;
-        case Commands.SORT_LIST:
-            expenseCommand.sortExpenses();
             break;
         default:
             messages.displayInvalidCommandMessage();
