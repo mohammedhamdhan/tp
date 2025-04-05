@@ -163,12 +163,13 @@ class ExpenseCommandTest {
     //@@author NandhithaShree
     @Test
     void testExecuteMarkCommand() {
+        provideInput("\n");
         Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
         budgetManager.addExpense(expense);
         assertEquals(false, expense.getDone());
 
-        provideInput("1\n");
-        expenseCommand.executeMarkCommand();
+        String input = "mark/1";
+        expenseCommand.executeMarkCommand(input);
         assertEquals(true, expense.getDone());
 
         assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
@@ -181,16 +182,17 @@ class ExpenseCommandTest {
 
     @Test
     void testExecuteUnmarkCommand() {
+        provideInput("\n");
         Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
         budgetManager.addExpense(expense);
         assertEquals(false, expense.getDone());
 
-        provideInput("1\n");
-        expenseCommand.executeMarkCommand();
+        String firstInput = "mark/1";
+        expenseCommand.executeMarkCommand(firstInput);
         assertEquals(true, expense.getDone());
 
-        provideInput("1");
-        expenseCommand.executeUnmarkCommand();
+        String secondInput = "unmark/1";
+        expenseCommand.executeUnmarkCommand(secondInput);
         assertEquals(false, expense.getDone());
 
         assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
@@ -202,13 +204,28 @@ class ExpenseCommandTest {
     }
 
     @Test
+    void testExecuteUnmarkCommandInvalidInputs() {
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        budgetManager.addExpense(expense);
+
+        String input = "unmark/2";
+        expenseCommand.executeUnmarkCommand(input);
+        String expectedMessage = "Please enter a valid expense number.";
+        String actualOutput = outContent.toString().trim();
+
+        assertTrue(actualOutput.contains(expectedMessage));
+    }
+
+    @Test
     void testExecuteMarkCommandInvalidInputs() {
+        provideInput("\n");
         Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
         budgetManager.addExpense(expense);
         assertEquals(false, expense.getDone());
-        provideInput("2\n");
+        String input = "mark/2";
 
-        expenseCommand.executeMarkCommand();
+        expenseCommand.executeMarkCommand(input);
         String expectedMessage = "Please enter a valid expense number.";
         String actualOutput = outContent.toString().trim();
 
