@@ -566,7 +566,7 @@ class ExpenseCommandTest {
 
         // Simulate user input: "cab"
         provideInput("cab\n");
-        expenseCommand.findExpense();
+        expenseCommand.findExpense("find /cab");
 
         String output = outContent.toString();
         // Verify that the output indicates one matching expense and shows the details of "Cab Ride"
@@ -583,7 +583,7 @@ class ExpenseCommandTest {
 
         // Simulate user input: "bus"
         provideInput("bus\n");
-        expenseCommand.findExpense();
+        expenseCommand.findExpense("find /bus");
 
         String output = outContent.toString();
         // Verify that the output indicates no matching expenses were found for the keyword "bus"

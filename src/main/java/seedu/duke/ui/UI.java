@@ -153,8 +153,8 @@ public class UI {
             expenseCommand.showExpenseSummary();
         } else if (command.equals(Commands.EXPORT)){
             expenseCommand.exportExpenseSummary();
-        } else if (command.equals(Commands.FIND)){
-            expenseCommand.findExpense();
+        } else if (command.startsWith(Commands.FIND)){
+            expenseCommand.findExpense(command);
         } else {
             messages.displayInvalidCommandMessage();
         }
