@@ -184,17 +184,18 @@ View all the expenses.
 
 #### View unsettled expenses: `list-unsettled`
 
-View expenses you owe or is owed to you.
+View all expenses that are unmarked
 
-- **Format and Usage:** `list-unsettled`
-- **Example:**
+- **Format and Example Usage:** `list-unsettled`
+- **Output:**
 
   ```
   All expenses are in SGD
   Expense #1
   Title: test expense
   Description: testing testing
-  Amount: $50.00
+  Date: 20-08-2004
+  Amount: 50.00
 
   You have 1 unsettled expense
   ```
@@ -203,18 +204,18 @@ View expenses you owe or is owed to you.
 
 #### View settled expenses: `list-settled`
 
-View expenses that are marked as settled using "mark" command.
+View all expenses that are marked
 
-- **Format and Usage:** `list-settled`
-- **Example:**
+- **Format and Example Usage:** `list-settled`
+- **Output:**
 
   ```
   All expenses are in SGD
   Expense #1
   Title: test expense
   Description: testing testing
-  Date: 01-01-2025
-  Amount: $50.00
+  Date: 20-08-2004
+  Amount: 50.00
 
   You have 1 settled expense
   ```
@@ -225,12 +226,11 @@ View expenses that are marked as settled using "mark" command.
 
 Once a transaction is made, the user can mark it as paid.
 
-- **Format and Usage:** `mark`
-- **Example:**
+- **Format** `mark/<expense ID>`
+- **Example Usage:** `mark/1`
+- **Output**
   ```
-  mark
-  "Enter expense number to mark:"
-  User input: 1
+  Expense 1 successfully marked!
   ```
 
 ---
@@ -239,11 +239,11 @@ Once a transaction is made, the user can mark it as paid.
 
 User can unmark an expense that has been marked already.
 
-- **Format and Usage:** `unmark`
-- **Example:**
+- **Format** `unmark/<expense ID>`
+- **Example Usage:** `unmark/1`
+- **Output**
   ```
-  "Enter expense number to unmark"
-  User input: 1
+  Expense 1 successfully unmarked!
   ```
   
 ---
@@ -262,40 +262,31 @@ User can find expenses that contain this keyword in the expense description
 
 #### Change currency: `change-currency`
 
-User can change the currency all expenses are in
+User can change the currency of all expenses. Almost all currencies are supported to be exchanged to, even the currency you are currently using.
 
-- **Format and Usage:** `change-currency`
-- **Example 1:**
+Currency to change to must follow the ISO 4217 standard (eg: SGD, USD, JPY), either in upper or lowercase.
+
+Exchange rate must be positive and below 50000.
+
+Rates in method 2 are only an estimate.
+
+After exchange, the amount will be rounded off to 2dp.
+
+- **Format for Method 1** `change-currency/1/<currency to change to>/<exchange rate>`
+- **Format for Method 2** `change-currency/2/<currency to change to>`
+- **Example Usage For Method 1:** `change-currency/1/EUR/0.75`
+- **Example Usage For Method 2:** `change-currency/2/EUR`
+
+- **Output**
   ```
-  "[1] Enter your own exchange rate from the current currency"
-  "[2] Switch currencies with an estimated exchange rate"
-  "Enter option:"
-  User input: 1
-  "Note: Please enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)"
-  "Please enter a currency to change to"
-  User input: USD
-  "Please input your exchange rate from SGD to a new currency"
-  User input: 0.75
-  "Currency successfully changed to USD"
-  ```
-  - **Usage example 2:**
-  ```
-  "[1] Enter your own exchange rate from the current currency"
-  "[2] Switch currencies with an estimated exchange rate"
-  "Enter option:"
-  User input: 2
-  "Your current currency is SGD"
-  "Note: Please enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)"
-  "Please enter a currency to change to"
-  User input: USD
-  "Currency successfully changed to USD"
+  "Currency successfully changed to EUR"
   ```
 
 ---
 
 #### View balance in wallet: `balance`
 Shows total money to be paid and total money to pay.
-- **Format and Usage:** `balance`
+- **Format and Example usage:** `balance`
 - **Output:**
   ```
   Balance Overview
