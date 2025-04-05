@@ -106,11 +106,6 @@ public class BudgetManager {
     //@@author NandhithaShree
     /**
      * Returns the count of unsettled (pending) expenses.
-     * <p>
-     * Iterates through the list of expenses and counts how many expenses are not marked as done.
-     * An assertion is included to ensure that the number of unsettled expenses is non-negative.
-     * </p>
-     *
      * @return the number of unsettled expenses
      * @throws AssertionError if the number of unsettled expenses is negative
      */
@@ -207,12 +202,6 @@ public class BudgetManager {
 
     /**
      * Edits the currency of all expenses based on a given exchange rate.
-     * <p>
-     * The method iterates through all expenses and adjusts their amounts by multiplying
-     * each expense's amount with the provided {@code finalExchangeRate}. It calls {@code editExpense}
-     * for each expense to update its details, including the new amount in the converted currency.
-     * If no expenses are present, the method returns early without making any changes.
-     * </p>
      *
      * @param finalExchangeRate the exchange rate used to convert each expense amount
      */

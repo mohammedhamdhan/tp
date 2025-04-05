@@ -98,81 +98,57 @@ public class UI {
      */
     public void processCommand(String userInput) {
         String command = userInput.trim().toLowerCase();
-        
-        switch (command) {
-        case Commands.HELP:
+
+        if(command.equals(Commands.HELP)){
             messages.displayCommandList();
-            break;
-        case Commands.EXIT:
-            // Save expenses before exiting
+        } else if(command.equals(Commands.EXIT)){
             budgetManager.saveAllExpenses();
             messages.displayExitMessage();
             isRunning = false;
-            break;
-        case Commands.ADD:
+        } else if(command.startsWith(Commands.ADD)){
             expenseCommand.executeAddExpense();
-            break;
-        case Commands.LIST:
+        } else if(command.startsWith(Commands.LIST)){
             expenseCommand.displayAllExpenses();
-            break;
-        case Commands.DELETE:
+        } else if(command.startsWith(Commands.DELETE)){
             expenseCommand.executeDeleteExpense();
-            break;
-        case Commands.EDIT:
+        } else if(command.startsWith(Commands.EDIT)) {
             expenseCommand.executeEditExpense();
-            break;
-        case Commands.BALANCE:
+        } else if(command.equals(Commands.BALANCE)) {
             expenseCommand.showBalanceOverview();
-            break;
-        case Commands.MARK:
+        } else if (command.startsWith(Commands.MARK)){
             expenseCommand.executeMarkCommand();
-            break;
-        case Commands.UNMARK:
+        } else if (command.startsWith(Commands.UNMARK)) {
             expenseCommand.executeUnmarkCommand();
-            break;
-        case Commands.SETTLED_LIST:
+        } else if (command.equals(Commands.SETTLED_LIST)) {
             expenseCommand.displaySettledExpenses();
-            break;
-        case Commands.UNSETTLED_LIST:
+        } else if (command.equals(Commands.UNSETTLED_LIST)) {
             expenseCommand.displayUnsettledExpenses();
-            break;
-        case Commands.CREATE_GROUP:
+        } else if (command.startsWith(Commands.CREATE_GROUP)) {
             friendsCommand.createGroup();
-            break;
-        case Commands.VIEW_GROUP:
+        } else if (command.startsWith(Commands.VIEW_GROUP)) {
             friendsCommand.viewGroup();
-            break;
-        case Commands.ADD_MEMBER:
+        } else if (command.startsWith(Commands.ADD_MEMBER)) {
             friendsCommand.addMember();
-            break;
-        case Commands.REMOVE_MEMBER:
+        } else if (command.startsWith(Commands.REMOVE_MEMBER)) {
             friendsCommand.removeMember();
-            break;
-        case Commands.VIEW_ALL_GROUPS:
+        } else if (command.startsWith(Commands.VIEW_ALL_GROUPS)) {
             friendsCommand.viewAllGroups();
-            break;
-        case Commands.SPLIT:
+        } else if(command.startsWith(Commands.SPLIT)) {
             splitCommand.executeSplit();
-            break;
-        case Commands.REMOVE_GROUP:
+        } else if(command.startsWith(Commands.REMOVE_GROUP)) {
             friendsCommand.removeGroup();
-            break;
-        case Commands.CHANGE_CURRENCY:
+        } else if(command.startsWith(Commands.CHANGE_CURRENCY)){
             currency.changeCurrency();
-            break;
-        case Commands.SUMMARY:
+        } else if (command.startsWith(Commands.SUMMARY)){
             expenseCommand.showExpenseSummary();
-            break;
-        case Commands.EXPORT:
+        } else if (command.equals(Commands.EXPORT)){
             expenseCommand.exportExpenseSummary();
-            break;
-        case Commands.FIND:
+        } else if (command.equals(Commands.FIND)){
             expenseCommand.findExpense();
-            break;
-        default:
+        } else {
             messages.displayInvalidCommandMessage();
-            break;
         }
     }
 }
 //@@author
+
