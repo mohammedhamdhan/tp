@@ -232,10 +232,6 @@ public class FriendsCommands {
             String response = scanner.nextLine().trim().toLowerCase();
 
             if (response.equals("y")) {
-                if (groupManager.groupExists(groupName)) {
-                    System.out.println("Group '" + groupName + "' already exists. Please use the add-member command to add more members.");
-                    return;
-                }
                 groupManager.addFriendToGroup(groupName, new Friend(name, groupName)); // Directly add the friend
                 groupManager.saveGroups(); // Save the new group and member
                 System.out.println("Group " + groupName + " has been created and " + name + " has been added.");
