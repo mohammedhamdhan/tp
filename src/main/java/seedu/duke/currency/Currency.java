@@ -272,6 +272,8 @@ public class Currency {
 
         } catch (NumberFormatException e) {
             System.out.println("Please input a valid number");
+        } catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("Please give input in correct format");
         }
     }
 

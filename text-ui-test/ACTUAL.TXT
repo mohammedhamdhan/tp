@@ -295,12 +295,19 @@ Enter command: Invalid command.
 
 ________________________________________________________________________________
 
-Enter command: [1] Enter your own exchange rate from the current currency
-[2] Switch currencies with an estimated exchange rate
-Enter option: Note: Please enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)
-Please enter a currency to change to
-Please input your exchange rate from SGD to the new currency
-Currency successfully changed to EUR
+Enter command: Please give input in correct format
+
+________________________________________________________________________________
+
+Enter command: Invalid command.
+
+________________________________________________________________________________
+
+Enter command: Invalid command.
+
+________________________________________________________________________________
+
+Enter command: Invalid command.
 
 ________________________________________________________________________________
 
