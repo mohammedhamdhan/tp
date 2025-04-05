@@ -592,6 +592,8 @@ Displays comprehensive analytics of your expenses through different visualizatio
 
   [Pie chart visualization will appear in a separate window]
   ```
+  ![image](https://github.com/user-attachments/assets/ed0ab5ce-91d1-44ba-baf6-2eb61bce1c4b)
+
 
 - **Notes about Pie Chart Visualization:**
   - Only available for category-wise summary
