@@ -8,8 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,13 +62,18 @@ public class ExpenseCommand {
     //@@author matthewyeo1
     public static boolean isValidDate(String date) {
         if (date.isEmpty()) {
-            System.out.println("Please enter a date.");
             return false;
         }
 
         // Ensure format is correct: DD-MM-YYYY
         if (!date.matches("\\d{2}-\\d{2}-\\d{4}")) {
-            System.out.println("Invalid date format.");
+            return false;
+        }
+
+        String[] parts = date.split("-");
+        int year = Integer.parseInt(parts[2]);
+
+        if (year < 2000) {
             return false;
         }
 
@@ -79,9 +84,45 @@ public class ExpenseCommand {
             dateFormat.parse(date); // Throws exception if date is invalid
             return true;
         } catch (ParseException e) {
-            System.out.println("Invalid day or month value. Please enter a real date.");
             return false;
         }
+    }
+
+    public static boolean isValidDescription(String description) {
+        return description.length() <= 200;
+    }
+
+    public static boolean isUniqueTitle(String title, List<Expense> expenses) {
+        for (Expense expense : expenses) {
+            if (expense.getTitle().equals(title)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isAmountBelowCap(Double amount, Currency currency) {
+        double maxSGDAmount = 50000.0;
+        double sgdEquivalentAmount;
+        String currentCurrency = currency.getCurrentCurrency();
+
+        if (currentCurrency.equals("SGD")) {
+            Double exchangeRate = currency.getExchangeRate(currentCurrency);
+            if (exchangeRate == null) {
+                System.out.println("Error: Unable to retrieve exchange rate for " + currentCurrency);
+                return false;
+            }
+            sgdEquivalentAmount = amount / exchangeRate;
+        } else {
+            sgdEquivalentAmount = amount;
+        }
+
+        if (sgdEquivalentAmount > maxSGDAmount) {
+            System.out.println("The entered amount exceeds the maximum " +
+                    "allowed limit of 50,000 SGD (or its equivalent).");
+            return false;
+        }
+        return true;
     }
     //@@author
 
@@ -89,41 +130,53 @@ public class ExpenseCommand {
     /**
      * Executes the add expense command.
      */
-    public void executeAddExpense() {
+    public void executeAddExpense(String userInput) {
+        String[] parts = userInput.split("/", 4); // Split into title, date, amount
+
+        if (parts.length < 4 || parts[1].trim().isEmpty() || parts[2].trim().isEmpty() || parts[3].trim().isEmpty()) {
+            System.out.println("Invalid format. Usage: add/<title>/<date>/<amount>");
+            return;
+        }
+
         try {
-            System.out.println("Enter expense title:");
-            String title = scanner.nextLine().trim();
+            String title = parts[1].trim();
+            String date = parts[2].trim();
+            String amountStr = parts[3].trim();
 
-            if (title.isEmpty()) {
-                System.out.println("Title cannot be empty.");
+            // Validate title uniqueness
+            List<Expense> expenses = budgetManager.getAllExpenses();
+            if (!isUniqueTitle(title, expenses)) {
+                System.out.println("Expense with the same title already exists.");
                 return;
             }
 
-            System.out.println("Enter expense description:");
-            String description = scanner.nextLine().trim();
-
-            System.out.println("Enter date of expense (DD-MM-YYYY):");
-            String date = scanner.nextLine().trim();
+            // Validate date
             if (!isValidDate(date)) {
+                System.out.println("Invalid date. Please enter a valid date in DD-MM-YYYY format.");
                 return;
             }
 
-            System.out.println("Enter expense amount:");
-            String amountStr = scanner.nextLine().trim();
-
-            if (amountStr.isEmpty()) {
-                System.out.println("Amount cannot be empty.");
-                return;
-            }
-
+            // Validate amount
             double amount = Double.parseDouble(amountStr);
-
             if (amount < 0) {
                 System.out.println("Amount cannot be negative.");
                 return;
             }
+            if (!isAmountBelowCap(amount, currency)) {
+                return;
+            }
 
-            assert amount >= 0 : "Amount should be non-negative";
+            // Prompt for optional description
+            System.out.println("Enter the description (press Enter to skip):");
+            String description = scanner.nextLine().trim();
+            if (description.isEmpty()) {
+                description = "nil";
+            } else if (!isValidDescription(description)) {
+                System.out.println("Description exceeds 200 characters.");
+                return;
+            }
+
+            // Create and add expense
             Expense expense = new Expense(title, description, date, amount);
             budgetManager.addExpense(expense);
 
@@ -135,130 +188,109 @@ public class ExpenseCommand {
             System.out.println("Error adding expense: " + e.getMessage());
         }
     }
-
     //@@author
 
     //@@author matthewyeo1
     /**
      * Executes the delete expense command by setting the expense amount to 0.0.
      */
-    public void executeDeleteExpense() {
+    public void executeDeleteExpense(String userInput) {
+
         try {
-            displayAllExpenses();
-
-            if (budgetManager.getExpenseCount() == 0) {
+            String[] parts = userInput.split("/", 2); // Split into command and expense ID
+            if (parts.length < 2 || parts[1].trim().isEmpty()) {
+                System.out.println("Invalid format. Usage: delete/<expense ID>");
                 return;
             }
 
-            System.out.println("Enter the index of the expense to delete:");
-            String indexStr = scanner.nextLine().trim();
-
-            if (indexStr.isEmpty()) {
-                System.out.println("Please enter a valid expense number.");
-                return;
-            }
-
-            int index = Integer.parseInt(indexStr) - 1; // Convert to 0-based index
+            int index = Integer.parseInt(parts[1].trim()) - 1; // Convert to 0-based index
 
             if (index < 0 || index >= budgetManager.getExpenseCount()) {
                 System.out.println("Please enter a valid expense number.");
                 return;
             }
-            //@@author
 
-            //@@author nandhananm7
             Expense expenseToDelete = budgetManager.getExpense(index);
             System.out.println("Are you sure you want to delete this expense? (y/n)");
             System.out.println(expenseToDelete);
             String confirmation = scanner.nextLine().trim().toLowerCase();
 
             if (!confirmation.equals("y")) {
-                System.out.println("Deletion Aborted.");
+                System.out.println("Deletion aborted.");
                 return;
             }
-            //@@author
 
-            //@@author matthewyeo1
-            assert index >= 0 && index < budgetManager.getExpenseCount() : "Index should be within valid range";
+            // Delete the expense
             Expense deletedExpense = budgetManager.deleteExpense(index);
-            // Update the owesData.txtfile
             updateOwesDataFile(deletedExpense);
             System.out.println("Expense deleted successfully:");
             System.out.println(deletedExpense);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input format. Please enter a valid number.");
+            System.out.println("Invalid input format. Please enter a valid expense ID.");
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Please enter a valid expense number.");
         } catch (Exception e) {
             System.out.println("Error deleting expense: " + e.getMessage());
         }
     }
+
     //@@author
 
     //@@author mohammedhamdhan
     /**
      * Executes the edit expense command.
      */
-    public void executeEditExpense() {
+    public void executeEditExpense(String userInput) {
         try {
-            displayAllExpenses();
-
-            if (budgetManager.getExpenseCount() == 0) {
+            String[] parts = userInput.split("/", 5); // Split into ID, title, date, amount
+            if (parts.length < 5 || parts[1].trim().isEmpty() || parts[4].trim().isEmpty()) {
+                System.out.println("Invalid format. Usage: edit/<expense ID>/<new title>/<new date>/<new amount>");
                 return;
             }
 
-            System.out.println("Enter the index of the expense to edit:");
-            String indexStr = scanner.nextLine().trim();
-
-            if (indexStr.isEmpty()) {
-                System.out.println("Please enter a valid expense number.");
-                return;
-            }
-
-            int index = Integer.parseInt(indexStr) - 1; // Convert to 0-based index
-
+            int index = Integer.parseInt(parts[1].trim()) - 1; // Convert to 0-based index
             if (index < 0 || index >= budgetManager.getExpenseCount()) {
                 System.out.println("Please enter a valid expense number.");
                 return;
             }
 
-            assert index >= 0 && index < budgetManager.getExpenseCount() : "Index should be within valid range";
+            String title = parts[2].trim().equalsIgnoreCase("x") ? null : parts[2].trim();
+            String date = parts[3].trim().equalsIgnoreCase("x") ? null : parts[3].trim();
+            String amountStr = parts[4].trim().equalsIgnoreCase("x") ? null : parts[4].trim();
 
-            // Display current details
-            Expense currentExpense = budgetManager.getExpense(index);
-            assert currentExpense != null : "Current expense should not be null";
-            System.out.println("Current expense details:");
-            System.out.println(currentExpense);
-
-            // Get new details (leave blank to keep current)
-            System.out.println("Enter new title (press Enter to keep current):");
-            String title = scanner.nextLine().trim();
-            if (title.isEmpty()) {
-                title = null;
+            // Validate date if provided
+            if (date != null && !isValidDate(date)) {
+                System.out.println("Invalid date format. Please enter a valid date in DD-MM-YYYY format.");
+                return;
             }
 
-            System.out.println("Enter new description (press Enter to keep current):");
-            String description = scanner.nextLine().trim();
-            if (description.isEmpty()) {
-                description = null;
-            }
-
-            System.out.println("Enter new date (press Enter to keep current):");
-            String date = scanner.nextLine().trim();
-            isValidDate(date);
-
-            System.out.println("Enter new amount (press Enter to keep current):");
-            String amountInput = scanner.nextLine().trim();
-            double amount = -1; // Sentinel value to indicate no change
-            if (!amountInput.isEmpty()) {
-                amount = Double.parseDouble(amountInput);
+            // Validate amount if provided
+            double amount = -1; // Sentinel value for no change
+            if (amountStr != null) {
+                amount = Double.parseDouble(amountStr);
                 if (amount < 0) {
                     System.out.println("Amount cannot be negative. Keeping current amount.");
                     amount = -1;
                 }
                 assert amount >= 0 || amount == -1 : "Amount should be non-negative or -1 for no change";
+
+                if (!isAmountBelowCap(amount, currency)) {
+                    System.out.println("Amount exceeds the maximum allowed limit of 50,000 SGD (or its equivalent).");
+                    return;
+                }
             }
 
+            // Prompt for optional description
+            System.out.println("Enter new description (press Enter to keep current):");
+            String description = scanner.nextLine().trim();
+            if (description.isEmpty()) {
+                description = "nil";
+            } else if (!isValidDescription(description)) {
+                System.out.println("Description exceeds 200 characters.");
+                return;
+            }
+
+            // Edit the expense
             Expense editedExpense = budgetManager.editExpense(index, title, description, date, amount);
             assert editedExpense != null : "Edited expense should not be null";
             System.out.println("Expense edited successfully:");
@@ -271,7 +303,6 @@ public class ExpenseCommand {
             System.out.println("Error editing expense: " + e.getMessage());
         }
     }
-
     /**
      * Displays all expenses in chronological order (most recent first).
      */
@@ -285,8 +316,6 @@ public class ExpenseCommand {
         }
 
         System.out.println("All expenses are in " + currency.getCurrentCurrency());
-      
-        expenses.sort(Comparator.comparing(Expense::getDate).reversed());
 
         System.out.println("List of Expenses:");
         for (int i = 0; i < expenses.size(); i++) {
@@ -312,8 +341,6 @@ public class ExpenseCommand {
         }
 
         System.out.println("All expenses are in " + currency.getCurrentCurrency());
-
-        expenses.sort(Comparator.comparing(Expense::getDate).reversed());
 
         for (int i = 0; i < expenses.size(); i++) {
             while(i < expenses.size() && !expenses.get(i).getDone()) {
@@ -347,8 +374,6 @@ public class ExpenseCommand {
         }
 
         System.out.println("All expenses are in " + currency.getCurrentCurrency());
-
-        expenses.sort(Comparator.comparing(Expense::getDate).reversed());
 
         for (int i = 0; i < expenses.size(); i++) {
             while (i < expenses.size() && expenses.get(i).getDone()) {
@@ -866,5 +891,43 @@ public class ExpenseCommand {
     }
     //@@author
 
+    //@@author matthewyeo1
+    public void sortExpenses(String option) {
+        List<Expense> expenses = budgetManager.getAllExpenses();
+
+        if (expenses.isEmpty()) {
+            System.out.println("No expenses to sort.");
+            return;
+        }
+
+        switch (option) {
+        case "1":
+            expenses.sort(Comparator.comparing(Expense::getTitle));
+            System.out.println("Expenses sorted by title (ascending):");
+            break;
+        case "2":
+            expenses.sort(Comparator.comparing(Expense::getTitle).reversed());
+            System.out.println("Expenses sorted by title (descending):");
+            break;
+        case "3":
+            expenses.sort(Comparator.comparing(Expense::getAmount));
+            System.out.println("Expenses sorted by amount (ascending):");
+            break;
+        case "4":
+            expenses.sort(Comparator.comparing(Expense::getAmount).reversed());
+            System.out.println("Expenses sorted by amount (descending):");
+            break;
+        default:
+            System.out.println("Invalid option.");
+            return;
+        }
+
+        for (Expense expense : expenses) {
+            System.out.println();
+            System.out.println(expense);
+        }
+    }
+    //@@author
 }
+//@@author
 

@@ -19,12 +19,12 @@ add
     - Amount: The monetary value (must be a positive number)
 
 mark
-  Description: mark an expense as settled
+  Description: Mark an expense as settled
   Usage: mark
   You will be prompted to enter: expense number
 
 unmark
-  Description: unmark an expense to become an unsettled expense
+  Description: Unmark an expense to become an unsettled expense
   Usage: unmark
   You will be prompted to enter: expense number
 
@@ -68,13 +68,13 @@ create-group
     - Enter done to create and save the group
 
 view-group
-  Description: view the members of a specific group
+  Description: View the members of a specific group
   Usage: view-group
   You will be prompted to enter:
     - Enter group name
 
 add-member
-  Description: add a member to an existing group/ create a new group and add
+  Description: Add a member to an existing group/ create a new group and add
   Usage: add-member
   You will be prompted to enter:
     - Enter name of new member
@@ -82,14 +82,14 @@ add-member
         If the group exists, adds to group. Else prompts the user to create a new group first
 
 remove-group
-  Description: remove a member from a group
+  Description: Remove a member from a group
   Usage: remove-group
   You will be prompted to enter:
     - Enter name of member to remove
     - Enter group to remove member from
 
 my-groups
-  Description: view the members of a specific group
+  Description: View the members of a specific group
   Usage: view-group
   Shows all the members and groups
 
@@ -113,149 +113,198 @@ export
   You will be prompted to choose:
     - Monthly Summary: Exports to monthly_summary.txt
     - Category-wise Summary: Exports to category_summary.txt
+
 change-currency
-  Description: Change all you expenses to a different currency
-  Usage: change currency
+  Description: Change all your expenses to a different currency
+  Usage: change-currency
   You will be prompted to enter:
-    -Please enter a number
+    - Please enter a number
   Enter 1 to enter your own exchange rate
   Enter 2 to use an estimated exchange rate
-    -Please enter a currency to change to
-  Enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)
-    -Please input your exchange rate from USD to a new currency (if you picked 1)
+    - Please enter a currency to change to
+  Enter currency based on ISO 4217 standard (e.g., SGD, USD, JPY)
+    - Please input your exchange rate from USD to a new currency (if you picked 1)
   Enter the exchange rate you'd like to use
+
+sort-list
+  Description: Choose how you would like to view your expenses
+  Usage: sort-list N, where N is 1,2,3 or 4
+    - Sort expenses for viewing by:
+    [1] Title (ascending alphabetically)
+    [2] Title (descending alphabetically)
+    [3] Amount (ascending)
+    [4] Amount (descending)
+
+  Enter 1 to show the expense of which the first letter of the title comes last lexicographically on top
+  Enter 2 to show the expense of which the first letter of the title comes first lexicographically on top
+  Enter 3 to show the expense with the smallest amount on top
+  Enter 4 to show the expense with the largest amount on top
 
 exit
   Description: Exit the program
   Usage: exit
 
-________________________________________________________________________________
-
-Enter command: No expenses found.
 
 ________________________________________________________________________________
 
-Enter command: Enter expense title:
-Enter expense description:
-Enter date of expense (DD-MM-YYYY):
-Enter expense amount:
+Enter command: Enter the description (press Enter to skip):
 Expense added successfully:
-Title: Breakfast
-Description: 1x Big Breakfast from McDonald's
+Title: groceries
+Description: Weekly food shopping
 Date: 01-01-2025
-Amount: 10.00
+Amount: 100.00
 
 ________________________________________________________________________________
 
-Enter command: All expenses are in SGD
-List of Expenses:
-Expense #1
-Title: Breakfast
-Description: 1x Big Breakfast from McDonald's
-Date: 01-01-2025
-Amount: 10.00
-
-Enter the index of the expense to edit:
-Current expense details:
-Title: Breakfast
-Description: 1x Big Breakfast from McDonald's
-Date: 01-01-2025
-Amount: 10.00
-Enter new title (press Enter to keep current):
-Enter new description (press Enter to keep current):
-Enter new date (press Enter to keep current):
-Enter new amount (press Enter to keep current):
-Expense edited successfully:
-Title: Breakfast
-Description: 1x Big Breakfast from McDonald's
-Date: 31-12-2025
-Amount: 9.00
+Enter command: Invalid command.
 
 ________________________________________________________________________________
 
-Enter command: All expenses are in SGD
-List of Expenses:
-Expense #1
-Title: Breakfast
-Description: 1x Big Breakfast from McDonald's
-Date: 31-12-2025
-Amount: 9.00
-
-Enter the index of the expense to edit:
-Please enter a valid expense number.
-
-________________________________________________________________________________
-
-Enter command: All expenses are in SGD
-List of Expenses:
-Expense #1
-Title: Breakfast
-Description: 1x Big Breakfast from McDonald's
-Date: 31-12-2025
-Amount: 9.00
-
-Enter the index of the expense to edit:
-Current expense details:
-Title: Breakfast
-Description: 1x Big Breakfast from McDonald's
-Date: 31-12-2025
-Amount: 9.00
-Enter new title (press Enter to keep current):
-Enter new description (press Enter to keep current):
-Enter new date (press Enter to keep current):
-Enter new amount (press Enter to keep current):
-Expense edited successfully:
-Title: Supper
-Description: 10x Egg Prata from SpringLeaf
+Enter command: Enter the description (press Enter to skip):
+Expense added successfully:
+Title: dinner
+Description: Italian restaurant
 Date: 02-01-2025
-Amount: 25.00
+Amount: 50.00
+
+________________________________________________________________________________
+
+Enter command: Invalid command.
+
+________________________________________________________________________________
+
+Enter command: Enter the description (press Enter to skip):
+Expense added successfully:
+Title: lunch
+Description: nil
+Date: 03-01-2025
+Amount: 20.00
+
+________________________________________________________________________________
+
+Enter command: All expenses are in SGD
+List of Expenses:
+Expense #1
+Title: groceries
+Description: Weekly food shopping
+Date: 01-01-2025
+Amount: 100.00
+
+Expense #2
+Title: dinner
+Description: Italian restaurant
+Date: 02-01-2025
+Amount: 50.00
+
+Expense #3
+Title: lunch
+Description: nil
+Date: 03-01-2025
+Amount: 20.00
+
+
+________________________________________________________________________________
+
+Enter command: Invalid command.
+
+________________________________________________________________________________
+
+Enter command: Are you sure you want to delete this expense? (y/n)
+Title: dinner
+Description: Italian restaurant
+Date: 02-01-2025
+Amount: 50.00
+Owed amounts file not found. No amounts to update.
+Expense deleted successfully:
+Title: dinner
+Description: Italian restaurant
+Date: 02-01-2025
+Amount: 50.00
+
+________________________________________________________________________________
+
+Enter command: Invalid command.
+
+________________________________________________________________________________
+
+Enter command: Enter new description (press Enter to keep current):
+Expense edited successfully:
+Title: new groceries
+Description: Updated description
+Date: 01-01-2025
+Amount: 150.00
+
+________________________________________________________________________________
+
+Enter command: Invalid command.
+
+________________________________________________________________________________
+
+Enter command: Expense 1 successfully marked!
+
+________________________________________________________________________________
+
+Enter command: Invalid command.
+
+________________________________________________________________________________
+
+Enter command: Expense 1 successfully unmarked!
+
+________________________________________________________________________________
+
+Enter command: Invalid command.
+
+________________________________________________________________________________
+
+Enter command: Invalid command.
+
+________________________________________________________________________________
+
+Enter command: Invalid command.
+
+________________________________________________________________________________
+
+Enter command: Choose summary view:
+1. Monthly Summary
+2. Category-wise Summary
+3. Cancel
+Invalid choice. Please select 1, 2, or 3.
+
+________________________________________________________________________________
+
+Enter command: Choose export format:
+1. Monthly Summary
+2. Category-wise Summary
+3. Back to main menu
+Monthly summary exported to monthly_summary.txt
+
+________________________________________________________________________________
+
+Enter command: Invalid command.
 
 ________________________________________________________________________________
 
 Enter command: Balance Overview
 ----------------
-Total number of unsettled expenses: 1
-Total amount owed: 25.00
+Total number of unsettled expenses: 2
+Total amount owed: 170.00
 
 ________________________________________________________________________________
 
-Enter command: All expenses are in SGD
-List of Expenses:
-Expense #1
-Title: Supper
-Description: 10x Egg Prata from SpringLeaf
-Date: 02-01-2025
-Amount: 25.00
-
-Enter the index of the expense to delete:
-Please enter a valid expense number.
+Enter command: Invalid command.
 
 ________________________________________________________________________________
 
-Enter command: All expenses are in SGD
-List of Expenses:
-Expense #1
-Title: Supper
-Description: 10x Egg Prata from SpringLeaf
-Date: 02-01-2025
-Amount: 25.00
-
-Enter the index of the expense to delete:
-Are you sure you want to delete this expense? (y/n)
-Title: Supper
-Description: 10x Egg Prata from SpringLeaf
-Date: 02-01-2025
-Amount: 25.00
-Owed amounts file not found. No amounts to update.
-Expense deleted successfully:
-Title: Supper
-Description: 10x Egg Prata from SpringLeaf
-Date: 02-01-2025
-Amount: 25.00
+Enter command: [1] Enter your own exchange rate from the current currency
+[2] Switch currencies with an estimated exchange rate
+Enter option: Note: Please enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)
+Please enter a currency to change to
+Please input your exchange rate from SGD to the new currency
+Currency successfully changed to EUR
 
 ________________________________________________________________________________
 
-Enter command: No expenses found.
+Enter command: Invalid command.
 
 ________________________________________________________________________________
 
@@ -274,12 +323,12 @@ add
     - Amount: The monetary value (must be a positive number)
 
 mark
-  Description: mark an expense as settled
+  Description: Mark an expense as settled
   Usage: mark
   You will be prompted to enter: expense number
 
 unmark
-  Description: unmark an expense to become an unsettled expense
+  Description: Unmark an expense to become an unsettled expense
   Usage: unmark
   You will be prompted to enter: expense number
 
@@ -323,13 +372,13 @@ create-group
     - Enter done to create and save the group
 
 view-group
-  Description: view the members of a specific group
+  Description: View the members of a specific group
   Usage: view-group
   You will be prompted to enter:
     - Enter group name
 
 add-member
-  Description: add a member to an existing group/ create a new group and add
+  Description: Add a member to an existing group/ create a new group and add
   Usage: add-member
   You will be prompted to enter:
     - Enter name of new member
@@ -337,14 +386,14 @@ add-member
         If the group exists, adds to group. Else prompts the user to create a new group first
 
 remove-group
-  Description: remove a member from a group
+  Description: Remove a member from a group
   Usage: remove-group
   You will be prompted to enter:
     - Enter name of member to remove
     - Enter group to remove member from
 
 my-groups
-  Description: view the members of a specific group
+  Description: View the members of a specific group
   Usage: view-group
   Shows all the members and groups
 
@@ -368,21 +417,37 @@ export
   You will be prompted to choose:
     - Monthly Summary: Exports to monthly_summary.txt
     - Category-wise Summary: Exports to category_summary.txt
+
 change-currency
-  Description: Change all you expenses to a different currency
-  Usage: change currency
+  Description: Change all your expenses to a different currency
+  Usage: change-currency
   You will be prompted to enter:
-    -Please enter a number
+    - Please enter a number
   Enter 1 to enter your own exchange rate
   Enter 2 to use an estimated exchange rate
-    -Please enter a currency to change to
-  Enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)
-    -Please input your exchange rate from USD to a new currency (if you picked 1)
+    - Please enter a currency to change to
+  Enter currency based on ISO 4217 standard (e.g., SGD, USD, JPY)
+    - Please input your exchange rate from USD to a new currency (if you picked 1)
   Enter the exchange rate you'd like to use
+
+sort-list
+  Description: Choose how you would like to view your expenses
+  Usage: sort-list N, where N is 1,2,3 or 4
+    - Sort expenses for viewing by:
+    [1] Title (ascending alphabetically)
+    [2] Title (descending alphabetically)
+    [3] Amount (ascending)
+    [4] Amount (descending)
+
+  Enter 1 to show the expense of which the first letter of the title comes last lexicographically on top
+  Enter 2 to show the expense of which the first letter of the title comes first lexicographically on top
+  Enter 3 to show the expense with the smallest amount on top
+  Enter 4 to show the expense with the largest amount on top
 
 exit
   Description: Exit the program
   Usage: exit
+
 
 ________________________________________________________________________________
 

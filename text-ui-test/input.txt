@@ -1,30 +1,37 @@
+add/Groceries/01-01-2025/100
+Weekly food shopping
+
+add/Dinner/02-01-2025/50
+Italian restaurant
+
+add/Lunch/03-01-2025/20
+
 list
-add
-Breakfast
-1x Big Breakfast from McDonald's
-01-01-2025
-10.00
-edit
-1
 
-
-31-12-2025
-9.00
-edit
-0
-edit
-1
-Supper
-10x Egg Prata from SpringLeaf
-02-01-2025
-25.00
-balance
-delete
-0
-delete
-1
+delete/2
 y
-list
+
+edit/1/New Groceries/X/150
+Updated description
+
+mark/1
+
+unmark/1
+
+find/Groceries
+
+summary
+
+export
+1
+
+balance
+
+change-currency
+1
+EUR
+0.85
+
 help
-invalidcommand
+
 exit

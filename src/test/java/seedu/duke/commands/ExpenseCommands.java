@@ -1,3 +1,4 @@
+//@@author matthewyeo1
 package seedu.duke.commands;
 
 import java.util.Scanner;
@@ -19,7 +20,6 @@ import seedu.duke.currency.Currency;
 import seedu.duke.expense.BudgetManager;
 import seedu.duke.expense.Expense;
 
-//@@author matthewyeo1
 class ExpenseCommandTest {
     private Currency currency;
     private BudgetManager budgetManager;
@@ -31,10 +31,12 @@ class ExpenseCommandTest {
     private final String testDate = "31-12-2025";
     private final double testAmount = 100.0;
 
+
     @BeforeEach
     void setUp() {
         budgetManager = new BudgetManager();
         outContent = new ByteArrayOutputStream();
+
         System.setOut(new PrintStream(outContent));
     }
 
@@ -83,12 +85,12 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense() {
-        provideInput("Groceries\nWeekly food shopping\n01-01-2025\n100\n");
+    void testExecuteAddExpenseValidInput() {
+        String userInput = "add/Groceries/01-01-2025/100";
+        provideInput("Weekly food shopping\n"); // Simulate optional description
+        expenseCommand.executeAddExpense(userInput);
 
-        expenseCommand.executeAddExpense();
         assertEquals(1, budgetManager.getExpenseCount());
-
         Expense addedExpense = budgetManager.getExpense(0);
         assertEquals("Groceries", addedExpense.getTitle());
         assertEquals("Weekly food shopping", addedExpense.getDescription());
@@ -97,299 +99,215 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteDeleteExpense() {
-        budgetManager.addExpense(new Expense("Lunch", "Pizza", "01-01-2025",10));
+    void testExecuteAddExpenseNoDescription() {
+        String userInput = "add/Groceries/01-01-2025/100";
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
 
-        provideInput("1\ny\n");
-        expenseCommand.executeDeleteExpense();
+        assertEquals(1, budgetManager.getExpenseCount());
+        Expense addedExpense = budgetManager.getExpense(0);
+        assertEquals("Groceries", addedExpense.getTitle());
+        assertEquals("nil", addedExpense.getDescription()); // Description should be empty
+        assertEquals("01-01-2025", addedExpense.getDate());
+        assertEquals(100.0, addedExpense.getAmount());
+    }
+
+    @Test
+    void testExecuteAddExpenseInvalidFormat() {
+        String userInput = "add/Groceries/01-01-2025"; // Missing amount
+        provideInput("\n");
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(0, budgetManager.getExpenseCount());
+        assertTrue(outContent.toString().contains("Invalid format. Usage: add/<title>/<date>/<amount>"));
+    }
+
+    @Test
+    void testExecuteAddExpenseDuplicateTitle() {
+        // Add an initial expense
+        budgetManager.addExpense(new Expense("Groceries", "Food", "01-01-2025", 100));
+
+        String userInput = "add/Groceries/01-01-2025/50";
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(1, budgetManager.getExpenseCount()); // No new expense should be added
+        assertTrue(outContent.toString().contains("Expense with the same title already exists."));
+    }
+
+    @Test
+    void testExecuteAddExpenseInvalidDate() {
+        String userInput = "add/Groceries/32-13-2025/100"; // Invalid date
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(0, budgetManager.getExpenseCount());
+        assertTrue(outContent.toString().contains("Invalid date. Please enter a valid date in DD-MM-YYYY format."));
+    }
+
+    @Test
+    void testExecuteAddExpenseNegativeAmount() {
+        String userInput = "add/Groceries/01-01-2025/-100"; // Negative amount
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(0, budgetManager.getExpenseCount());
+        assertTrue(outContent.toString().contains("Amount cannot be negative."));
+    }
+
+    @Test
+    void testExecuteAddExpenseDescriptionTooLong() {
+        String userInput = "add/Groceries/01-01-2025/100";
+        String longDescription = "a".repeat(201); // 201 characters
+        provideInput(longDescription + "\n");
+        expenseCommand.executeAddExpense(userInput);
+    }
+
+
+    @Test
+    void testExecuteAddExpenseAmountExceedsCap() {
+        String userInput = "add/Groceries/01-01-2025/60000"; // Amount exceeds cap
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(0, budgetManager.getExpenseCount());
+        assertTrue(outContent.toString().contains("The entered amount exceeds the " +
+                "maximum allowed limit of 50,000 SGD (or its equivalent)."));
+    }
+
+    @Test
+    void testExecuteAddExpenseEmptyInput() {
+        String userInput = ""; // Empty input
+        provideInput("\n");
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(0, budgetManager.getExpenseCount());
+        assertTrue(outContent.toString().contains("Invalid format. Usage: add/<title>/<date>/<amount>"));
+    }
+
+    @Test
+    void testExecuteAddExpenseExtraFields() {
+        String userInput = "add/Groceries/01-01-2025/100/ExtraField"; // Extra field
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(0, budgetManager.getExpenseCount());
+        assertTrue(outContent.toString().contains("Invalid amount format. Please enter a valid number"));
+    }
+
+    @Test
+    void testExecuteAddExpenseAllowSpecialCharactersInTitle() {
+        String userInput = "add/Groceries@!/01-01-2025/100"; // Title with special characters
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(1, budgetManager.getExpenseCount()); // Expense should be added
+        Expense addedExpense = budgetManager.getExpense(0);
+        assertEquals("Groceries@!", addedExpense.getTitle()); // Verify the title
+        assertEquals("nil", addedExpense.getDescription()); // No description
+        assertEquals("01-01-2025", addedExpense.getDate());
+        assertEquals(100.0, addedExpense.getAmount());
+    }
+
+    @Test
+    void testExecuteAddExpenseInvalidCharactersInDate() {
+        String userInput = "add/Groceries/01-@1-2025/100"; // Invalid character in date
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(0, budgetManager.getExpenseCount());
+        assertTrue(outContent.toString().contains("Invalid date. Please enter a valid date in DD-MM-YYYY format."));
+    }
+
+    @Test
+    void testExecuteAddExpenseZeroAmount() {
+        String userInput = "add/Groceries/01-01-2025/0"; // Boundary value: 0
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(1, budgetManager.getExpenseCount());
+        Expense addedExpense = budgetManager.getExpense(0);
+        assertEquals("Groceries", addedExpense.getTitle());
+        assertEquals("nil", addedExpense.getDescription());
+        assertEquals("01-01-2025", addedExpense.getDate());
+        assertEquals(0.0, addedExpense.getAmount());
+    }
+
+    @Test
+    void testExecuteAddExpenseMaximumAmount() {
+        String userInput = "add/Groceries/01-01-2025/50000"; // Boundary value: Maximum allowed amount
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(1, budgetManager.getExpenseCount());
+        Expense addedExpense = budgetManager.getExpense(0);
+        assertEquals("Groceries", addedExpense.getTitle());
+        assertEquals("nil", addedExpense.getDescription());
+        assertEquals("01-01-2025", addedExpense.getDate());
+        assertEquals(50000.0, addedExpense.getAmount());
+    }
+
+    @Test
+    void testExecuteAddExpenseNegativeZeroAmount() {
+        String userInput = "add/Groceries/01-01-2025/-0.01"; // Negative zero amount
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(0, budgetManager.getExpenseCount());
+        assertTrue(outContent.toString().contains("Amount cannot be negative."));
+    }
+
+    @Test
+    void testExecuteAddExpenseCaseSensitivity() {
+        String userInput = "ADD/Groceries/01-01-2025/100"; // Uppercase command
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(1, budgetManager.getExpenseCount());
+        Expense addedExpense = budgetManager.getExpense(0);
+        assertEquals("Groceries", addedExpense.getTitle());
+        assertEquals("nil", addedExpense.getDescription());
+        assertEquals("01-01-2025", addedExpense.getDate());
+        assertEquals(100.0, addedExpense.getAmount());
+    }
+
+    @Test
+    void testExecuteAddExpenseLeadingTrailingWhitespace() {
+        String userInput = "  add/Groceries/01-01-2025/100  "; // Leading/trailing whitespace
+        provideInput("\n"); // No description
+        expenseCommand.executeAddExpense(userInput);
+
+        assertEquals(1, budgetManager.getExpenseCount());
+        Expense addedExpense = budgetManager.getExpense(0);
+        assertEquals("Groceries", addedExpense.getTitle());
+        assertEquals("nil", addedExpense.getDescription());
+        assertEquals("01-01-2025", addedExpense.getDate());
+        assertEquals(100.0, addedExpense.getAmount());
+    }
+
+    @Test
+    void testExecuteDeleteExpenseLeadingTrailingWhitespace() {
+        budgetManager.addExpense(new Expense("Lunch", "Pizza", "01-01-2025", 10));
+        String userInput = " delete/1  "; // Leading/trailing whitespace
+        provideInput("y\n");
+        expenseCommand.executeDeleteExpense(userInput);
 
         assertEquals(0, budgetManager.getExpenseCount());
         assertTrue(outContent.toString().contains("Expense deleted successfully"));
     }
 
     @Test
-    void testExecuteEditExpense() {
-        budgetManager.addExpense(new Expense("Coffee", "Starbucks", "01-01-2025",5.0));
-
-        provideInput("1\nLatte\nCaramel Latte\n31-12-2025\n6.5\n");
-        expenseCommand.executeEditExpense();
+    void testExecuteEditExpenseLeadingTrailingWhitespace() {
+        budgetManager.addExpense(new Expense("Coffee", "Starbucks", "01-01-2025", 5.0));
+        String userInput = "  edit/1/Latte/X/6.5  "; // Leading/trailing whitespace
+        provideInput("Caramel Latte\n");
+        expenseCommand.executeEditExpense(userInput);
 
         Expense editedExpense = budgetManager.getExpense(0);
         assertEquals("Latte", editedExpense.getTitle());
         assertEquals("Caramel Latte", editedExpense.getDescription());
-        assertEquals("31-12-2025", editedExpense.getDate());
+        assertEquals("01-01-2025", editedExpense.getDate());
         assertEquals(6.5, editedExpense.getAmount());
-    }
-
-    @Test
-    void testInvalidDateHandling() {
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        // Simulating user input with an invalid date
-        provideInput("Test Expense\nDescription\n32-13-2000\n100\n");
-
-        expenseCommand.executeAddExpense();
-
-        String actualOutput = outContent.toString().trim();
-        System.out.println("Actual Output:\n" + actualOutput); // Debugging
-
-        // Check if it contains either of the expected messages
-        assertTrue(
-                actualOutput.contains("Invalid date format.") ||
-                        actualOutput.contains("Invalid day or month value. Please enter a real date."),
-                "Expected output to contain an error message about date format, but got:\n" + actualOutput
-        );
-    }
-
-    @Test
-    void testInvalidAmountHandling() {
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        provideInput("Test Expense\nDescription\n31-12-2025\nInvalidAmount\n");
-
-        expenseCommand.executeAddExpense();
-
-        String expectedMessage = "Invalid amount format. Please enter a valid number.";
-
-        String actualOutput = outContent.toString().trim();
-
-        assertTrue(actualOutput.contains(expectedMessage),
-                "Expected message to contain: " + expectedMessage + "\nBut found: " + actualOutput);
-    }
-    //@@author
-
-    //@@author NandhithaShree
-    @Test
-    void testExecuteMarkCommand() {
-        provideInput("\n");
-        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
-        budgetManager.addExpense(expense);
-        assertEquals(false, expense.getDone());
-
-        String input = "mark/1";
-        expenseCommand.executeMarkCommand(input);
-        assertEquals(true, expense.getDone());
-
-        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
-        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
-        assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
-        //@@author matthewyeo1
-        assertEquals(testDate, budgetManager.getExpense(0).getDate());
-        //@@author
-    }
-
-    @Test
-    void testExecuteUnmarkCommand() {
-        provideInput("\n");
-        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
-        budgetManager.addExpense(expense);
-        assertEquals(false, expense.getDone());
-
-        String firstInput = "mark/1";
-        expenseCommand.executeMarkCommand(firstInput);
-        assertEquals(true, expense.getDone());
-
-        String secondInput = "unmark/1";
-        expenseCommand.executeUnmarkCommand(secondInput);
-        assertEquals(false, expense.getDone());
-
-        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
-        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
-        assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
-        //@@author matthewyeo1
-        assertEquals(testDate, budgetManager.getExpense(0).getDate());
-        //@@author
-    }
-
-    @Test
-    void testExecuteUnmarkCommandInvalidInputs() {
-        provideInput("\n");
-        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
-        budgetManager.addExpense(expense);
-
-        String input = "unmark/2";
-        expenseCommand.executeUnmarkCommand(input);
-        String expectedMessage = "Please enter a valid expense number.";
-        String actualOutput = outContent.toString().trim();
-
-        assertTrue(actualOutput.contains(expectedMessage));
-    }
-
-    @Test
-    void testExecuteMarkCommandInvalidInputs() {
-        provideInput("\n");
-        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
-        budgetManager.addExpense(expense);
-        assertEquals(false, expense.getDone());
-        String input = "mark/2";
-
-        expenseCommand.executeMarkCommand(input);
-        String expectedMessage = "Please enter a valid expense number.";
-        String actualOutput = outContent.toString().trim();
-
-        assertTrue(actualOutput.contains(expectedMessage));
-        assertEquals(false, expense.getDone());
-
-        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
-        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
-        assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
-        //@@author matthewyeo1
-        assertEquals(testDate, budgetManager.getExpense(0).getDate());
-        //@@author
-    }
-
-    @Test
-    void testDisplaySettledExpensesZeroSettledExpenses(){
-        provideInput("\n");
-        expenseCommand.displaySettledExpenses();
-        String expectedMessage = "No expenses found.";
-
-        String actualOutput = outContent.toString().trim();
-        assertEquals(expectedMessage, actualOutput);
-    }
-
-    @Test
-    void testDisplaySettledExpensesTwoSettledExpenses(){
-        provideInput("\n");
-        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
-        Expense expense1 = new Expense(testTitle + "1", testDescription + "1",
-                testDate, testAmount + 1);
-        Expense expense2= new Expense(testTitle + "2", testDescription + "2",
-                testDate, testAmount + 1);
-        budgetManager.addExpense(expense);
-        budgetManager.addExpense(expense1);
-        budgetManager.addExpense(expense2);
-        budgetManager.markExpense(0);
-        budgetManager.markExpense(1);
-
-        expenseCommand.displaySettledExpenses();
-        String expectedMessage = "All expenses are in SGD\n" + "Expense #1\n" + expense.toString() + "\n\n" +
-                "Expense " + "#2\n" + expense1.toString() + "\n" + "\n" + "You have 2 settled expenses";
-        String actualOutput = outContent.toString().trim();
-        actualOutput = actualOutput.replaceAll("\r\n", "\n");
-        assertEquals(expectedMessage, actualOutput);
-    }
-
-    @Test
-    void testDisplayUnsettledExpensesTwoUnsettledExpenses(){
-        provideInput("\n");
-        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
-        Expense expense1 = new Expense(testTitle + "1", testDescription + "1",
-                testDate,testAmount + 1);
-        Expense expense2= new Expense(testTitle + "2", testDescription + "2",
-                testDate, testAmount + 1);
-        budgetManager.addExpense(expense);
-        budgetManager.addExpense(expense1);
-        budgetManager.addExpense(expense2);
-
-        budgetManager.markExpense(2);
-
-        expenseCommand.displayUnsettledExpenses();
-        String expectedMessage = "All expenses are in SGD\n" + "Expense #1\n" + expense.toString() + "\n\n" +
-                "Expense #2\n" + expense1.toString() + "\n\n" + "You have 2 unsettled expenses";
-      
-        String actualOutput = outContent.toString().trim();
-        actualOutput = actualOutput.replaceAll("\r\n", "\n");
-        assertEquals(expectedMessage, actualOutput);
-    }
-
-    @Test
-    void testCurrency(){
-        provideInput("\n");
-        assertEquals("SGD", currency.getCurrentCurrency());
-    }
-
-    @Test
-    public void testCurrencyFileNotFound() {
-        provideInput("\n");
-        File file = new File("./currentCurrency");
-        file.delete(); // Ensure the file doesn't exist
-
-        assertEquals(Commands.DEFAULT_CURRENCY, currency.getCurrentCurrency());
-    }
-
-    @Test
-    public void testChangeCurrencyMethod1ValidCurrency() {
-        provideInput("\n");
-        String input = "change-currency/1/EUR/0.70";
-        currency.changeCurrency(input);
-
-        assertEquals("EUR", currency.getCurrentCurrency());
-    }
-
-    @Test
-    public void testChangeCurrencyMethod1InValidCurrency() {
-        provideInput("\n");
-        String input = "change-currency/1/ABC/0.70";
-        currency.changeCurrency(input);
-
-        String actualOutput = outContent.toString().trim();
-        String expectedOutput = "Please provide a valid currency...";
-
-        assertTrue(actualOutput.contains(expectedOutput));
-    }
-
-    @Test
-    public void testChangeCurrencyMethod2ValidCurrency() {
-        provideInput("\n");
-        String input = "change-currency/2/JPY";
-        currency.changeCurrency(input);
-
-        assertEquals("JPY", currency.getCurrentCurrency());
-    }
-
-    @Test
-    public void testChangeCurrencyMethod2InValidCurrency() {
-        provideInput("\n");
-        String input = "change-currency/2/ABC";
-        currency.changeCurrency(input);
-
-        String actualOutput = outContent.toString().trim();
-        String expectedOutput = "Currency code ABC not found.";
-
-        assertTrue(actualOutput.contains(expectedOutput));
-    }
-
-    //@@author
-
-    //@@author mohammedhamdhan
-    @Test
-    void testExecuteDeleteExpenseInvalidInput() {
-        budgetManager.addExpense(new Expense("Lunch", "Pizza", "01-01-2025",10));
-
-        provideInput("2\n");
-        expenseCommand.executeDeleteExpense();
-
-        assertEquals(1, budgetManager.getExpenseCount());
-        assertTrue(outContent.toString().contains("Please enter a valid expense number"));
-    }
-
-    @Test
-    void testExecuteEditExpenseInvalidInput() {
-        budgetManager.addExpense(new Expense("Coffee", "Starbucks", "31-12-2025",5.0));
-
-        provideInput("2\nLatte\nCaramel Latte\n6.5\n");
-        expenseCommand.executeEditExpense();
-
-        Expense originalExpense = budgetManager.getExpense(0);
-        assertEquals("Coffee", originalExpense.getTitle());
-        assertEquals("Starbucks", originalExpense.getDescription());
-        //@@author matthewyeo1
-        assertEquals("31-12-2025", originalExpense.getDate());
-        //@@author
-        assertEquals(5.0, originalExpense.getAmount());
-        assertTrue(outContent.toString().contains("Please enter a valid expense number"));
-    }
-
-    @Test
-    void testExecuteAddExpenseEmptyInput() {
-        provideInput("\n\n\n");
-        expenseCommand.executeAddExpense();
-
-        assertEquals(0, budgetManager.getExpenseCount());
-        assertTrue(outContent.toString().contains("Title cannot be empty"));
     }
 
     @Test
@@ -602,5 +520,215 @@ class ExpenseCommandTest {
                 "Expected output to mention no matching expenses for keyword 'bus'");
     }
     //@@author
-}
 
+    //@@author NandhithaShree
+    @Test
+    void testExecuteMarkCommandValidInputs() {
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        budgetManager.addExpense(expense);
+        assertEquals(false, expense.getDone());
+        String input = "mark/1";
+
+        expenseCommand.executeMarkCommand(input);
+        String expectedMessage = "Expense 1 successfully marked!";
+        String actualOutput = outContent.toString().trim();
+
+        assertEquals(1, budgetManager.getExpenseCount());
+        assertTrue(outContent.toString().contains(expectedMessage));
+    }
+
+    @Test
+    void testExecuteMarkCommand() {
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        budgetManager.addExpense(expense);
+        assertEquals(false, expense.getDone());
+
+        String input = "mark/1";
+        expenseCommand.executeMarkCommand(input);
+        assertEquals(true, expense.getDone());
+
+        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
+        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
+        assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
+        //@@author matthewyeo1
+        assertEquals(testDate, budgetManager.getExpense(0).getDate());
+        //@@author
+    }
+
+    @Test
+    void testExecuteUnmarkCommand() {
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        budgetManager.addExpense(expense);
+        assertEquals(false, expense.getDone());
+
+        String firstInput = "mark/1";
+        expenseCommand.executeMarkCommand(firstInput);
+        assertEquals(true, expense.getDone());
+
+        String secondInput = "unmark/1";
+        expenseCommand.executeUnmarkCommand(secondInput);
+        assertEquals(false, expense.getDone());
+
+        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
+        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
+        assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
+        //@@author matthewyeo1
+        assertEquals(testDate, budgetManager.getExpense(0).getDate());
+        //@@author
+    }
+
+    @Test
+    void testExecuteUnmarkCommandInvalidInputs() {
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        budgetManager.addExpense(expense);
+
+        String input = "unmark/2";
+        expenseCommand.executeUnmarkCommand(input);
+        String expectedMessage = "Please enter a valid expense number.";
+        String actualOutput = outContent.toString().trim();
+
+        assertTrue(actualOutput.contains(expectedMessage));
+    }
+
+    @Test
+    void testExecuteMarkCommandInvalidInputs() {
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        budgetManager.addExpense(expense);
+        assertEquals(false, expense.getDone());
+        String input = "mark/2";
+
+        expenseCommand.executeMarkCommand(input);
+        String expectedMessage = "Please enter a valid expense number.";
+        String actualOutput = outContent.toString().trim();
+
+        assertTrue(actualOutput.contains(expectedMessage));
+        assertEquals(false, expense.getDone());
+
+        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
+        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
+        assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
+        //@@author matthewyeo1
+        assertEquals(testDate, budgetManager.getExpense(0).getDate());
+        //@@author
+    }
+
+    @Test
+    void testDisplaySettledExpensesZeroSettledExpenses(){
+        provideInput("\n");
+        expenseCommand.displaySettledExpenses();
+        String expectedMessage = "No expenses found.";
+
+        String actualOutput = outContent.toString().trim();
+        assertEquals(expectedMessage, actualOutput);
+    }
+
+    @Test
+    void testDisplaySettledExpensesTwoSettledExpenses(){
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        Expense expense1 = new Expense(testTitle + "1", testDescription + "1",
+                testDate, testAmount + 1);
+        Expense expense2= new Expense(testTitle + "2", testDescription + "2",
+                testDate, testAmount + 1);
+        budgetManager.addExpense(expense);
+        budgetManager.addExpense(expense1);
+        budgetManager.addExpense(expense2);
+        budgetManager.markExpense(0);
+        budgetManager.markExpense(1);
+
+        expenseCommand.displaySettledExpenses();
+        String expectedMessage = "All expenses are in SGD\n" + "Expense #1\n" + expense.toString() + "\n\n" +
+                "Expense " + "#2\n" + expense1.toString() + "\n" + "\n" + "You have 2 settled expenses";
+        String actualOutput = outContent.toString().trim();
+        actualOutput = actualOutput.replaceAll("\r\n", "\n");
+        assertEquals(expectedMessage, actualOutput);
+    }
+
+    @Test
+    void testDisplayUnsettledExpensesTwoUnsettledExpenses(){
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        Expense expense1 = new Expense(testTitle + "1", testDescription + "1",
+                testDate,testAmount + 1);
+        Expense expense2= new Expense(testTitle + "2", testDescription + "2",
+                testDate, testAmount + 1);
+        budgetManager.addExpense(expense);
+        budgetManager.addExpense(expense1);
+        budgetManager.addExpense(expense2);
+
+        budgetManager.markExpense(2);
+
+        expenseCommand.displayUnsettledExpenses();
+        String expectedMessage = "All expenses are in SGD\n" + "Expense #1\n" + expense.toString() + "\n\n" +
+                "Expense #2\n" + expense1.toString() + "\n\n" + "You have 2 unsettled expenses";
+
+        String actualOutput = outContent.toString().trim();
+        actualOutput = actualOutput.replaceAll("\r\n", "\n");
+        assertEquals(expectedMessage, actualOutput);
+    }
+
+    @Test
+    void testCurrency(){
+        provideInput("\n");
+        assertEquals("SGD", currency.getCurrentCurrency());
+    }
+
+    @Test
+    public void testCurrencyFileNotFound() {
+        provideInput("\n");
+        File file = new File("./currentCurrency");
+        file.delete(); // Ensure the file doesn't exist
+
+        assertEquals(Commands.DEFAULT_CURRENCY, currency.getCurrentCurrency());
+    }
+
+    @Test
+    public void testChangeCurrencyMethod1ValidCurrency() {
+        provideInput("\n");
+        String input = "change-currency/1/EUR/0.70";
+        currency.changeCurrency(input);
+
+        assertEquals("EUR", currency.getCurrentCurrency());
+    }
+
+    @Test
+    public void testChangeCurrencyMethod1InValidCurrency() {
+        provideInput("\n");
+        String input = "change-currency/1/ABC/0.70";
+        currency.changeCurrency(input);
+
+        String actualOutput = outContent.toString().trim();
+        String expectedOutput = "Please provide a valid currency...";
+
+        assertTrue(actualOutput.contains(expectedOutput));
+    }
+
+    @Test
+    public void testChangeCurrencyMethod2ValidCurrency() {
+        provideInput("\n");
+        String input = "change-currency/2/JPY";
+        currency.changeCurrency(input);
+
+        assertEquals("JPY", currency.getCurrentCurrency());
+    }
+
+    @Test
+    public void testChangeCurrencyMethod2InValidCurrency() {
+        provideInput("\n");
+        String input = "change-currency/2/ABC";
+        currency.changeCurrency(input);
+
+        String actualOutput = outContent.toString().trim();
+        String expectedOutput = "Currency code ABC not found.";
+
+        assertTrue(actualOutput.contains(expectedOutput));
+    }
+
+    //@@author
+}
+//@@author

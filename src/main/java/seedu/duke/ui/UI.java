@@ -99,6 +99,16 @@ public class UI {
     public void processCommand(String userInput) {
         String command = userInput.trim().toLowerCase();
 
+        if (command.startsWith(Commands.SORT_LIST)) {
+            String[] parts = command.split("/", 2);
+            if (parts.length < 2 || parts[1].trim().isEmpty()) {
+                System.out.println("Invalid format. Usage: sort-list/<1,2,3,4>");
+                return;
+            }
+            String sortOption = parts[1].trim();
+            expenseCommand.sortExpenses(sortOption);
+            return;
+        }
         if(command.equals(Commands.HELP)){
             messages.displayCommandList();
         } else if(command.equals(Commands.EXIT)){
@@ -106,13 +116,13 @@ public class UI {
             messages.displayExitMessage();
             isRunning = false;
         } else if(command.startsWith(Commands.ADD)){
-            expenseCommand.executeAddExpense();
+            expenseCommand.executeAddExpense(command);
         } else if(command.equals(Commands.LIST)){
             expenseCommand.displayAllExpenses();
         } else if(command.startsWith(Commands.DELETE)){
-            expenseCommand.executeDeleteExpense();
+            expenseCommand.executeDeleteExpense(command);
         } else if(command.startsWith(Commands.EDIT)) {
-            expenseCommand.executeEditExpense();
+            expenseCommand.executeEditExpense(command);
         } else if(command.equals(Commands.BALANCE)) {
             expenseCommand.showBalanceOverview();
         } else if (command.startsWith(Commands.MARK)){
