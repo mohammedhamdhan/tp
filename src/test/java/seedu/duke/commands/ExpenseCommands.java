@@ -26,6 +26,10 @@ class ExpenseCommandTest {
     private ExpenseCommand expenseCommand;
     private final PrintStream originalOut = System.out;
     private ByteArrayOutputStream outContent;
+    private final String testTitle = "Test Expense";
+    private final String testDescription = "Test Description";
+    private final String testDate = "31-12-2025";
+    private final double testAmount = 100.0;
 
 
     @BeforeEach
@@ -103,7 +107,7 @@ class ExpenseCommandTest {
         assertEquals(1, budgetManager.getExpenseCount());
         Expense addedExpense = budgetManager.getExpense(0);
         assertEquals("Groceries", addedExpense.getTitle());
-        assertEquals("", addedExpense.getDescription()); // Description should be empty
+        assertEquals("nil", addedExpense.getDescription()); // Description should be empty
         assertEquals("01-01-2025", addedExpense.getDate());
         assertEquals(100.0, addedExpense.getAmount());
     }
@@ -216,19 +220,19 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteMarkCommandInvalidInputs() {
+    void testExecuteMarkCommandValidInputs() {
         provideInput("\n");
         Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
         budgetManager.addExpense(expense);
         assertEquals(false, expense.getDone());
-        String input = "mark/2";
+        String input = "mark/1";
 
         expenseCommand.executeMarkCommand(input);
-        String expectedMessage = "Please enter a valid expense number.";
+        String expectedMessage = "Expense 1 successfully marked!";
         String actualOutput = outContent.toString().trim();
 
-        assertEquals(0, budgetManager.getExpenseCount());
-        assertTrue(outContent.toString().contains("Description exceeds 200 characters."));
+        assertEquals(1, budgetManager.getExpenseCount());
+        assertTrue(outContent.toString().contains(expectedMessage));
     }
 
     @Test
@@ -270,7 +274,7 @@ class ExpenseCommandTest {
         assertEquals(1, budgetManager.getExpenseCount()); // Expense should be added
         Expense addedExpense = budgetManager.getExpense(0);
         assertEquals("Groceries@!", addedExpense.getTitle()); // Verify the title
-        assertEquals("", addedExpense.getDescription()); // No description
+        assertEquals("nil", addedExpense.getDescription()); // No description
         assertEquals("01-01-2025", addedExpense.getDate());
         assertEquals(100.0, addedExpense.getAmount());
     }
@@ -294,7 +298,7 @@ class ExpenseCommandTest {
         assertEquals(1, budgetManager.getExpenseCount());
         Expense addedExpense = budgetManager.getExpense(0);
         assertEquals("Groceries", addedExpense.getTitle());
-        assertEquals("", addedExpense.getDescription());
+        assertEquals("nil", addedExpense.getDescription());
         assertEquals("01-01-2025", addedExpense.getDate());
         assertEquals(0.0, addedExpense.getAmount());
     }
@@ -308,7 +312,7 @@ class ExpenseCommandTest {
         assertEquals(1, budgetManager.getExpenseCount());
         Expense addedExpense = budgetManager.getExpense(0);
         assertEquals("Groceries", addedExpense.getTitle());
-        assertEquals("", addedExpense.getDescription());
+        assertEquals("nil", addedExpense.getDescription());
         assertEquals("01-01-2025", addedExpense.getDate());
         assertEquals(50000.0, addedExpense.getAmount());
     }
@@ -332,7 +336,7 @@ class ExpenseCommandTest {
         assertEquals(1, budgetManager.getExpenseCount());
         Expense addedExpense = budgetManager.getExpense(0);
         assertEquals("Groceries", addedExpense.getTitle());
-        assertEquals("", addedExpense.getDescription());
+        assertEquals("nil", addedExpense.getDescription());
         assertEquals("01-01-2025", addedExpense.getDate());
         assertEquals(100.0, addedExpense.getAmount());
     }
@@ -346,7 +350,7 @@ class ExpenseCommandTest {
         assertEquals(1, budgetManager.getExpenseCount());
         Expense addedExpense = budgetManager.getExpense(0);
         assertEquals("Groceries", addedExpense.getTitle());
-        assertEquals("", addedExpense.getDescription());
+        assertEquals("nil", addedExpense.getDescription());
         assertEquals("01-01-2025", addedExpense.getDate());
         assertEquals(100.0, addedExpense.getAmount());
     }

@@ -116,13 +116,13 @@ public class UI {
             messages.displayExitMessage();
             isRunning = false;
         } else if(command.startsWith(Commands.ADD)){
-            expenseCommand.executeAddExpense();
+            expenseCommand.executeAddExpense(command);
         } else if(command.equals(Commands.LIST)){
             expenseCommand.displayAllExpenses();
         } else if(command.startsWith(Commands.DELETE)){
-            expenseCommand.executeDeleteExpense();
+            expenseCommand.executeDeleteExpense(command);
         } else if(command.startsWith(Commands.EDIT)) {
-            expenseCommand.executeEditExpense();
+            expenseCommand.executeEditExpense(command);
         } else if(command.equals(Commands.BALANCE)) {
             expenseCommand.showBalanceOverview();
         } else if (command.startsWith(Commands.MARK)){
