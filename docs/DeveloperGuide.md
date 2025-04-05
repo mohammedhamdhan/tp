@@ -983,6 +983,9 @@ The `changeCurrency(String command)` method handles the currency change process 
 - Based on the method value (1 or 2), it either calls handleCustomExchangeRate() or handleEstimatedExchangeRate().
 - The function performs basic error handling for number parsing and missing inputs using try-catch blocks.
 
+Below is the UML sequence diagram for the classes involved in the "Change Currency" operation.
+![CurrencySequenceDiagram.png](diagrams/CurrencySequenceDiagram.png "Currency Sequence Diagram")
+
 #### Edit Expense Currency Method
 
 The `editExpenseCurrency(Double finalExchangeRate, String newCurrency)` method manages the process of updating the expense currency with these features:
