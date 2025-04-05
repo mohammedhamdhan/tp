@@ -157,6 +157,75 @@ class ExpenseCommandTest {
         String longDescription = "a".repeat(201); // 201 characters
         provideInput(longDescription + "\n");
         expenseCommand.executeAddExpense(userInput);
+    }
+
+    @Test
+    void testExecuteMarkCommand() {
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        budgetManager.addExpense(expense);
+        assertEquals(false, expense.getDone());
+
+        String input = "mark/1";
+        expenseCommand.executeMarkCommand(input);
+        assertEquals(true, expense.getDone());
+
+        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
+        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
+        assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
+        //@@author matthewyeo1
+        assertEquals(testDate, budgetManager.getExpense(0).getDate());
+        //@@author
+    }
+
+    @Test
+    void testExecuteUnmarkCommand() {
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        budgetManager.addExpense(expense);
+        assertEquals(false, expense.getDone());
+
+        String firstInput = "mark/1";
+        expenseCommand.executeMarkCommand(firstInput);
+        assertEquals(true, expense.getDone());
+
+        String secondInput = "unmark/1";
+        expenseCommand.executeUnmarkCommand(secondInput);
+        assertEquals(false, expense.getDone());
+
+        assertEquals(testTitle, budgetManager.getExpense(0).getTitle());
+        assertEquals(testAmount, budgetManager.getExpense(0).getAmount());
+        assertEquals(testDescription, budgetManager.getExpense(0).getDescription());
+        //@@author matthewyeo1
+        assertEquals(testDate, budgetManager.getExpense(0).getDate());
+        //@@author
+    }
+
+    @Test
+    void testExecuteUnmarkCommandInvalidInputs() {
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        budgetManager.addExpense(expense);
+
+        String input = "unmark/2";
+        expenseCommand.executeUnmarkCommand(input);
+        String expectedMessage = "Please enter a valid expense number.";
+        String actualOutput = outContent.toString().trim();
+
+        assertTrue(actualOutput.contains(expectedMessage));
+    }
+
+    @Test
+    void testExecuteMarkCommandInvalidInputs() {
+        provideInput("\n");
+        Expense expense = new Expense(testTitle, testDescription, testDate, testAmount);
+        budgetManager.addExpense(expense);
+        assertEquals(false, expense.getDone());
+        String input = "mark/2";
+
+        expenseCommand.executeMarkCommand(input);
+        String expectedMessage = "Please enter a valid expense number.";
+        String actualOutput = outContent.toString().trim();
 
         assertEquals(0, budgetManager.getExpenseCount());
         assertTrue(outContent.toString().contains("Description exceeds 200 characters."));
