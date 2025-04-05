@@ -312,19 +312,18 @@ class ExpenseCommandTest {
 
     @Test
     public void testChangeCurrencyMethod1ValidCurrency() {
-        String newCurrency = "EUR\n";
-        String exchangeRate = "0.69\n";
-        provideInput("1\n" + newCurrency + exchangeRate);
-        currency.changeCurrency();
+        provideInput("\n");
+        String input = "change-currency/1/EUR/0.70";
+        currency.changeCurrency(input);
 
         assertEquals("EUR", currency.getCurrentCurrency());
     }
 
     @Test
     public void testChangeCurrencyMethod1InValidCurrency() {
-        String newCurrency = "ABC\n";
-        provideInput("1\n" + newCurrency);
-        currency.changeCurrency();
+        provideInput("\n");
+        String input = "change-currency/1/ABC/0.70";
+        currency.changeCurrency(input);
 
         String actualOutput = outContent.toString().trim();
         String expectedOutput = "Please provide a valid currency...";
@@ -334,21 +333,21 @@ class ExpenseCommandTest {
 
     @Test
     public void testChangeCurrencyMethod2ValidCurrency() {
-        String newCurrency = "JPY\n";
-        provideInput("2\n" + newCurrency);
-        currency.changeCurrency();
+        provideInput("\n");
+        String input = "change-currency/2/JPY";
+        currency.changeCurrency(input);
 
         assertEquals("JPY", currency.getCurrentCurrency());
     }
 
     @Test
     public void testChangeCurrencyMethod2InValidCurrency() {
-        String newCurrency = "ABC\n";
-        provideInput("2\n" + newCurrency);
-        currency.changeCurrency();
+        provideInput("\n");
+        String input = "change-currency/2/ABC";
+        currency.changeCurrency(input);
 
         String actualOutput = outContent.toString().trim();
-        String expectedOutput = "Currency not found!";
+        String expectedOutput = "Currency code ABC not found.";
 
         assertTrue(actualOutput.contains(expectedOutput));
     }

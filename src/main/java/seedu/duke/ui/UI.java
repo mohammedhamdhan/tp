@@ -138,7 +138,7 @@ public class UI {
         } else if(command.startsWith(Commands.REMOVE_GROUP)) {
             friendsCommand.removeGroup();
         } else if(command.startsWith(Commands.CHANGE_CURRENCY)){
-            currency.changeCurrency();
+            currency.changeCurrency(command);
         } else if (command.startsWith(Commands.SUMMARY)){
             expenseCommand.showExpenseSummary();
         } else if (command.equals(Commands.EXPORT)){
