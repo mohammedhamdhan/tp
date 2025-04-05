@@ -236,93 +236,80 @@ public class Currency {
     }
 
     /**
-     * Prompts the user to change the currency by either entering their own exchange rate
-     * or switching to an estimated exchange rate. The user is required to input a valid
-     * option (1 or 2) and specify a currency in the ISO 4217 standard.
+     * Changes the currency based on the user's input command.
+     * <p>
+     * This method parses the command, validates the input, and delegates
+     * to either {@code handleCustomExchangeRate} or {@code handleEstimatedExchangeRate}
+     * based on the specified method.
+     * </p>
      *
-     * <p>Option 1: The user enters their own exchange rate.</p>
-     * <p>Option 2: The system estimates an exchange rate.</p>
-     *
-     * <p>If the user inputs an invalid option, an error message is displayed, and the method returns.</p>
-     *
-     * @throws NumberFormatException if the input is not a valid number.
+     * @param command the user input string representing the currency change command.
+     * @throws NumberFormatException if the method part of the command is not a valid number.
      */
-    public void changeCurrency() {
-        System.out.println("[1] Enter your own exchange rate from the current currency");
-        System.out.println("[2] Switch currencies with an estimated exchange rate");
-        System.out.print("Enter option: ");
-
-        String method = scanner.nextLine().trim();
-        int intMethod;
-
+    public void changeCurrency(String command) {
         try {
-            intMethod = Integer.parseInt(method);
-            if (intMethod != 1 && intMethod != 2) {
-                System.out.println("Please input either '1' or '2'");
+            String [] splitInput = command.split("/");
+            String method = splitInput[1];
+            String newCurrency = splitInput[2].toUpperCase();
+            int intMethod = Integer.parseInt(method);
+
+            if(intMethod == 1 && splitInput.length != 4){
+                System.out.println("Please give input in correct format");
+                return;
+            } else if(intMethod == 2 && splitInput.length != 3){
+                System.out.println("Please give input in correct format");
                 return;
             }
+
+            if (intMethod != 1 && intMethod != 2) {
+                System.out.println("Please input either '1' or '2'");
+            } else if (intMethod == 1) {
+                String exchangeRate = splitInput[3];
+                handleCustomExchangeRate(newCurrency, exchangeRate);
+            } else {
+                handleEstimatedExchangeRate(newCurrency);
+            }
+
         } catch (NumberFormatException e) {
             System.out.println("Please input a valid number");
-            return;
-        }
-
-        System.out.println("Note: Please enter currency based on ISO 4217 standard (eg: SGD, USD, JPY)");
-        System.out.println("Please enter a currency to change to");
-        String newCurrency = scanner.nextLine().trim();
-
-        if (intMethod == 1) {
-            handleCustomExchangeRate(newCurrency);
-        } else {
-            handleEstimatedExchangeRate(newCurrency);
+        } catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("Please give input in correct format");
         }
     }
 
     /**
-     * Handles the process of changing the currency using a custom exchange rate provided by the user.
+     * Handles currency conversion using a custom exchange rate provided by the user.
      *
-     * <p>This method first checks if the specified currency exists in the exchange rates map.
-     * If the currency is not valid, an error message is displayed.</p>
-     *
-     * <p>Next, the user is prompted to input an exchange rate from the current currency to
-     * the new currency. If the input is a valid number, the method updates the expense currency
-     * using {@code editExpenseCurrency}. Otherwise, an error message is displayed.</p>
-     *
-     * @param newCurrency The target currency to which the exchange rate will be applied.
-     * @throws NumberFormatException if the user inputs an invalid exchange rate.
+     * @param newCurrency  the target currency to convert expenses to
+     * @param exchangeRate the custom exchange rate as a string
      */
-    private void handleCustomExchangeRate(String newCurrency) {
+    private void handleCustomExchangeRate(String newCurrency, String exchangeRate) {
         if (!exchangeRates.containsKey(newCurrency)) {
             System.out.println("Please provide a valid currency...");
             return;
         }
-
-        System.out.println("Please input your exchange rate from " + getCurrentCurrency() + " to the new currency");
         try {
-            double finalExchangeRate = Double.parseDouble(scanner.nextLine().trim());
+            double finalExchangeRate = Double.parseDouble(exchangeRate);
+
+            if(finalExchangeRate <= 0){
+                System.out.println("You must give a positive exchange rate");
+                return;
+            }
             editExpenseCurrency(finalExchangeRate, newCurrency);
         } catch (NumberFormatException e) {
-            System.out.println("Please input a valid number");
+            System.out.println("Please provide a valid exchange rate");
         }
     }
 
     /**
-     * Handles the process of changing the currency using an estimated exchange rate.
+     * Handles currency conversion using an estimated exchange rate.
      *
-     * <p>This method retrieves the exchange rate for the specified currency and calculates
-     * the conversion rate based on the current currency. If the exchange rate for the
-     * specified currency is not found, an error message is displayed.</p>
-     *
-     * <p>If a valid exchange rate is obtained, the method calculates the final exchange rate
-     * and updates the expense currency using {@code editExpenseCurrency}.</p>
-     *
-     * @param newCurrency The target currency to which the exchange rate will be applied.
+     * @param newCurrency the target currency to convert expenses to
      */
     private void handleEstimatedExchangeRate(String newCurrency) {
-        System.out.println("Your current currency is " + currentCurrency);
         Double exchangeRate = getExchangeRate(newCurrency);
 
         if (exchangeRate == null) {
-            System.out.println("Currency not found!");
             return;
         }
 
