@@ -241,10 +241,8 @@ The `displayUnsettledExpenses()` method manages the display of unsettled expense
 
 #### Marking Expenses
 
-The `executeMarkCommand()` method manages marking an expense as settled with these features:
+The `executeMarkCommand(String command)` method manages marking an expense as settled with these features:
 
-- Prompts the user to enter an expense number for marking
-- Trims and parses user input to handle potential formatting issues
 - Attempts to mark the specified expense using budgetManager.markExpense()
 - Handles invalid indices gracefully with an IndexOutOfBoundsException
 - Handles non-numeric input with a NumberFormatException
@@ -252,10 +250,8 @@ The `executeMarkCommand()` method manages marking an expense as settled with the
 
 #### Unmarking Expenses
 
-The `executeUnmarkCommand()` method manages unmarking an expense as unsettled with these features:
+The `executeUnmarkCommand(String command)` method manages unmarking an expense as unsettled with these features:
 
-- Prompts the user to enter an expense number for unmarking
-- Trims and parses user input to handle potential formatting issues
 - Attempts to unmark the specified expense using budgetManager.unmarkExpense()
 - Handles invalid indices gracefully with an IndexOutOfBoundsException
 - Handles non-numeric input with a NumberFormatException
@@ -964,7 +960,7 @@ The Currency class handles all currency-related operations within the applicatio
 
 #### Currency Constructor
 
-The `Currency()` method sets up the exchange rates for different currencies with these features:
+The `Currency(Scanner scanner, BudgetManager budgetManager)` method sets up the exchange rates for different currencies with these features:
 
 - Initializes a map to store the exchange rates between different currencies.
 - Attempts to read current currency from the file `./currentCurrency`
@@ -976,29 +972,25 @@ The `initializeExchangeRates()` method initializes currency exchange rates by ad
 
 - Each currency code is mapped to its corresponding exchange rate value.
 - The exchange rates are hardcoded and include values for a wide range of currencies (e.g., AED, AFN, ALL, AMD, etc.).
-- Ensures that the exchangeRates map is populated with accurate conversion values for use in currency calculations.
+- Ensures that the exchangeRates map is populated with estimated conversion values for use in currency calculations.
 
 #### Change Currency Method
 
-The `changeCurrency()` method handles the currency change process with these features:
+The `changeCurrency(String command)` method handles the currency change process with these features:
 
-- Prompts the user to choose between entering their own exchange rate (option 1) or using an estimated exchange rate (option 2).
-- Handles the user's input by checking if they input '1' or '2', guiding them to make a valid choice.
-- If the user selects option 1, it asks for the currency code (based on ISO 4217 standard) and validates if the currency exists in the exchangeRates map.
-- In option 1, the user is also prompted to enter a custom exchange rate, which is validated and parsed.
-- If the user selects option 2, it retrieves the current exchange rate for the selected currency using the getExchangeRate() method.
-- If a valid exchange rate is found for the new currency, it calculates the exchange rate relative to the current currency.
-- Handles NumberFormatException gracefully and prompts the user to input a valid number if there are formatting issues.
-- The method invokes editExpenseCurrency() to update the expense currency with the final exchange rate and the new currency.
+- changeCurrency(String command) parses a user input string to determine how to update the application's currency setting.
+- The method ensures the command is properly formatted and handles invalid inputs with informative messages.
+- Based on the method value (1 or 2), it either calls handleCustomExchangeRate() or handleEstimatedExchangeRate().
+- The function performs basic error handling for number parsing and missing inputs using try-catch blocks.
 
 #### Edit Expense Currency Method
 
-The `editExpenseCurrency()` method manages the process of updating the expense currency with these features:
+The `editExpenseCurrency(Double finalExchangeRate, String newCurrency)` method manages the process of updating the expense currency with these features:
 
 - Accepts a finalExchangeRate and a newCurrency as parameters to update the expense currency.
 - Calls the budgetManager.editExpenseCurrency() method to apply the new exchange rate.
 - Updates the currentCurrency to the new currency.
-- Attempts to write the new currency to a file using the writeToFile() method.
+- Attempts to write the new currency file using the writeToFile() method.
 - Handles potential IOException by catching the error and displaying a message if there's an issue with recording the change.
 - Prints a success message confirming that the currency has been successfully changed to the new currency.
 
