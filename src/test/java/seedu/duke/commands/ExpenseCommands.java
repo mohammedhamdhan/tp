@@ -236,17 +236,18 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_AmountExceedsCap() {
+    void testExecuteAddExpenseAmountExceedsCap() {
         String userInput = "add/Groceries/01-01-2025/60000"; // Amount exceeds cap
         provideInput("\n"); // No description
         expenseCommand.executeAddExpense(userInput);
 
         assertEquals(0, budgetManager.getExpenseCount());
-        assertTrue(outContent.toString().contains("The entered amount exceeds the maximum allowed limit of 50,000 SGD"));
+        assertTrue(outContent.toString().contains("The entered amount exceeds " +
+                "the maximum allowed limit of 50,000 SGD"));
     }
 
     @Test
-    void testExecuteAddExpense_EmptyInput() {
+    void testExecuteAddExpenseEmptyInput() {
         String userInput = ""; // Empty input
         provideInput("\n");
         expenseCommand.executeAddExpense(userInput);
@@ -256,7 +257,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_ExtraFields() {
+    void testExecuteAddExpenseExtraFields() {
         String userInput = "add/Groceries/01-01-2025/100/ExtraField"; // Extra field
         provideInput("\n"); // No description
         expenseCommand.executeAddExpense(userInput);
@@ -266,7 +267,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_AllowSpecialCharactersInTitle() {
+    void testExecuteAddExpenseAllowSpecialCharactersInTitle() {
         String userInput = "add/Groceries@!/01-01-2025/100"; // Title with special characters
         provideInput("\n"); // No description
         expenseCommand.executeAddExpense(userInput);
@@ -280,7 +281,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_InvalidCharactersInDate() {
+    void testExecuteAddExpenseInvalidCharactersInDate() {
         String userInput = "add/Groceries/01-@1-2025/100"; // Invalid character in date
         provideInput("\n"); // No description
         expenseCommand.executeAddExpense(userInput);
@@ -290,7 +291,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_ZeroAmount() {
+    void testExecuteAddExpenseZeroAmount() {
         String userInput = "add/Groceries/01-01-2025/0"; // Boundary value: 0
         provideInput("\n"); // No description
         expenseCommand.executeAddExpense(userInput);
@@ -304,7 +305,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_MaximumAmount() {
+    void testExecuteAddExpenseMaximumAmount() {
         String userInput = "add/Groceries/01-01-2025/50000"; // Boundary value: Maximum allowed amount
         provideInput("\n"); // No description
         expenseCommand.executeAddExpense(userInput);
@@ -318,7 +319,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_NegativeZeroAmount() {
+    void testExecuteAddExpenseNegativeZeroAmount() {
         String userInput = "add/Groceries/01-01-2025/-0.01"; // Negative zero amount
         provideInput("\n"); // No description
         expenseCommand.executeAddExpense(userInput);
@@ -328,7 +329,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_CaseSensitivity() {
+    void testExecuteAddExpenseCaseSensitivity() {
         String userInput = "ADD/Groceries/01-01-2025/100"; // Uppercase command
         provideInput("\n"); // No description
         expenseCommand.executeAddExpense(userInput);
@@ -342,7 +343,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_LeadingTrailingWhitespace() {
+    void testExecuteAddExpenseLeadingTrailingWhitespace() {
         String userInput = "  add/Groceries/01-01-2025/100  "; // Leading/trailing whitespace
         provideInput("\n"); // No description
         expenseCommand.executeAddExpense(userInput);
@@ -356,7 +357,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteDeleteExpense_LeadingTrailingWhitespace() {
+    void testExecuteDeleteExpenseLeadingTrailingWhitespace() {
         budgetManager.addExpense(new Expense("Lunch", "Pizza", "01-01-2025", 10));
         String userInput = " delete/1  "; // Leading/trailing whitespace
         provideInput("y\n");
@@ -367,7 +368,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteEditExpense_LeadingTrailingWhitespace() {
+    void testExecuteEditExpenseLeadingTrailingWhitespace() {
         budgetManager.addExpense(new Expense("Coffee", "Starbucks", "01-01-2025", 5.0));
         String userInput = "  edit/1/Latte/X/6.5  "; // Leading/trailing whitespace
         provideInput("Caramel Latte\n");

@@ -33,7 +33,6 @@ import seedu.duke.expense.Expense;
 import seedu.duke.friends.Friend;
 import seedu.duke.friends.GroupManager;
 import seedu.duke.summary.Categories;
-import seedu.duke.messages.Messages;
 import seedu.duke.summary.ExpenseClassifier;
 
 /**
@@ -90,7 +89,7 @@ public class ExpenseCommand {
     }
 
     public static boolean isValidDescription(String description) {
-       return description.length() <= 200;
+        return description.length() <= 200;
     }
 
     public static boolean isUniqueTitle(String title, List<Expense> expenses) {
@@ -119,7 +118,8 @@ public class ExpenseCommand {
         }
 
         if (sgdEquivalentAmount > maxSGDAmount) {
-            System.out.println("The entered amount exceeds the maximum allowed limit of 50,000 SGD (or its equivalent).");
+            System.out.println("The entered amount exceeds the maximum" +
+                    "allowed limit of 50,000 SGD (or its equivalent).");
             return false;
         }
         return true;
