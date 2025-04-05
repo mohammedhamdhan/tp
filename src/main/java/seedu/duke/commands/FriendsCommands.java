@@ -183,9 +183,7 @@ public class FriendsCommands {
             }
         }
     }
-
     //@@author
-
 
     //@@author nandhananm7
     public void viewAllGroups() {
