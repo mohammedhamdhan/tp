@@ -85,7 +85,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_ValidInput() {
+    void testExecuteAddExpenseValidInput() {
         String userInput = "add/Groceries/01-01-2025/100";
         provideInput("Weekly food shopping\n"); // Simulate optional description
         expenseCommand.executeAddExpense(userInput);
@@ -99,7 +99,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_NoDescription() {
+    void testExecuteAddExpenseNoDescription() {
         String userInput = "add/Groceries/01-01-2025/100";
         provideInput("\n"); // No description
         expenseCommand.executeAddExpense(userInput);
@@ -113,7 +113,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_InvalidFormat() {
+    void testExecuteAddExpenseInvalidFormat() {
         String userInput = "add/Groceries/01-01-2025"; // Missing amount
         provideInput("\n");
         expenseCommand.executeAddExpense(userInput);
@@ -123,7 +123,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_DuplicateTitle() {
+    void testExecuteAddExpenseDuplicateTitle() {
         // Add an initial expense
         budgetManager.addExpense(new Expense("Groceries", "Food", "01-01-2025", 100));
 
@@ -136,7 +136,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_InvalidDate() {
+    void testExecuteAddExpenseInvalidDate() {
         String userInput = "add/Groceries/32-13-2025/100"; // Invalid date
         provideInput("\n"); // No description
         expenseCommand.executeAddExpense(userInput);
@@ -146,7 +146,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_NegativeAmount() {
+    void testExecuteAddExpenseNegativeAmount() {
         String userInput = "add/Groceries/01-01-2025/-100"; // Negative amount
         provideInput("\n"); // No description
         expenseCommand.executeAddExpense(userInput);
@@ -156,7 +156,7 @@ class ExpenseCommandTest {
     }
 
     @Test
-    void testExecuteAddExpense_DescriptionTooLong() {
+    void testExecuteAddExpenseDescriptionTooLong() {
         String userInput = "add/Groceries/01-01-2025/100";
         String longDescription = "a".repeat(201); // 201 characters
         provideInput(longDescription + "\n");
@@ -242,8 +242,8 @@ class ExpenseCommandTest {
         expenseCommand.executeAddExpense(userInput);
 
         assertEquals(0, budgetManager.getExpenseCount());
-        assertTrue(outContent.toString().contains("The entered amount exceeds " +
-                "the maximum allowed limit of 50,000 SGD"));
+        assertTrue(outContent.toString().contains("The entered amount exceeds the " +
+                "maximum allowed limit of 50,000 SGD (or its equivalent)."));
     }
 
     @Test

@@ -118,7 +118,7 @@ public class ExpenseCommand {
         }
 
         if (sgdEquivalentAmount > maxSGDAmount) {
-            System.out.println("The entered amount exceeds the maximum" +
+            System.out.println("The entered amount exceeds the maximum " +
                     "allowed limit of 50,000 SGD (or its equivalent).");
             return false;
         }
