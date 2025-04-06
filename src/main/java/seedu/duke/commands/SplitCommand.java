@@ -130,7 +130,8 @@ public class SplitCommand {
                     if (method.equals("/a") || method.equals("/p")) {
                         break;
                     } else {
-                        System.out.println("Invalid method. Please enter '/a' for absolute amounts or '/p' for percentages.");
+                        System.out.println("Invalid method." +
+                            " Please enter '/a' for absolute amounts or '/p' for percentages.");
                     }
                 }
                 if (method.equals("/a")) {
@@ -251,7 +252,7 @@ public class SplitCommand {
      */
     public static class OwedTransactionsLister {
 
-        
+
         /**
          * Lists all owed transactions for a particular member in a group.
          *
