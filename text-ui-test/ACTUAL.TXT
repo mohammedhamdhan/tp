@@ -11,12 +11,8 @@ help
   Usage: help
 
 add
-  Description: Add a new expense
-  Usage: add
-  You will be prompted to enter:
-    - Title: Short name for the expense
-    - Description: Detailed information about the expense
-    - Amount: The monetary value (must be a positive number)
+  Description: Add a new expense and optionally include a description
+  Usage: add/<title>/<date>/<amount>
 
 mark
   Description: Mark an expense as settled
@@ -42,18 +38,11 @@ list-unsettled
 
 delete
   Description: Delete an existing expense
-  Usage: delete
-  You will be shown the list of expenses and prompted to enter
-  the index of the expense to delete
+  Usage: delete<expense ID>
 
 edit
-  Description: Edit an existing expense
-  Usage: edit
-  You will be shown the list of expenses and prompted to enter:
-    - Index of the expense to edit
-    - New title (press Enter to keep current)
-    - New description (press Enter to keep current)
-    - New amount (press Enter to keep current)
+  Description: Edit an existing expense and optionally change the description
+  Usage: edit/<expense ID>/<new title>/<new date>/<new amount>
 
 balance
   Description: Show the balance overview (total expenses and amount owed)
@@ -327,12 +316,8 @@ help
   Usage: help
 
 add
-  Description: Add a new expense
-  Usage: add
-  You will be prompted to enter:
-    - Title: Short name for the expense
-    - Description: Detailed information about the expense
-    - Amount: The monetary value (must be a positive number)
+  Description: Add a new expense and optionally include a description
+  Usage: add/<title>/<date>/<amount>
 
 mark
   Description: Mark an expense as settled
@@ -358,18 +343,11 @@ list-unsettled
 
 delete
   Description: Delete an existing expense
-  Usage: delete
-  You will be shown the list of expenses and prompted to enter
-  the index of the expense to delete
+  Usage: delete<expense ID>
 
 edit
-  Description: Edit an existing expense
-  Usage: edit
-  You will be shown the list of expenses and prompted to enter:
-    - Index of the expense to edit
-    - New title (press Enter to keep current)
-    - New description (press Enter to keep current)
-    - New amount (press Enter to keep current)
+  Description: Edit an existing expense and optionally change the description
+  Usage: edit/<expense ID>/<new title>/<new date>/<new amount>
 
 balance
   Description: Show the balance overview (total expenses and amount owed)

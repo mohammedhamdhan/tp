@@ -17,7 +17,7 @@
 These are all the available commands that the user can input while navigating through the O\$P\$ application.
 
 
-### Admin:
+### Admin
 
 #### Viewing help: `help`
 
@@ -37,7 +37,7 @@ Terminates the program and saves the user's data, such as their payee list, grou
 
 ---
 
-## Manage Balance:
+### Manage Expenses
 
 #### Add an expense: `add`
 
@@ -296,7 +296,7 @@ Shows total money to be paid and total money to pay.
   ```
 ---
 
-## Manage Group Members:
+### Manage Group Members:
 
 #### View Friends in a group: `create-group`
 
@@ -408,7 +408,7 @@ Removes an entire group.
 
 ---
 
-## Manage Payments:
+### Manage Payments:
 
 #### Select split method: `split`
 
@@ -513,7 +513,7 @@ Allows an expense to be split among a certain group, either equally or via manua
 ---
 
 
-## Expense Analytics:
+### Expense Analytics:
 
 #### View summary of expenses: `summary`
 
@@ -556,7 +556,7 @@ Displays comprehensive analytics of your expenses through different visualizatio
 
 ---
 
-## Viewing Method for Expenses:
+### Viewing Method for Expenses:
 
 #### Select Viewing Method: `sort-list`
 

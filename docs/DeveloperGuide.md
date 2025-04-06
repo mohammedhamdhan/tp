@@ -40,7 +40,6 @@
 &nbsp;&nbsp;[5.2 User Stories](#52-user-stories) <br>
 &nbsp;&nbsp;[5.3 Non-Functional Requirements](#53-non-functional-requirements) <br>
 &nbsp;&nbsp;[5.4 Glossary](#54-glossary) <br>
-&nbsp;&nbsp;[5.5 Test Cases](#55-test-cases) <br>
 
 ## Acknowledgements
 
@@ -66,8 +65,8 @@ of their spending across multiple categories.
 2.  You may download [here](https://se-education.org/guides/tutorials/javaInstallationMac.html) for Mac users and [here](https://www.oracle.com/sg/java/technologies/downloads/) for Windows users.
 3.  If you have it installed already, you may check it by running `java -version` in your terminal.
 4.  Download the latest `.jar` file from here. **[link will be updated once v1 is ready]**
-5.  Copy the file to the folder you want to use as the home folder for your **O$P$ budget tracking app** 🙂.
-6.  Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar oSpS.jar` command to run the application.
+5.  Copy the file to the folder you want to use as the home folder for your **O\$P$ budget tracking app** 🙂.
+6.  Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar tp.jar` command to run the application.
 7.  Type the command in the command box and press **Enter** to execute it.
 8.  **Example:** Typing `help` and pressing **Enter** will open a mini window showing a list of all possible commands.
 9.  Refer to the [features](https://docs.google.com/document/d/125Cg7wzuc4XFo3wsziwL2f64KN1uUfvFL5dIm6IQrSk/edit?tab=t.xl7ogrtj0a5q#heading=h.61o02m6y9xrc) section below for details on all commands and functionalities.
@@ -198,24 +197,44 @@ Below are the commands supported by the application:
 
 The ExpenseCommand class handles all expense-related operations in the application. It provides functionality for adding, deleting, editing, and managing expenses.
 
-#### Adding Expenses
+#### **Adding Expenses**
 
-The `executeAddExpense()` method handles the addition of new expenses with the following features:
+The `executeAddExpense()` method manages the addition of new expenses with the following features:
 
-- Validates input fields (title, description, date, amount)
-- Ensures date format is DD-MM-YYYY
-- Prevents negative amounts
-- Handles empty inputs gracefully
-- Uses assertions to validate state
+- Ensures the user input follows the correct format (`add/<title>/<date>/<amount>`). If the format is invalid, it prompts the user with the correct usage instructions.
+- Validates that the provided title is unique among existing expenses. If a duplicate title is detected, it notifies the user and prevents the addition.
+- Ensures the provided date adheres to the `DD-MM-YYYY` format. Invalid dates result in an error message.
+- Ensures the amount is a non-negative number. Negative amounts are rejected with an appropriate message.
+- Validates that the amount does not exceed the maximum allowed limit of 50,000 SGD (or its equivalent in other currencies). If the cap is exceeded, the addition is aborted.
+- Prompts the user to optionally provide a description for the expense. It enforces a character limit of 200 for the description and sets it to `"nil"` if no input is provided.
+- Constructs a new `Expense` object with the validated inputs and adds it to the `budgetManager`. Upon success, it displays the added expense details.
+- Catches and handles exceptions such as `NumberFormatException` (for invalid amount formats) and general exceptions to provide meaningful feedback to the user.
 
-#### Deleting Expenses
+#### Editing Expenses
 
-The `executeDeleteExpense()` method manages expense deletion with these features:
+The `executeEditExpense()` method manages the editing of existing expenses with the following features:
 
-- Validates expense index before deletion
-- Updates owed amounts in the owesData.txt file
-- Handles invalid indices gracefully
-- Uses assertions to ensure valid state
+- Ensures the user input follows the correct format (`edit/<expense ID>/<new title>/<new date>/<new amount>`). If the format is invalid, it prompts the user with the correct usage instructions.
+- Converts the provided expense ID to a zero-based index and checks if it falls within the valid range of existing expenses. If the index is invalid, it notifies the user to enter a valid expense number.
+- Allows users to skip updating specific fields (title, date, or amount) by entering `"x"`. This flexibility ensures only desired fields are modified.
+- Validates the new date if provided, ensuring it adheres to the `DD-MM-YYYY` format. Invalid dates result in an error message.
+- Ensures the new amount is non-negative and does not exceed the maximum allowed limit of 50,000 SGD (or its equivalent in other currencies). If the amount is invalid, it retains the current value.
+- Prompts the user to optionally update the expense description. It enforces a character limit of 200 for the description and retains the current description if no input is provided.
+- Calls the `budgetManager.editExpense()` method to apply the changes to the specified expense. The method ensures the edited expense is not null and displays the updated details upon success.
+- Catches and handles exceptions such as `NumberFormatException`, `IndexOutOfBoundsException`, and general exceptions to provide meaningful feedback to the user.
+- Uses assertions to ensure internal consistency, such as verifying that the edited expense is not null and that the amount is either non-negative or set to `-1` (indicating no change).
+
+#### **Deleting Expenses**
+
+The `executeDeleteExpense()` method manages the deletion of existing expenses with the following features:
+
+- Ensures the user input follows the correct format (`delete/<expense ID>`). If the format is invalid, it prompts the user with the correct usage instructions.
+- Converts the provided expense ID to a zero-based index and checks if it falls within the valid range of existing expenses. If the index is invalid, it notifies the user to enter a valid expense number.
+- Displays the expense details and asks the user to confirm the deletion (`y/n`). If the user does not confirm, the deletion is aborted.
+- Calls the `budgetManager.deleteExpense()` method to remove the specified expense. The deleted expense is displayed upon success.
+- Updates the `owesData.txt` file to reflect any changes in owed amounts due to the deletion.
+- Catches and handles exceptions such as `NumberFormatException` (for invalid expense IDs), `IndexOutOfBoundsException` (for out-of-range indices), and general exceptions to provide meaningful feedback to the user.
+- Ensures the internal state remains consistent by validating the existence of the expense before deletion.
 
 #### Displaying Settled Expenses
 
@@ -652,15 +671,90 @@ Saves all expenses to persistent storage.
 
 - Calls `DataStorage.saveExpenses(expenses)`.
 
-#### `setExpenseAmountToZero(int index)`
+### 3.1.9 Expense Class
 
-Sets an expense's amount to 0.0.
+The `Expense` class in the `seedu.duke.expense` package represents an individual expense with attributes such as title, description, date, amount, completion status, and associated group name. It encapsulates all necessary details for managing and tracking expenses.
 
-- Retrieves the expense at `index`.
-- Calls `setAmount(0.0)` and saves changes.
-- Throws `IndexOutOfBoundsException` if the index is invalid.
+#### Expense Initialization
 
-### 3.1.8 Expense Class
+- **Constructors:**
+  - `Expense(String title, String description, String date, double amount)`
+    - Initializes the `title`, `description`, `date`, and `amount` fields with the provided values.
+    - Sets the default completion status (`isDone`) to `false`.
+  - `Expense(String title, String description, String date, double amount, boolean isDone)`
+    - Initializes the `title`, `description`, `date`, `amount`, and `isDone` fields with the provided values.
+    - Allows specifying whether the expense is marked as completed during initialization.
+
+#### Getting and Setting Attributes
+
+- **Title:**
+  - **Method:** `getTitle()`
+    - Returns the title of the expense.
+    - Provides a way to access the short name or summary of the expense.
+  - **Method:** `setTitle(String title)`
+    - Updates the title of the expense.
+    - Enables modification of the expense's summary.
+
+- **Description:**
+  - **Method:** `getDescription()`
+    - Returns the description of the expense.
+    - Provides detailed information about the expense.
+  - **Method:** `setDescription(String description)`
+    - Updates the description of the expense.
+    - Allows modifying the detailed information.
+
+- **Date:**
+  - **Method:** `getDate()`
+    - Returns the date of the expense.
+    - Provides the date when the expense was incurred.
+  - **Method:** `setDate(String date)`
+    - Updates the date of the expense.
+    - Enables correction or adjustment of the expense date.
+
+- **Amount:**
+  - **Method:** `getAmount()`
+    - Returns the monetary value of the expense.
+    - Provides the expense amount for calculations or display.
+  - **Method:** `setAmount(double amount)`
+    - Updates the monetary value of the expense.
+    - Allows modifying the expense amount.
+
+- **Completion Status:**
+  - **Method:** `getDone()`
+    - Returns the completion status of the expense (`true` if completed, `false` otherwise).
+    - Indicates whether the expense has been settled or marked as done.
+  - **Method:** `setDone(Boolean isDone)`
+    - Updates the completion status of the expense.
+    - Allows marking the expense as completed or uncompleted.
+
+- **Group Name:**
+  - **Method:** `getGroupName()`
+    - Returns the name of the group associated with the expense.
+    - Useful for organizing expenses by groups.
+  - **Method:** `setGroupName(String groupName)`
+    - Updates the group name associated with the expense.
+    - Enables assigning the expense to a specific group.
+
+#### String Representation
+
+- **Method:** `toString()`
+  - Returns a string representation of the expense.
+  - Includes the title, description, date, and formatted amount (to two decimal places).
+  - Example Output:
+    ```
+    Title: Groceries
+    Description: Weekly food shopping
+    Date: 01-01-2025
+    Amount: 100.00
+    ```
+
+#### Design Considerations
+
+- The class follows the **Single Responsibility Principle (SRP)**, focusing solely on holding and managing expense-related data.
+- Encapsulation is maintained through private attributes and public getter/setter methods.
+- Default values (e.g., `isDone = false`) ensure consistency and simplify initialization.
+- The inclusion of optional fields (e.g., `groupName`) provides flexibility for advanced use cases like group-based expense tracking.
+- The `toString()` method ensures a user-friendly representation of the expense, making it suitable for display purposes.
 
 ### 3.1.9 Friend Class
 
@@ -1140,217 +1234,5 @@ This application can be run on any _mainstream OS_ as long as it has java`17` or
 
 - _Mainstream OS_ - Windows, Linux, Unix, macOS
 
-## 5.5 Test Cases
 
-This section documents some test cases for the application. Each test case describes the input commands, the expected behavior, and the corresponding output from the system.
 
----
-
-### **Test Case 1: Adding a New Expense**
-
-- **Purpose**: Verify that the user can successfully add a new expense.
-- **Input**:
-  ```
-  add
-  Breakfast
-  1x Big Breakfast from McDonald's
-  01-01-2025
-  10.00
-  ```
-- **Expected Output**:
-  ```
-  Expense added successfully:
-  Title: Breakfast
-  Description: 1x Big Breakfast from McDonald's
-  Date: 01-01-2025
-  Amount: 10.00
-  ```
-- **Behavior**:
-  - The program prompts the user for the title, description, date, and amount of the expense.
-  - Upon successful addition, the program confirms the details of the newly added expense.
-
----
-
-### **Test Case 2: Listing All Expenses**
-
-- **Purpose**: Verify that the program correctly lists all expenses.
-- **Input**:
-  ```
-  list
-  ```
-- **Expected Output**:
-  ```
-  All expenses are in SGD
-  List of Expenses:
-  Expense #1
-  Title: Breakfast
-  Description: 1x Big Breakfast from McDonald's
-  Date: 01-01-2025
-  Amount: 10.00
-  ```
-- **Behavior**:
-  - The program displays all stored expenses with their respective details.
-  - If no expenses exist, the program outputs "No expenses found."
-
----
-
-### **Test Case 3: Editing an Existing Expense**
-
-- **Purpose**: Verify that the user can edit an existing expense.
-- **Input**:
-  ```
-  edit
-  1
-  (press Enter to keep current title)
-  (press Enter to keep current description)
-  31-12-2025
-  9.00
-  ```
-- **Expected Output**:
-  ```
-  Expense edited successfully:
-  Title: Breakfast
-  Description: 1x Big Breakfast from McDonald's
-  Date: 31-12-2025
-  Amount: 9.00
-  ```
-- **Behavior**:
-  - The program prompts the user to select an expense by index.
-  - The user can modify the title, description, date, and amount or press Enter to retain the current value.
-  - Upon successful editing, the program confirms the updated details.
-
----
-
-### **Test Case 4: Deleting an Expense**
-
-- **Purpose**: Verify that the user can delete an existing expense.
-- **Input**:
-  ```
-  delete
-  1
-  y
-  ```
-- **Expected Output**:
-  ```
-  Are you sure you want to delete this expense? (y/n)
-  Title: Supper
-  Description: 10x Egg Prata from SpringLeaf
-  Date: 02-01-2025
-  Amount: 25.00
-  Expense deleted successfully:
-  Title: Supper
-  Description: 10x Egg Prata from SpringLeaf
-  Date: 02-01-2025
-  Amount: 25.00
-  ```
-- **Behavior**:
-  - The program prompts the user to confirm the deletion of the selected expense.
-  - Upon confirmation, the expense is removed, and the program confirms the deletion.
-
----
-
-### **Test Case 5: Viewing Balance Overview**
-
-- **Purpose**: Verify that the program displays the balance overview correctly.
-- **Input**:
-  ```
-  balance
-  ```
-- **Expected Output**:
-  ```
-  Balance Overview
-  ----------------
-  Total number of unsettled expenses: 1
-  Total amount owed: $25.00
-  ```
-- **Behavior**:
-  - The program calculates and displays the total number of unsettled expenses and the total amount owed.
-
----
-
-### **Test Case 6: Handling Invalid Commands**
-
-- **Purpose**: Verify that the program handles invalid commands gracefully.
-- **Input**:
-  ```
-  invalidcommand
-  ```
-- **Expected Output**:
-  ```
-  Invalid command.
-  ```
-- **Behavior**:
-  - The program informs the user that the entered command is invalid and does not crash.
-
----
-
-### **Test Case 7: Exiting the Program**
-
-- **Purpose**: Verify that the program exits cleanly when the user issues the `exit` command.
-- **Input**:
-  ```
-  exit
-  ```
-- **Expected Output**:
-  ```
-  Thank you for using the Expense Manager. Goodbye!
-  ```
-- **Behavior**:
-  - The program terminates after displaying a farewell message.
-
----
-
-### **Test Case 8: Displaying Help Information**
-
-- **Purpose**: Verify that the program provides a comprehensive help message.
-- **Input**:
-  ```
-  help
-  ```
-- **Expected Output**:
-  ```
-  AVAILABLE COMMANDS:
-  ------------------
-  help
-    Description: Displays this help message
-    Usage: help
-  ...
-  ```
-- **Behavior**:
-  - The program lists all available commands along with their descriptions and usage instructions.
-
----
-
-### **Test Case 9: Editing an Expense with Invalid Index**
-
-- **Purpose**: Verify that the program handles invalid expense indices during editing.
-- **Input**:
-  ```
-  edit
-  0
-  ```
-- **Expected Output**:
-  ```
-  Please enter a valid expense number.
-  ```
-- **Behavior**:
-  - The program prompts the user to enter a valid expense index.
-
----
-
-### **Test Case 10: Deleting an Expense with Invalid Index**
-
-- **Purpose**: Verify that the program handles invalid expense indices during deletion.
-- **Input**:
-  ```
-  delete
-  0
-  ```
-- **Expected Output**:
-  ```
-  Please enter a valid expense number.
-  ```
-- **Behavior**:
-  - The program prompts the user to enter a valid expense index.
-
----

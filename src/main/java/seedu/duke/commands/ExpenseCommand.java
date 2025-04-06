@@ -60,6 +60,19 @@ public class ExpenseCommand {
     //@@author
 
     //@@author matthewyeo1
+
+    public static boolean isAddCommandValid(String[] parts) {
+        return parts.length >= 4 && !parts[1].trim().isEmpty() && !parts[2].trim().isEmpty() && !parts[3].trim().isEmpty();
+    }
+
+    public static boolean isDeleteCommandValid(String[] parts) {
+        return parts.length >= 2 && !parts[1].trim().isEmpty();
+    }
+
+    public static boolean isEditCommandValid(String[] parts) {
+        return parts.length >= 5 && !parts[1].trim().isEmpty() && !parts[4].trim().isEmpty();
+    }
+
     public static boolean isValidDate(String date) {
         if (date.isEmpty()) {
             return false;
@@ -133,7 +146,7 @@ public class ExpenseCommand {
     public void executeAddExpense(String userInput) {
         String[] parts = userInput.split("/", 4); // Split into title, date, amount
 
-        if (parts.length < 4 || parts[1].trim().isEmpty() || parts[2].trim().isEmpty() || parts[3].trim().isEmpty()) {
+        if (!isAddCommandValid(parts)) {
             System.out.println("Invalid format. Usage: add/<title>/<date>/<amount>");
             return;
         }
@@ -198,7 +211,7 @@ public class ExpenseCommand {
 
         try {
             String[] parts = userInput.split("/", 2); // Split into command and expense ID
-            if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            if (!isDeleteCommandValid(parts)) {
                 System.out.println("Invalid format. Usage: delete/<expense ID>");
                 return;
             }
@@ -243,7 +256,7 @@ public class ExpenseCommand {
     public void executeEditExpense(String userInput) {
         try {
             String[] parts = userInput.split("/", 5); // Split into ID, title, date, amount
-            if (parts.length < 5 || parts[1].trim().isEmpty() || parts[4].trim().isEmpty()) {
+            if (!isEditCommandValid(parts)) {
                 System.out.println("Invalid format. Usage: edit/<expense ID>/<new title>/<new date>/<new amount>");
                 return;
             }
