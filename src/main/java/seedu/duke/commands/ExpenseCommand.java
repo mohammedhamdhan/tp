@@ -62,7 +62,8 @@ public class ExpenseCommand {
     //@@author matthewyeo1
 
     public static boolean isAddCommandValid(String[] parts) {
-        return parts.length >= 4 && !parts[1].trim().isEmpty() && !parts[2].trim().isEmpty() && !parts[3].trim().isEmpty();
+        return parts.length >= 4 && !parts[1].trim().isEmpty() &&
+                !parts[2].trim().isEmpty() && !parts[3].trim().isEmpty();
     }
 
     public static boolean isDeleteCommandValid(String[] parts) {
