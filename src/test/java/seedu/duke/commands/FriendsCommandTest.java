@@ -71,11 +71,12 @@ public class FriendsCommandTest {
     @Test
     void testCreateGroupWithDuplicateName() {
         groupManager = new GroupManager();
-        groupManager.addFriendToGroup("TestGroup", new Friend("Alice", "TestGroup"));
         friendsCommands = new FriendsCommands(groupManager);
-        friendsCommands.createGroup("create-group /TestGroup");
 
-        assertTrue(outContent.toString().contains("Group 'TestGroup' already exists."));
+        groupManager.addFriendToGroup("testgroup", new Friend("Alice", "testgroup"));
+        provideInput("done\n");
+        friendsCommands.createGroup("create-group /TestGroup");
+        assertTrue(outContent.toString().contains("Group 'testgroup' already exists."));
     }
 
     @Test
@@ -99,7 +100,6 @@ public class FriendsCommandTest {
 
         assertTrue(outContent.toString().contains("Group not found"));
     }
-
 
     @Test
     void testViewAllGroupsWithGroups() {
@@ -141,8 +141,6 @@ public class FriendsCommandTest {
         assertTrue(friends.stream().anyMatch(friend -> friend.getName().equals("Charlie")));
     }
 
-
-
     @Test
     void testAddMemberToNonExistentGroupUserRejects() {
         groupManager = new GroupManager();
@@ -180,7 +178,6 @@ public class FriendsCommandTest {
         assertTrue(friends.isEmpty());
         assertTrue(outContent.toString().contains("Alice has been removed from TestGroup"));
     }
-
 
     @Test
     void testRemoveMemberNotPresentInGroup() {
