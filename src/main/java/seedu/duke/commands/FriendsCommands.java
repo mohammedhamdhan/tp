@@ -1,3 +1,4 @@
+//@@author nandhananm7
 package seedu.duke.commands;
 import seedu.duke.friends.Group;
 import seedu.duke.friends.GroupManager;
@@ -11,7 +12,6 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-//@@author nandhananm7
 public class FriendsCommands {
     private GroupManager groupManager;
     private Scanner scanner;
@@ -29,6 +29,13 @@ public class FriendsCommands {
         return name.matches("[A-Za-z0-9 ]+");
     }
 
+    /**
+     * Creates a group from the given command in the format:
+     * create-group /<group-name>.
+     * Prompts for members and saves the group if valid.
+     *
+     * @param command the command string.
+     */
     public void createGroup(String command) {
         String[] parts = command.trim().split(" */", 2);
         if (parts.length < 2 || !parts[0].equals("create-group")) {
@@ -36,7 +43,7 @@ public class FriendsCommands {
             return;
         }
 
-        String groupName = parts[1].trim();
+        String groupName = parts[1].trim().toLowerCase();
         if (groupName.isEmpty() || !isValidName(groupName)) {
             System.out.println("Invalid group name. Name cannot be empty or contain special characters.");
             return;
@@ -44,7 +51,7 @@ public class FriendsCommands {
 
         if (groupManager.groupExists(groupName)) {
             System.out.println("Group '" + groupName + "' already exists.");
-            System.out.println("If you would like to add more members to" + groupName + "use the add-member command.");
+            System.out.println("If you would like to add more members to " +groupName +" use the add-member command.");
             return;
         }
 
@@ -53,7 +60,7 @@ public class FriendsCommands {
 
         while (true) {
             System.out.print("Enter name: ");
-            String name = scanner.nextLine();
+            String name = scanner.nextLine().trim().toLowerCase();
             if (name.equalsIgnoreCase("done")) {
                 break;
             }
@@ -81,9 +88,13 @@ public class FriendsCommands {
         System.out.println("Group created successfully!");
     }
 
-
-
-    // Edited to ensure sum up values from owedAmounts.txt instead of showing the last value
+    /**
+     * Displays the details of a specified group based on the command.
+     * Command format: view-group /<group-name>.
+     * Retrieves and shows group members and their total owed expenses.
+     *
+     * @param command the command string containing the group name.
+     */
     public void viewGroup(String command) {
         String[] parts = command.trim().split(" */", 2);
         if (parts.length < 2 || !parts[0].equals("view-group")) {
@@ -143,8 +154,16 @@ public class FriendsCommands {
             }
         }
     }
+    //@@author
 
     //@@author Ashertan256
+    /**
+     * Displays the members and their total owed amounts for a given group.
+     * This method is called directly without requiring user input.
+     * Used internally when the group name is already known.
+     *
+     * @param groupName the name of the group to display.
+     */
     public void viewGroupDirect(String groupName) {
         // Exactly the same as viewGroup but WITHOUT requiring the user to input the group name. 
         //Called directly from the split command, to show the sum of amounts. 
@@ -186,6 +205,10 @@ public class FriendsCommands {
     //@@author
 
     //@@author nandhananm7
+    /**
+     * Displays all existing groups.
+     * If there are no groups, informs the user.
+     */
     public void viewAllGroups() {
         if (groupManager.getGroups().isEmpty()) {
             System.out.println("You have no groups.");
@@ -196,6 +219,13 @@ public class FriendsCommands {
         }
     }
 
+    /**
+     * Adds a member to an existing group or creates a new group if it doesn't exist.
+     * Command format: add-member /<member name> /<group-name>.
+     * Prompts for confirmation if the group does not exist.
+     *
+     * @param command the command string containing member name and group name.
+     */
     public void addMember(String command) {
         String[] parts = command.trim().split(" */", 3);
         if (parts.length < 3 || !parts[0].equals("add-member")) {
@@ -216,7 +246,6 @@ public class FriendsCommands {
             return;
         }
 
-        // Check if group exists and prevent adding to a duplicate group
         if (groupManager.groupExists(groupName)) {
             if (groupManager.isMemberInGroup(groupName, name)) {
                 System.out.println("Member '" + name + "' already exists in group '" + groupName + "'.");
@@ -239,7 +268,13 @@ public class FriendsCommands {
         }
     }
 
-
+    /**
+     * Removes a member from a specified group.
+     * Command format: remove-member /<member name> /<group-name>.
+     * Prompts for confirmation before removal.
+     *
+     * @param command the command string containing member name and group name.
+     */
     public void removeMember(String command) {
         String[] parts = command.trim().split(" */", 3);
         if (parts.length < 3 || !parts[0].equals("remove-member")) {
@@ -297,6 +332,13 @@ public class FriendsCommands {
         }
     }
 
+    /**
+     * Removes a specified group after user confirmation.
+     * Command format: remove-group /<group-name>.
+     * If the group exists, prompts the user before removal.
+     *
+     * @param command the command string containing the group name.
+     */
     public void removeGroup(String command) {
         String[] parts = command.trim().split(" */", 2);
         if (parts.length < 2 || !parts[0].equals("remove-group")) {
@@ -322,6 +364,5 @@ public class FriendsCommands {
         groupManager.saveGroups(); // Save the updated groups list
         System.out.println("Group " + groupName + " has been removed.");
     }
-
 }
 //@@author

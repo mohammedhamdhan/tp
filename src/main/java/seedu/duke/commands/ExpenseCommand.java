@@ -233,7 +233,6 @@ public class ExpenseCommand {
             System.out.println("Error deleting expense: " + e.getMessage());
         }
     }
-
     //@@author
 
     //@@author mohammedhamdhan
@@ -894,8 +893,6 @@ public class ExpenseCommand {
             }
         }
     }
-
-
     //@@author
 
     //@@author matthewyeo1
