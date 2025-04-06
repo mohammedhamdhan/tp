@@ -107,6 +107,7 @@ public class UI {
             expenseCommand.sortExpenses(sortOption);
             return;
         }
+        //@@author NandhithaShree
         if(command.equals(Commands.HELP)){
             messages.displayCommandList();
         } else if(command.equals(Commands.EXIT)){
@@ -156,6 +157,7 @@ public class UI {
         } else {
             messages.displayInvalidCommandMessage();
         }
+        //@@author
     }
 }
 //@@author
