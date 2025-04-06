@@ -119,7 +119,7 @@ public class Messages {
                 - Title: Short name for the expense
                 - Date: In DD-MM-YYYY format
                 - Amount: The monetary value (must be a positive number)
-              You will then be prompted to enter a description
+              You will then be prompted to enter a description (optional)
 
             mark
               Description: Mark an expense as settled
@@ -143,13 +143,13 @@ public class Messages {
 
             delete
               Description: Delete an existing expense
-              Usage: delete/<expense number>
+              Usage: delete/<expense ID>
 
             edit
               Description: Edit an existing expense
               Usage: edit/<expense number>/<new title>/<new date>/<new amount>
               Note: Use 'x' to keep existing values for title, date, or amount
-              You will then be prompted to enter a new description
+              You will then be prompted to change the description (optional)
 
             balance
               Description: Show the balance overview (total expenses and amount owed)

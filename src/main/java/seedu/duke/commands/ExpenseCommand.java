@@ -90,6 +90,20 @@ public class ExpenseCommand {
     //@@author
 
     //@@author matthewyeo1
+
+    public static boolean isAddCommandValid(String[] parts) {
+        return parts.length >= 4 && !parts[1].trim().isEmpty() &&
+                !parts[2].trim().isEmpty() && !parts[3].trim().isEmpty();
+    }
+
+    public static boolean isDeleteCommandValid(String[] parts) {
+        return parts.length >= 2 && !parts[1].trim().isEmpty();
+    }
+
+    public static boolean isEditCommandValid(String[] parts) {
+        return parts.length >= 5 && !parts[1].trim().isEmpty() && !parts[4].trim().isEmpty();
+    }
+
     public static boolean isValidDate(String date) {
         if (date.isEmpty()) {
             return false;
@@ -163,7 +177,7 @@ public class ExpenseCommand {
     public void executeAddExpense(String userInput) {
         String[] parts = userInput.split("/", 4); // Split into title, date, amount
 
-        if (parts.length < 4 || parts[1].trim().isEmpty() || parts[2].trim().isEmpty() || parts[3].trim().isEmpty()) {
+        if (!isAddCommandValid(parts)) {
             System.out.println("Invalid format. Usage: add/<title>/<date>/<amount>");
             return;
         }
@@ -228,7 +242,7 @@ public class ExpenseCommand {
 
         try {
             String[] parts = userInput.split("/", 2); // Split into command and expense ID
-            if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            if (!isDeleteCommandValid(parts)) {
                 System.out.println("Invalid format. Usage: delete/<expense ID>");
                 return;
             }
@@ -273,7 +287,7 @@ public class ExpenseCommand {
     public void executeEditExpense(String userInput) {
         try {
             String[] parts = userInput.split("/", 5); // Split into ID, title, date, amount
-            if (parts.length < 5 || parts[1].trim().isEmpty() || parts[4].trim().isEmpty()) {
+            if (!isEditCommandValid(parts)) {
                 System.out.println("Invalid format. Usage: edit/<expense ID>/<new title>/<new date>/<new amount>");
                 return;
             }
@@ -963,9 +977,14 @@ public class ExpenseCommand {
     /**
      * Searches for expenses containing the given keyword in the title or description.
      */
-    public void findExpense() {
-        System.out.println("Enter keyword to search for expenses:");
-        String keyword = scanner.nextLine().trim();
+    public void findExpense(String command) {
+        String[] parts = command.trim().split(" */", 2);
+        if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            System.out.println("Invalid command. Please use the format: find /<keyword>");
+            return;
+        }
+
+        String keyword = parts[1].trim();
 
         if (keyword.isEmpty()) {
             System.out.println("Keyword cannot be empty.");
@@ -982,7 +1001,7 @@ public class ExpenseCommand {
         String lowerKeyword = keyword.toLowerCase();
 
         for (Expense expense : expenses) {
-            // Check if title or description contains the keyword
+
             if ((expense.getTitle() != null && expense.getTitle().toLowerCase().contains(lowerKeyword)) ||
                     (expense.getDescription() != null &&
                             expense.getDescription().toLowerCase().contains(lowerKeyword))) {
@@ -994,12 +1013,14 @@ public class ExpenseCommand {
             System.out.println("No matching expenses found for keyword: " + keyword);
         } else {
             System.out.println("Found " + matchingExpenses.size() + " matching expense(s):");
-            for (int i = 0; i < matchingExpenses.size(); i++) {
-                System.out.println(matchingExpenses.get(i));
+            for (Expense expense : matchingExpenses) {
+                System.out.println(expense);
                 System.out.println();
             }
         }
     }
+
+
     //@@author
 
     //@@author matthewyeo1

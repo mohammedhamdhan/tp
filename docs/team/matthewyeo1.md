@@ -48,6 +48,7 @@ Here is the list of features implemented:
 - **Documented Sections:**
     - `Basic Interface of O$P$ Application`
     - `Admin Commands: 'help', 'categories' and 'exit'`
+    - `Manage Expenses: 'add', 'edit' and 'delete`
     - `Smart Categories Classifier`
 
 **Relevant Pull Requests:** 
@@ -82,7 +83,7 @@ Here is the list of features implemented:
   - Section 5.5 `Test Cases`
 
 #### Class & UML Sequence Diagrams
-- Section 3.1.7: `BudgetManager Class Diagram`
+- Section 4.1: `Flow Diagram of Overall Program`
 - Section 4.2: `Expense CRUD Feature`
 
 **Relevant Pull Requests:**

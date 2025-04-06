@@ -291,8 +291,8 @@ public class Currency {
         try {
             double finalExchangeRate = Double.parseDouble(exchangeRate);
 
-            if(finalExchangeRate <= 0){
-                System.out.println("You must give a positive exchange rate");
+            if(finalExchangeRate <= 0 || finalExchangeRate >= 50000){
+                System.out.println("You must give a positive exchange rate and an exchange rate less than 50000");
                 return;
             }
             editExpenseCurrency(finalExchangeRate, newCurrency);
