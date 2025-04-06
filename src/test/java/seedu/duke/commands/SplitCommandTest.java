@@ -1,7 +1,7 @@
 package seedu.duke.commands;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+//import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -36,11 +36,11 @@ class SplitCommandTest {
     private ByteArrayOutputStream outContent;
 
     class TestGroupManager extends GroupManager {
-        private List<Group> groups = new ArrayList<>();
+        private List < Group > groups = new ArrayList < > ();
 
-        public void addGroup(String groupName, List<Friend> members) {
+        public void addGroup(String groupName, List < Friend > members) {
             Group group = new Group(groupName);
-            for (Friend friend : members) {
+            for (Friend friend: members) {
                 group.addFriend(friend);
             }
             groups.add(group);
@@ -48,7 +48,7 @@ class SplitCommandTest {
 
         @Override
         public boolean groupExists(String groupName) {
-            for (Group group : groups) {
+            for (Group group: groups) {
                 if (group.getName().equals(groupName)) {
                     return true;
                 }
@@ -57,13 +57,13 @@ class SplitCommandTest {
         }
 
         @Override
-        public List<Friend> getGroupMembers(String groupName) {
-            for (Group group : groups) {
+        public List < Friend > getGroupMembers(String groupName) {
+            for (Group group: groups) {
                 if (group.getName().equals(groupName)) {
                     return group.getFriends();
                 }
             }
-            return new ArrayList<>();
+            return new ArrayList < > ();
         }
     }
 
@@ -78,7 +78,7 @@ class SplitCommandTest {
         groupManager = new TestGroupManager();
         SplitCommand.OwesStorage.owesFile = "testOwedAmounts.txt";
         try (PrintWriter writer = new PrintWriter(
-                SplitCommand.OwesStorage.owesFile)) {
+            SplitCommand.OwesStorage.owesFile)) {
             writer.print("");
         } catch (IOException e) {
             e.printStackTrace();
@@ -95,7 +95,7 @@ class SplitCommandTest {
             e.printStackTrace();
         }
         try (PrintWriter writer = new PrintWriter(
-                SplitCommand.OwesStorage.owesFile)) {
+            SplitCommand.OwesStorage.owesFile)) {
             writer.print("");
         } catch (IOException e) {
             e.printStackTrace();
@@ -104,7 +104,7 @@ class SplitCommandTest {
 
     void provideInput(String input) {
         InputStream in = new ByteArrayInputStream(input.getBytes());
-        Scanner scanner = new Scanner(in);
+        Scanner scanner = new Scanner( in );
         friendsCommand = new FriendsCommands(groupManager);
         splitCommand = new SplitCommand(scanner, groupManager, friendsCommand);
     }
@@ -160,7 +160,7 @@ class SplitCommandTest {
     void testEmptyGroup() {
         Expense expense = new Expense("Lunch", "Meal", "01-01-2025", 100.0);
         budgetManager.addExpense(expense);
-        ((TestGroupManager) groupManager).addGroup("friends", new ArrayList<>());
+        ((TestGroupManager) groupManager).addGroup("friends", new ArrayList < > ());
         provideInput("");
         splitCommand.executeSplit("split/equal/1/friends");
         String output = outContent.toString();
@@ -172,7 +172,7 @@ class SplitCommandTest {
     void testEqualSplitValid() {
         Expense expense = new Expense("Lunch", "Meal", "01-01-2025", 100.0);
         budgetManager.addExpense(expense);
-        List<Friend> members = Arrays.asList(
+        List < Friend > members = Arrays.asList(
             new Friend("Alice", "friends"),
             new Friend("Bob", "friends"));
         ((TestGroupManager) groupManager).addGroup("friends", members);
@@ -195,7 +195,7 @@ class SplitCommandTest {
             String fileContent = new String(Files.readAllBytes(owesFile.toPath()));
             String expectedContent = expectedAlice + "\n" + expectedBob + "\n";
             //assertEquals(expectedContent, fileContent,
-        //        "File content does not match for equal split.");
+            //        "File content does not match for equal split.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -205,7 +205,7 @@ class SplitCommandTest {
     void testDuplicateSplitPrevention() {
         Expense expense = new Expense("Dinner", "Evening meal", "31-12-2025", 120.0);
         budgetManager.addExpense(expense);
-        List<Friend> members = Arrays.asList(
+        List < Friend > members = Arrays.asList(
             new Friend("Alice", "friends"),
             new Friend("Bob", "friends"));
         ((TestGroupManager) groupManager).addGroup("friends", members);
@@ -223,7 +223,7 @@ class SplitCommandTest {
     void testManualSplitAbsoluteValid() {
         Expense expense = new Expense("Dinner", "Evening meal", "31-12-2025", 100.0);
         budgetManager.addExpense(expense);
-        List<Friend> members = Arrays.asList(
+        List < Friend > members = Arrays.asList(
             new Friend("Alice", "friends"),
             new Friend("Bob", "friends"));
         ((TestGroupManager) groupManager).addGroup("friends", members);
@@ -245,7 +245,7 @@ class SplitCommandTest {
             String fileContent = new String(Files.readAllBytes(owesFile.toPath()));
             String expectedContent = expectedAlice + "\n" + expectedBob + "\n";
             //assertEquals(expectedContent, fileContent,
-           //     "File content does not match for manual absolute split.");
+            //     "File content does not match for manual absolute split.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -255,7 +255,7 @@ class SplitCommandTest {
     void testManualSplitPercentageValid() {
         Expense expense = new Expense("Brunch", "Late meal", "15-02-2025", 200.0);
         budgetManager.addExpense(expense);
-        List<Friend> members = Arrays.asList(
+        List < Friend > members = Arrays.asList(
             new Friend("Alice", "friends"),
             new Friend("Bob", "friends"),
             new Friend("Charlie", "friends"));
@@ -287,7 +287,7 @@ class SplitCommandTest {
                 expectedBob + "\n" +
                 expectedCharlie + "\n";
             //assertEquals(expectedContent, fileContent,
-           //     "File content does not match for manual percentage split.");
+            //     "File content does not match for manual percentage split.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -297,14 +297,14 @@ class SplitCommandTest {
     void testManualSplitInvalidMethodThenValid() {
         Expense expense = new Expense("Snack", "Light bite", "10-03-2025", 50.0);
         budgetManager.addExpense(expense);
-        List<Friend> members = Arrays.asList(new Friend("Alice", "friends"));
+        List < Friend > members = Arrays.asList(new Friend("Alice", "friends"));
         ((TestGroupManager) groupManager).addGroup("friends", members);
         String input = "invalid_method\n/ a\n/a\n25\n";
         provideInput(input);
         splitCommand.executeSplit("split/assign/1/friends");
         String output = outContent.toString();
         assertTrue(output.contains("Invalid method. Please enter '/a' for absolute amounts or " +
-            "'/p' for percentages."), 
+                "'/p' for percentages."),
             "Expected re-prompt for invalid method.");
         String expectedAlice = "Transaction: Expense: Snack, Date: 10-03-2025, " +
             "Group: friends, Member: Alice owes: 25.00";
@@ -316,7 +316,7 @@ class SplitCommandTest {
     void testManualSplitAbsoluteInvalidNumericThenValid() {
         Expense expense = new Expense("Dinner", "Evening meal", "31-12-2025", 100.0);
         budgetManager.addExpense(expense);
-        List<Friend> members = Arrays.asList(
+        List < Friend > members = Arrays.asList(
             new Friend("Alice", "friends"),
             new Friend("Bob", "friends"));
         ((TestGroupManager) groupManager).addGroup("friends", members);

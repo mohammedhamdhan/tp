@@ -28,7 +28,6 @@ public class SplitCommand {
 
     /**
      * Executes the split command using the unified format:
-     * split /<equal|assign>/<expense index>/<group name>
      */
     public void executeSplit(String command) {
         try {
@@ -39,8 +38,8 @@ public class SplitCommand {
             String[] parts = command.trim().split("/");
             if (parts.length != 4) {
                 throw new IllegalArgumentException(
-                    "Invalid command format: expected 'split /<equal|assign>/<expense index>/<group name>' but got: " 
-                    + command);
+                    "Invalid command format: expected 'split /<equal|assign>/<expense index>/<group name>' but got: " +
+                    command);
             }
             String commandWord = parts[0].trim();
             if (!commandWord.equalsIgnoreCase("split")) {
@@ -66,7 +65,7 @@ public class SplitCommand {
             if (groupName.isEmpty()) {
                 throw new IllegalArgumentException("Group name cannot be empty.");
             }
-            List<Expense> expenses = DataStorage.loadExpenses();
+            List < Expense > expenses = DataStorage.loadExpenses();
             if (expenses.isEmpty()) {
                 throw new IllegalArgumentException("No expenses available to split.");
             }
@@ -80,18 +79,20 @@ public class SplitCommand {
             if (!groupManager.groupExists(groupName)) {
                 throw new IllegalArgumentException("Group '" + groupName + "' not found.");
             }
-            List<Friend> members = groupManager.getGroupMembers(groupName);
+            List < Friend > members = groupManager.getGroupMembers(groupName);
             if (members == null || members.isEmpty()) {
-                throw new IllegalArgumentException("No members in group '" + groupName + "'. Cannot perform split.");
+                throw new IllegalArgumentException("No members in group '" +
+                    groupName + "'. Cannot perform split.");
             }
 
-            // Prevent duplicate splits: check if the expense has already been split for this group.
+            // Prevent duplicate splits: 
+            //check if the expense has already been split for this group.
             boolean alreadySplit = false;
             File owesFile = new File(OwesStorage.owesFile);
             if (owesFile.exists()) {
                 try {
-                    List<String> lines = Files.readAllLines(owesFile.toPath());
-                    for (String line : lines) {
+                    List < String > lines = Files.readAllLines(owesFile.toPath());
+                    for (String line: lines) {
                         if (line.contains("Expense: " + selectedExpense.getTitle()) &&
                             line.contains("Date: " + selectedExpense.getDate()) &&
                             line.contains("Group: " + groupName)) {
@@ -114,7 +115,7 @@ public class SplitCommand {
                 double share = totalAmount / numMembers;
                 System.out.println("Splitting " + totalAmount + " equally among " + numMembers +
                     " members of group \"" + groupName + "\":");
-                for (Friend member : members) {
+                for (Friend member: members) {
                     String assignment = createTransactionRecord(selectedExpense, groupName, member.getName(), share);
                     System.out.print(assignment);
                     OwesStorage.appendOwes(assignment);
@@ -136,7 +137,7 @@ public class SplitCommand {
                     double remaining = totalAmount;
                     System.out.println("Total expense amount to split: " + totalAmount);
                     System.out.println("You can assign up to " + remaining + " in total.");
-                    for (Friend member : members) {
+                    for (Friend member: members) {
                         while (true) {
                             System.out.println("Remaining expense: " + String.format("%.2f", remaining));
                             System.out.print("Enter amount for " + member.getName() + ": ");
@@ -158,7 +159,8 @@ public class SplitCommand {
                                     ". Try again.");
                             } else {
                                 remaining -= assigned;
-                                String assignment = createTransactionRecord(selectedExpense, groupName, member.getName(), assigned);
+                                String assignment = createTransactionRecord(selectedExpense,
+                                    groupName, member.getName(), assigned);
                                 System.out.print(assignment);
                                 OwesStorage.appendOwes(assignment);
                                 break;
@@ -171,10 +173,11 @@ public class SplitCommand {
                 } else { // method equals "/p" for percentage splitting
                     double remainingPercentage = 100.0;
                     System.out.println("Total expense is " + totalAmount +
-                        ". You can assign up to 100% in total. Each assignment reduces the remaining percentage.");
-                    for (Friend member : members) {
+                        ". You can assign up to 100% in total.");
+                    for (Friend member: members) {
                         while (true) {
-                            System.out.println("Remaining percentage: " + String.format("%.2f", remainingPercentage) + "%");
+                            System.out.println("Remaining percentage: " +
+                                String.format("%.2f", remainingPercentage) + "%");
                             System.out.print("Enter percentage for " + member.getName() + ": ");
                             String percStr = scanner.nextLine().trim();
                             double percent;
@@ -191,7 +194,8 @@ public class SplitCommand {
                                     ". Try again.");
                             } else {
                                 double assignedAmount = totalAmount * (percent / 100.0);
-                                String assignment = createTransactionRecord(selectedExpense, groupName, member.getName(), assignedAmount);
+                                String assignment = createTransactionRecord(selectedExpense,
+                                    groupName, member.getName(), assignedAmount);
                                 System.out.print(assignment);
                                 OwesStorage.appendOwes(assignment);
                                 remainingPercentage -= percent;
@@ -218,7 +222,8 @@ public class SplitCommand {
      * @param amount     The amount assigned.
      * @return A formatted transaction string.
      */
-    private String createTransactionRecord(Expense expense, String groupName, String memberName, double amount) {
+    private String createTransactionRecord(Expense expense,
+        String groupName, String memberName, double amount) {
         return "Transaction: Expense: " + expense.getTitle() +
             ", Date: " + expense.getDate() +
             ", Group: " + groupName +
@@ -259,10 +264,10 @@ public class SplitCommand {
                 return;
             }
             try {
-                List<String> allLines = Files.readAllLines(file.toPath());
+                List < String > allLines = Files.readAllLines(file.toPath());
                 boolean found = false;
                 System.out.println("Owed transactions for member '" + memberName + "' in group '" + groupName + "':");
-                for (String line : allLines) {
+                for (String line: allLines) {
                     if (line == null || line.trim().isEmpty()) {
                         continue; // skip blank lines
                     }
@@ -278,7 +283,8 @@ public class SplitCommand {
                     }
                 }
                 if (!found) {
-                    System.out.println("No transactions found for member '" + memberName + "' in group '" + groupName + "'.");
+                    System.out.println("No transactions found for member '" +
+                        memberName + "' in group '" + groupName + "'.");
                 }
             } catch (IOException e) {
                 System.out.println("Error reading owed transactions: " + e.getMessage());
