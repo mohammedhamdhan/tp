@@ -251,6 +251,7 @@ public class SplitCommand {
      */
     public static class OwedTransactionsLister {
 
+        
         /**
          * Lists all owed transactions for a particular member in a group.
          *
