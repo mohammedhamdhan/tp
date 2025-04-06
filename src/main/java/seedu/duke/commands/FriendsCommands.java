@@ -12,7 +12,6 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 
 public class FriendsCommands {
     private GroupManager groupManager;
@@ -53,7 +52,7 @@ public class FriendsCommands {
 
         if (groupManager.groupExists(groupName)) {
             System.out.println("Group '" + groupName + "' already exists.");
-            System.out.println("If you would like to add more members to " +groupName +" use the add-member command.");
+            System.out.println("If you would like to add more members to " + groupName + " use the add-member command.");
             return;
         }
 
@@ -94,78 +93,77 @@ public class FriendsCommands {
 
     //@@author Ashertan256
     /**
- * Displays detailed owed transactions for a specific member in a group.
- * Command format: view-member/<groupname>/<member name>
- */
-public void viewMember(String command) {
-    // Validate command input
-    if (command == null || command.trim().isEmpty()) {
-        System.out.println("Error: Command cannot be empty.");
-        return;
-    }
-    // Expected syntax: view-member/<groupname>/<member name>
-    String[] parts = command.trim().split("/");
-    if (parts.length != 3) {
-        System.out.println("Invalid command format. Expected: view-member/<group name>/<member name>");
-        return;
-    }
-    
-    // Validate command keyword
-    String commandWord = parts[0].trim();
-    if (!commandWord.equalsIgnoreCase("view-member")) {
-        System.out.println("Invalid command. Expected command to start with 'view-member'.");
-        return;
-    }
-    
-    // Extract and validate group and member names
-    String groupName = parts[1].trim();
-    String memberName = parts[2].trim();
-    if (groupName.isEmpty() || memberName.isEmpty()) {
-        System.out.println("Error: Group name and member name cannot be empty.");
-        return;
-    }
-    
-    File file = new File("owedAmounts.txt");
-    if (!file.exists()) {
-        System.out.println("Error: Owed transactions file does not exist. No data available.");
-        return;
-    }
-    
-    List<String> allLines;
-    try {
-        allLines = java.nio.file.Files.readAllLines(file.toPath());
-    } catch (IOException e) {
-        System.out.println("Error reading owed transactions file: " + e.getMessage());
-        return;
-    }
-    
-    if (allLines.isEmpty()) {
-        System.out.println("No transactions found in the file.");
-        return;
-    }
-    
-    boolean found = false;
-    System.out.println("Transactions for member '" + memberName + "' in group '" + groupName + "':");
-    for (String line : allLines) {
-        if (line == null || line.trim().isEmpty()) {
-            continue; // skip blank lines
+     * Displays detailed owed transactions for a specific member in a group.
+     */
+    public void viewMember(String command) {
+        // Validate command input
+        if (command == null || command.trim().isEmpty()) {
+            System.out.println("Error: Command cannot be empty.");
+            return;
         }
-        String trimmedLine = line.trim();
-        // Expect detailed transaction records to start with the specific prefix.
-        if (!trimmedLine.startsWith("Transaction: Expense:")) {
-            System.out.println("Warning: Skipping unrecognized record: " + trimmedLine);
-            continue;
+        // Expected syntax: view-member/<groupname>/<member name>
+        String[] parts = command.trim().split("/");
+        if (parts.length != 3) {
+            System.out.println("Invalid command format. Expected: view-member/<group name>/<member name>");
+            return;
         }
-        // Check if the record contains both the specified group and member.
-        if (trimmedLine.contains("Group: " + groupName) && trimmedLine.contains("Member: " + memberName)) {
-            System.out.println(trimmedLine);
-            found = true;
+
+        // Validate command keyword
+        String commandWord = parts[0].trim();
+        if (!commandWord.equalsIgnoreCase("view-member")) {
+            System.out.println("Invalid command. Expected command to start with 'view-member'.");
+            return;
+        }
+
+        // Extract and validate group and member names
+        String groupName = parts[1].trim();
+        String memberName = parts[2].trim();
+        if (groupName.isEmpty() || memberName.isEmpty()) {
+            System.out.println("Error: Group name and member name cannot be empty.");
+            return;
+        }
+
+        File file = new File("owedAmounts.txt");
+        if (!file.exists()) {
+            System.out.println("Error: Owed transactions file does not exist. No data available.");
+            return;
+        }
+
+        List < String > allLines;
+        try {
+            allLines = java.nio.file.Files.readAllLines(file.toPath());
+        } catch (IOException e) {
+            System.out.println("Error reading owed transactions file: " + e.getMessage());
+            return;
+        }
+
+        if (allLines.isEmpty()) {
+            System.out.println("No transactions found in the file.");
+            return;
+        }
+
+        boolean found = false;
+        System.out.println("Transactions for member '" + memberName + "' in group '" + groupName + "':");
+        for (String line: allLines) {
+            if (line == null || line.trim().isEmpty()) {
+                continue; // skip blank lines
+            }
+            String trimmedLine = line.trim();
+            // Expect detailed transaction records to start with the specific prefix.
+            if (!trimmedLine.startsWith("Transaction: Expense:")) {
+                System.out.println("Warning: Skipping unrecognized record: " + trimmedLine);
+                continue;
+            }
+            // Check if the record contains both the specified group and member.
+            if (trimmedLine.contains("Group: " + groupName) && trimmedLine.contains("Member: " + memberName)) {
+                System.out.println(trimmedLine);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No transactions found for member '" + memberName + "' in group '" + groupName + "'.");
         }
     }
-    if (!found) {
-        System.out.println("No transactions found for member '" + memberName + "' in group '" + groupName + "'.");
-    }
-}
 
     /**
      * Displays the details of a specified group based on the command.
@@ -180,20 +178,20 @@ public void viewMember(String command) {
             System.out.println("Invalid command. Please use the format: view-group /<group name>");
             return;
         }
-    
+
         String groupName = parts[1].trim();
         if (groupName.isEmpty() || !isValidName(groupName)) {
             System.out.println("Invalid group name. Name cannot be empty or contain special characters.");
             return;
         }
-    
+
         if (!groupManager.groupExists(groupName)) {
             System.out.println("Group not found");
             return;
         }
         System.out.println("Group: " + groupName);
-    
-        Map<String, Double> owedAmounts = new HashMap<>();
+
+        Map < String, Double > owedAmounts = new HashMap < > ();
         File file = new File("owedAmounts.txt");
         try (Scanner fileScanner = new Scanner(file)) {
             while (fileScanner.hasNextLine()) {
@@ -214,7 +212,7 @@ public void viewMember(String command) {
                             System.out.println("Warning: Unable to parse amount in record: " + line);
                         }
                     }
-                } 
+                }
                 // Handle new format: detailed transaction record
                 else if (line.startsWith("Transaction: Expense:")) {
                     try {
@@ -239,20 +237,20 @@ public void viewMember(String command) {
         } catch (FileNotFoundException e) {
             System.out.println("Owed amounts file not found. No expense data available.");
         }
-    
-        List<Friend> members = groupManager.getGroupMembers(groupName);
+
+        List < Friend > members = groupManager.getGroupMembers(groupName);
         if (members.isEmpty()) {
             System.out.println("No members in this group.");
         } else {
             System.out.println("Members:");
-            for (Friend friend : members) {
+            for (Friend friend: members) {
                 String friendName = friend.getName();
                 double totalOwed = owedAmounts.getOrDefault(friendName, 0.0);
                 System.out.println(friendName + " - Expense: $" + String.format("%.2f", totalOwed));
             }
         }
     }
-    
+
 
     /**
      * Displays the members and their total owed amounts for a given group.
@@ -262,7 +260,7 @@ public void viewMember(String command) {
      * @param groupName the name of the group to display.
      */
     public void viewGroupDirect(String groupName) {
-        Map<String, Double> owedAmounts = new HashMap<>();
+        Map < String, Double > owedAmounts = new HashMap < > ();
         File file = new File("owedAmounts.txt");
         try (Scanner fileScanner = new Scanner(file)) {
             while (fileScanner.hasNextLine()) {
@@ -283,9 +281,7 @@ public void viewMember(String command) {
                             System.out.println("Warning: Unable to parse amount in record: " + line);
                         }
                     }
-                }
-                
-                else if (line.startsWith("Transaction: Expense:")) {
+                } else if (line.startsWith("Transaction: Expense:")) {
                     try {
                         int memberIdx = line.indexOf("Member: ");
                         int owesIdx = line.indexOf(" owes:");
@@ -308,21 +304,21 @@ public void viewMember(String command) {
         } catch (FileNotFoundException e) {
             System.out.println("Owed amounts file not found. No expense data available.");
         }
-    
+
         // Retrieve group members and display their total owed amounts.
-        List<Friend> members = groupManager.getGroupMembers(groupName);
+        List < Friend > members = groupManager.getGroupMembers(groupName);
         if (members.isEmpty()) {
             System.out.println("No members in this group.");
         } else {
             System.out.println("Members:");
-            for (Friend friend : members) {
+            for (Friend friend: members) {
                 String name = friend.getName();
                 double totalOwed = owedAmounts.getOrDefault(name, 0.0);
                 System.out.println(name + " - Expense: $" + String.format("%.2f", totalOwed));
             }
         }
     }
-    
+
     //@@author
 
     //@@author nandhananm7
@@ -417,7 +413,7 @@ public void viewMember(String command) {
         }
 
         boolean memberExists = false;
-        for (Group group : groupManager.getGroups()) {
+        for (Group group: groupManager.getGroups()) {
             if (group.getName().equals(groupName) && group.hasFriend(memberName)) {
                 memberExists = true;
                 break;
@@ -437,7 +433,7 @@ public void viewMember(String command) {
         }
 
         boolean removed = false;
-        for (Group group : groupManager.getGroups()) {
+        for (Group group: groupManager.getGroups()) {
             if (group.getName().equals(groupName)) {
                 removed = group.removeFriend(memberName);
                 break;

@@ -135,7 +135,7 @@ class SplitCommandTest {
         provideInput("");
         splitCommand.executeSplit("split/equal/-1/testgroup");
         String output = outContent.toString();
-        assertTrue(output.contains("Expense index must be a positive integer"), "Expected error for negative expense index.");
+        assertTrue(output.contains("Expense index must be a positive integer"), "Expected error for negative");
     }
 
     @Test
@@ -257,7 +257,7 @@ class SplitCommandTest {
         double charlieShare = 200.0 * (50.0 / 100.0);
         assertTrue(output.contains("Alice owes: " + String.format("%.2f", aliceShare)), "Incorrect share for Alice.");
         assertTrue(output.contains("Bob owes: " + String.format("%.2f", bobShare)), "Incorrect share for Bob.");
-        assertTrue(output.contains("Charlie owes: " + String.format("%.2f", charlieShare)), "Incorrect share for Charlie.");
+        assertTrue(output.contains("Charlie owes: " + String.format("%.2f", charlieShare)), "Incorrect for Charlie.");
 
         File owesFile = new File(SplitCommand.OwesStorage.owesFile);
         try {
@@ -303,7 +303,7 @@ class SplitCommandTest {
         provideInput(input);
         splitCommand.executeSplit("split/assign/1/friends");
         String output = outContent.toString();
-        assertTrue(output.contains("Invalid amount format for Alice"), "Expected invalid numeric input error for Alice.");
+        assertTrue(output.contains("Invalid amount format for Alice"), "Expected invalid numeric input error.");
         assertTrue(output.contains("Alice owes: 30.00"), "Expected Alice to owe 30.00 after re-entry.");
         assertTrue(output.contains("Bob owes: 70.00"), "Expected Bob to owe 70.00 after re-entry.");
     }

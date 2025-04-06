@@ -27,8 +27,7 @@ public class SplitCommand {
     }
 
     /**
-     * Executes the split command using the unified format:
-     * split /<equal|assign>/<expense index>/<group name>
+     * Executes the split command using the unified format
      */
     public void executeSplit(String command) {
         try {
@@ -38,7 +37,10 @@ public class SplitCommand {
             // Split command using "/" as delimiter.
             String[] parts = command.trim().split("/");
             if (parts.length != 4) {
-                throw new IllegalArgumentException("Invalid command format: expected 'split /<equal|assign>/<expense index>/<group name>' but got: " + command);
+                throw new IllegalArgumentException(
+                    "Invalid command. Expected format: split /<equal|assign>/<expense index>/<group name>, " +
+                    "got: " + command);
+
             }
             String commandWord = parts[0].trim();
             if (!commandWord.equalsIgnoreCase("split")) {
@@ -47,7 +49,7 @@ public class SplitCommand {
             String splitOption = parts[1].trim().toLowerCase();
             if (!splitOption.equals("equal") && !splitOption.equals("assign")) {
                 throw new IllegalArgumentException("Invalid split option: '" + splitOption +
-                        "'. Use 'equal' for an equal split or 'assign' for manual splitting.");
+                    "'. Use 'equal' for an equal split or 'assign' for manual splitting.");
             }
             String expenseIndexStr = parts[2].trim();
             int expIndex;
@@ -63,32 +65,32 @@ public class SplitCommand {
             if (groupName.isEmpty()) {
                 throw new IllegalArgumentException("Group name cannot be empty.");
             }
-            List<Expense> expenses = DataStorage.loadExpenses();
+            List < Expense > expenses = DataStorage.loadExpenses();
             if (expenses.isEmpty()) {
                 throw new IllegalArgumentException("No expenses available to split.");
             }
             if (expIndex >= expenses.size()) {
-                throw new IllegalArgumentException("Expense index out of range: " + (expIndex + 1) + " does not exist.");
+                throw new IllegalArgumentException("Expense index out of range: " + (expIndex + 1));
             }
             Expense selectedExpense = expenses.get(expIndex);
             double totalAmount = selectedExpense.getAmount();
             System.out.println("Selected expense amount: " + String.format("%.2f", totalAmount));
-    
+
             if (!groupManager.groupExists(groupName)) {
                 throw new IllegalArgumentException("Group '" + groupName + "' not found.");
             }
-            List<Friend> members = groupManager.getGroupMembers(groupName);
+            List < Friend > members = groupManager.getGroupMembers(groupName);
             if (members == null || members.isEmpty()) {
                 throw new IllegalArgumentException("No members in group '" + groupName + "'. Cannot perform split.");
             }
-            
+
             // Prevent duplicate splits: check if the expense has already been split for this group.
             boolean alreadySplit = false;
             File owesFile = new File(OwesStorage.owesFile);
             if (owesFile.exists()) {
                 try {
-                    List<String> lines = Files.readAllLines(owesFile.toPath());
-                    for (String line : lines) {
+                    List < String > lines = Files.readAllLines(owesFile.toPath());
+                    for (String line: lines) {
                         if (line.contains("Expense: " + selectedExpense.getTitle()) &&
                             line.contains("Date: " + selectedExpense.getDate()) &&
                             line.contains("Group: " + groupName)) {
@@ -105,13 +107,13 @@ public class SplitCommand {
                 System.out.println("Error: This expense has already been split for group '" + groupName + "'.");
                 return;
             }
-    
+
             if (splitOption.equals("equal")) {
                 int numMembers = members.size();
                 double share = totalAmount / numMembers;
                 System.out.println("Splitting " + totalAmount + " equally among " + numMembers +
-                        " members of group \"" + groupName + "\":");
-                for (Friend member : members) {
+                    " members of group \"" + groupName + "\":");
+                for (Friend member: members) {
                     String assignment = createTransactionRecord(selectedExpense, groupName, member.getName(), share);
                     System.out.print(assignment);
                     OwesStorage.appendOwes(assignment);
@@ -126,14 +128,14 @@ public class SplitCommand {
                     if (method.equals("/a") || method.equals("/p")) {
                         break;
                     } else {
-                        System.out.println("Invalid method. Please enter '/a' for absolute amounts or '/p' for percentages.");
+                        System.out.println("Invalid. Enter '/a' for absolute or '/p' for percentage.");
                     }
                 }
                 if (method.equals("/a")) {
                     double remaining = totalAmount;
                     System.out.println("Total expense amount to split: " + totalAmount);
                     System.out.println("You can assign up to " + remaining + " in total.");
-                    for (Friend member : members) {
+                    for (Friend member: members) {
                         while (true) {
                             System.out.println("Remaining expense: " + String.format("%.2f", remaining));
                             System.out.print("Enter amount for " + member.getName() + ": ");
@@ -143,19 +145,20 @@ public class SplitCommand {
                                 assigned = Double.parseDouble(amtStr);
                             } catch (NumberFormatException e) {
                                 System.out.println("Invalid amount format for " + member.getName() +
-                                        ". Please enter a numeric value.");
+                                    ". Please enter a numeric value.");
                                 continue;
                             }
                             if (assigned < 0) {
                                 System.out.println("Assigned amount for " + member.getName() +
-                                        " cannot be negative. Try again.");
+                                    " cannot be negative. Try again.");
                             } else if (assigned > remaining) {
                                 System.out.println("Assigned amount for " + member.getName() +
-                                        " exceeds remaining amount of " + String.format("%.2f", remaining) +
-                                        ". Try again.");
+                                    " exceeds remaining amount of " + String.format("%.2f", remaining) +
+                                    ". Try again.");
                             } else {
                                 remaining -= assigned;
-                                String assignment = createTransactionRecord(selectedExpense, groupName, member.getName(), assigned);
+                                String assignment = createTransactionRecord(selectedExpense,
+                                    groupName, member.getName(), assigned);
                                 System.out.print(assignment);
                                 OwesStorage.appendOwes(assignment);
                                 break;
@@ -168,8 +171,8 @@ public class SplitCommand {
                 } else { // method equals "/p" for percentage splitting
                     double remainingPercentage = 100.0;
                     System.out.println("Total expense is " + totalAmount +
-                            ". You can assign up to 100% in total. Each assignment reduces the remaining percentage.");
-                    for (Friend member : members) {
+                        ". You can assign up to 100% in total.");
+                    for (Friend member: members) {
                         while (true) {
                             System.out.println("Remaining percentage: " + String.format("%.2f", remainingPercentage) + "%");
                             System.out.print("Enter percentage for " + member.getName() + ": ");
@@ -179,16 +182,17 @@ public class SplitCommand {
                                 percent = Double.parseDouble(percStr);
                             } catch (NumberFormatException e) {
                                 System.out.println("Invalid percentage format for " + member.getName() +
-                                        ". Please enter a numeric value.");
+                                    ". Please enter a numeric value.");
                                 continue;
                             }
                             if (percent < 0 || percent > remainingPercentage) {
                                 System.out.println("Percentage for " + member.getName() +
-                                        " must be between 0 and " + String.format("%.2f", remainingPercentage) +
-                                        ". Try again.");
+                                    " must be between 0 and " + String.format("%.2f", remainingPercentage) +
+                                    ". Try again.");
                             } else {
                                 double assignedAmount = totalAmount * (percent / 100.0);
-                                String assignment = createTransactionRecord(selectedExpense, groupName, member.getName(), assignedAmount);
+                                String assignment = createTransactionRecord(selectedExpense,
+                                    groupName, member.getName(), assignedAmount);
                                 System.out.print(assignment);
                                 OwesStorage.appendOwes(assignment);
                                 remainingPercentage -= percent;
@@ -205,7 +209,7 @@ public class SplitCommand {
             System.out.println("Error: " + e.getMessage());
         }
     }
-    
+
 
     /**
      * Creates a detailed transaction record to be stored.
@@ -218,10 +222,10 @@ public class SplitCommand {
      */
     private String createTransactionRecord(Expense expense, String groupName, String memberName, double amount) {
         return "Transaction: Expense: " + expense.getTitle() +
-                ", Date: " + expense.getDate() +
-                ", Group: " + groupName +
-                ", Member: " + memberName +
-                " owes: " + String.format("%.2f", amount) + "\n";
+            ", Date: " + expense.getDate() +
+            ", Group: " + groupName +
+            ", Member: " + memberName +
+            " owes: " + String.format("%.2f", amount) + "\n";
     }
 
     /**
@@ -257,10 +261,10 @@ public class SplitCommand {
                 return;
             }
             try {
-                List<String> allLines = Files.readAllLines(file.toPath());
+                List < String > allLines = Files.readAllLines(file.toPath());
                 boolean found = false;
                 System.out.println("Owed transactions for member '" + memberName + "' in group '" + groupName + "':");
-                for (String line : allLines) {
+                for (String line: allLines) {
                     if (line == null || line.trim().isEmpty()) {
                         continue; // skip blank lines
                     }
