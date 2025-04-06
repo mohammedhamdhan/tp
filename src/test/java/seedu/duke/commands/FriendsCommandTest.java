@@ -1,3 +1,4 @@
+//@@author nandhananm7
 package seedu.duke.commands;
 
 import org.junit.jupiter.api.AfterEach;
@@ -11,12 +12,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.List;
+//@@author
 //@@author matthewyeo1
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 //@@author
 
+//@@author nandhananm7
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,6 +36,7 @@ public class FriendsCommandTest {
         friendsCommands = new FriendsCommands(groupManager);
         System.setOut(new PrintStream(outContent)); // Capture console output
     }
+    //@@author
 
     //@@author matthewyeo1
     @AfterEach
@@ -42,6 +46,7 @@ public class FriendsCommandTest {
     }
     //@@author
 
+    //@@author nandhananm7
     @AfterEach
     void clearGroupsFile() {
         File file = new File("groups.txt");
@@ -66,11 +71,12 @@ public class FriendsCommandTest {
     @Test
     void testCreateGroupWithDuplicateName() {
         groupManager = new GroupManager();
-        groupManager.addFriendToGroup("TestGroup", new Friend("Alice", "TestGroup"));
         friendsCommands = new FriendsCommands(groupManager);
-        friendsCommands.createGroup("create-group /TestGroup");
 
-        assertTrue(outContent.toString().contains("Group 'TestGroup' already exists."));
+        groupManager.addFriendToGroup("testgroup", new Friend("Alice", "testgroup"));
+        provideInput("done\n");
+        friendsCommands.createGroup("create-group /TestGroup");
+        assertTrue(outContent.toString().contains("Group 'testgroup' already exists."));
     }
 
     @Test
@@ -94,7 +100,6 @@ public class FriendsCommandTest {
 
         assertTrue(outContent.toString().contains("Group not found"));
     }
-
 
     @Test
     void testViewAllGroupsWithGroups() {
@@ -136,8 +141,6 @@ public class FriendsCommandTest {
         assertTrue(friends.stream().anyMatch(friend -> friend.getName().equals("Charlie")));
     }
 
-
-
     @Test
     void testAddMemberToNonExistentGroupUserRejects() {
         groupManager = new GroupManager();
@@ -175,7 +178,6 @@ public class FriendsCommandTest {
         assertTrue(friends.isEmpty());
         assertTrue(outContent.toString().contains("Alice has been removed from TestGroup"));
     }
-
 
     @Test
     void testRemoveMemberNotPresentInGroup() {
@@ -258,6 +260,5 @@ public class FriendsCommandTest {
 
         assertTrue(outContent.toString().contains("You have no groups."));
     }
-
-
 }
+//@@author

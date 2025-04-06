@@ -1,3 +1,4 @@
+//@@author nandhananm7
 package seedu.duke.friends;
 
 import seedu.duke.messages.Messages;
@@ -5,17 +6,23 @@ import seedu.duke.storage.GroupStorage;
 import java.util.List;
 import java.util.ArrayList;
 
-//@@author nandhananm7
-
 public class GroupManager {
     private List<Group> groups;
     private Messages messages;
 
+    /**
+     * Constructs a GroupManager and loads existing groups from storage.
+     */
     public GroupManager() {
-        this.groups = GroupStorage.loadGroups();  // Load the existing groups from storage
+        this.groups = GroupStorage.loadGroups();
     }
 
-    // Add a friend to a group
+    /**
+     * Adds a friend to an existing group or creates a new group if it doesn't exist.
+     *
+     * @param groupName the name of the group.
+     * @param friend the friend to add.
+     */
     public void addFriendToGroup(String groupName, Friend friend) {
         for (Group group : groups) {
             if (group.getName().equals(groupName)) {
@@ -23,13 +30,17 @@ public class GroupManager {
                 return;
             }
         }
-        // If group doesn't exist, create a new one and add the friend
         Group newGroup = new Group(groupName);
         newGroup.addFriend(friend);
         groups.add(newGroup);
     }
 
-    // Check if a group exists
+    /**
+     * Checks if a group exists.
+     *
+     * @param groupName the name of the group.
+     * @return true if the group exists, false otherwise.
+     */
     public boolean groupExists(String groupName) {
         for (Group group : groups) {
             if (group.getName().equals(groupName)) {
@@ -39,6 +50,13 @@ public class GroupManager {
         return false;
     }
 
+    /**
+     * Checks if a member exists in a specific group.
+     *
+     * @param groupName the name of the group.
+     * @param memberName the name of the member.
+     * @return true if the member exists in the group, false otherwise.
+     */
     public boolean isMemberInGroup(String groupName, String memberName) {
         for (Group group : groups) {
             if (group.getName().equals(groupName)) {
@@ -48,32 +66,48 @@ public class GroupManager {
         return false;
     }
 
+    /**
+     * Retrieves the members of a specified group.
+     *
+     * @param groupName the name of the group.
+     * @return a list of friends in the group.
+     */
     public List<Friend> getGroupMembers(String groupName) {
         for (Group group : groups) {
             if (group.getName().equals(groupName)) {
                 return group.getFriends();
             }
         }
-        return new ArrayList<>(); // Return an empty list if the group doesn't exist
+        return new ArrayList<>();
     }
 
-    // Remove a group by name
+    /**
+     * Removes a group by name and saves the updated list if successful.
+     *
+     * @param groupName the name of the group to remove.
+     */
     public void removeGroup(String groupName) {
         boolean removed = groups.removeIf(group -> group.getName().equals(groupName));
 
         if (removed) {
-            saveGroups(); // Save changes after removal
+            saveGroups();
         } else {
             messages.displayMissingGroupMessage();
         }
     }
 
-    // Save the updated list of groups
+    /**
+     * Saves the current list of groups to storage.
+     */
     public void saveGroups() {
         GroupStorage.saveGroups(groups);
     }
 
-    // Get all groups
+    /**
+     * Retrieves all existing groups.
+     *
+     * @return the list of groups.
+     */
     public List<Group> getGroups() {
         return groups;
     }
