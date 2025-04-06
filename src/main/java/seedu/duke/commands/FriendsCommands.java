@@ -52,7 +52,7 @@ public class FriendsCommands {
 
         if (groupManager.groupExists(groupName)) {
             System.out.println("Group '" + groupName + "' already exists.");
-            System.out.println("If you would like to add more members to " + groupName + " use the add-member command.");
+            System.out.println("Add more members to " + groupName + " using the add-member command.");
             return;
         }
 

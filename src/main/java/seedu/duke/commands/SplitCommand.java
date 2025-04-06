@@ -59,7 +59,7 @@ public class SplitCommand {
                     throw new IllegalArgumentException("Expense index must be a positive integer.");
                 }
             } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Invalid expense index: '" + expenseIndexStr + "'. It must be a valid positive number.");
+                throw new IllegalArgumentException("Invalid index: '" + expenseIndexStr);
             }
             String groupName = parts[3].trim();
             if (groupName.isEmpty()) {
@@ -174,7 +174,8 @@ public class SplitCommand {
                         ". You can assign up to 100% in total.");
                     for (Friend member: members) {
                         while (true) {
-                            System.out.println("Remaining percentage: " + String.format("%.2f", remainingPercentage) + "%");
+                            System.out.println("Remaining percentage: " +
+                                String.format("%.2f", remainingPercentage) + "%");
                             System.out.print("Enter percentage for " + member.getName() + ": ");
                             String percStr = scanner.nextLine().trim();
                             double percent;
@@ -280,7 +281,8 @@ public class SplitCommand {
                     }
                 }
                 if (!found) {
-                    System.out.println("No transactions found for member '" + memberName + "' in group '" + groupName + "'.");
+                    System.out.println("No transactions found for member '" +
+                        memberName + "' in group '" + groupName + "'.");
                 }
             } catch (IOException e) {
                 System.out.println("Error reading owed transactions: " + e.getMessage());
