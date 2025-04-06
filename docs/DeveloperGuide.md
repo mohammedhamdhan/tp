@@ -234,7 +234,7 @@ The `displayUnsettledExpenses()` method manages the display of unsettled expense
 
 - Retrieves all expenses from budgetManager before filtering
 - Checks for empty expense lists and displays an appropriate message
-- Ensures expenses are printed in the correct currency
+- Prints the current currency to ensure user is aware which currency the amounts are printed in
 - Iterates through the expense list while filtering for unsettled expenses
 - Handles edge cases gracefully, such as no unsettled expenses found
 - Uses proper singular/plural formatting for the summary output
@@ -964,7 +964,7 @@ The `Currency(Scanner scanner, BudgetManager budgetManager)` method sets up the 
 
 - Initializes a map to store the exchange rates between different currencies.
 - Attempts to read current currency from the file `./currentCurrency`
-- Handles any file-related issues or data retrieval failures gracefully by providing default exchange rates when necessary.
+- Provides default exchange rates when `./currentCurrency` file has no currency populated.
 
 #### Initialising Exchange Rates
 
@@ -978,13 +978,10 @@ The `initializeExchangeRates()` method initializes currency exchange rates by ad
 
 The `changeCurrency(String command)` method handles the currency change process with these features:
 
-- changeCurrency(String command) parses a user input string to determine how to update the application's currency setting.
+- `changeCurrency(String command)` parses a user input string to determine how to update the application's currency setting.
 - The method ensures the command is properly formatted and handles invalid inputs with informative messages.
-- Based on the method value (1 or 2), it either calls handleCustomExchangeRate() or handleEstimatedExchangeRate().
+- Based on the method value (1 or 2), it either calls `handleCustomExchangeRate(String newCurrency, String exchangeRate)` or `handleEstimatedExchangeRate(String newCurrency)`.
 - The function performs basic error handling for number parsing and missing inputs using try-catch blocks.
-
-Below is the UML sequence diagram for the classes involved in the "Change Currency" operation.
-![CurrencySequenceDiagram.png](diagrams/CurrencySequenceDiagram.png "Currency Sequence Diagram")
 
 #### Edit Expense Currency Method
 
@@ -1024,6 +1021,13 @@ as shown in the diagram.
 ### 4.4 Split Expense Feature
 
 ### 4.5 Change Currency Feature
+
+Below is the UML sequence diagram for the classes involved in the "Change Currency" operation.
+![CurrencySequenceDiagram.png](diagrams/CurrencySequenceDiagram.png "Currency Sequence Diagram")
+
+Below is the UML Object diagram illustrating the state of a Currency object after these actions: the addition of the first expense titled "Groceries shopping" (description: "tomatoes", date: "20-01-2025", amount: 5.00, groupName: "Shoppers"), the initial setting of currentCurrency to SGD, and the subsequent input of `change-currency/1/USD/0.7`, which converts the currency to USD at a rate of 0.7.
+ 
+<img alt="ChangeCurrencyObjectDiagram.png" height="400" src="diagrams/ChangeCurrencyObjectDiagram.png" title="Object Diagram" width="270"/>
 
 ### 4.6 Data Visualization Feature
 
