@@ -44,6 +44,19 @@ Add an expense with a title, description, date, amount. You have to first enter
 the `add` keyword, followed by the `title`, `date` and `amount`, each separated by a `/`.
 
 After that, you will be prompted to optionally add a `description` of maximum 200 characters.
+Please ensure the description is accurate and simple, because the summary analytics by category uses description to classify expenses.
+Please ensure the description is not wordy and it is to the point, to ensure your expenses are accurately classified.
+- **Example Usage:**
+
+```
+Had lunch with friends
+```
+
+- **Example Usage:**
+
+```
+Went to the movies with friends
+```
 
 The `date` field has to follow the DD-MM-YYYY format. You can choose the date to be in the past (earliest 2000),
 present and future, as long as it is a legitimate date (e.g. NOT 99-99-9999).
