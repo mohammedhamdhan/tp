@@ -40,10 +40,10 @@ public class Group {
         for (Friend friend : friends) {
             if (friend.getName().equals(friendName)) {
                 friends.remove(friend);
-                return true; // Successfully removed
+                return true;
             }
         }
-        return false; // Friend not found
+        return false;
     }
 
     /**
