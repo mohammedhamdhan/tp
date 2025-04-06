@@ -31,8 +31,7 @@
 &nbsp;&nbsp;[4.2 Expense CRUD Feature](#42-expense-crud-feature) <br>
 &nbsp;&nbsp;[4.3 Create Group Feature](#43-create-group-feature) <br>
 &nbsp;&nbsp;[4.4 Split Expense Feature](#44-split-expense-feature) <br>
-&nbsp;&nbsp;[4.5 Change Currency Feature](#45-change-currency-feature) <br>
-&nbsp;&nbsp;[4.6 Data Visualization Feature](#46-data-visualization-feature) <br>
+&nbsp;&nbsp;[4.5 Data Visualization Feature](#46-data-visualization-feature) <br>
 [5. Appendix](#5-appendix) <br>
 &nbsp;&nbsp;[5.1 Product Scope](#51-product-scope) <br>
 &nbsp;&nbsp;&nbsp;&nbsp;[5.1.1 Target User Profile](#511-target-user-profile) <br>
@@ -234,7 +233,7 @@ The `displayUnsettledExpenses()` method manages the display of unsettled expense
 
 - Retrieves all expenses from budgetManager before filtering
 - Checks for empty expense lists and displays an appropriate message
-- Ensures expenses are printed in the correct currency
+- Prints the current currency to ensure user is aware which currency the amounts are printed in
 - Iterates through the expense list while filtering for unsettled expenses
 - Handles edge cases gracefully, such as no unsettled expenses found
 - Uses proper singular/plural formatting for the summary output
@@ -983,6 +982,9 @@ The `changeCurrency(String command)` method handles the currency change process 
 - Based on the method value (1 or 2), it either calls handleCustomExchangeRate() or handleEstimatedExchangeRate().
 - The function performs basic error handling for number parsing and missing inputs using try-catch blocks.
 
+Below is the UML sequence diagram for the classes involved in the "Change Currency" operation.
+![CurrencySequenceDiagram.png](diagrams/CurrencySequenceDiagram.png "Currency Sequence Diagram")
+
 #### Edit Expense Currency Method
 
 The `editExpenseCurrency(Double finalExchangeRate, String newCurrency)` method manages the process of updating the expense currency with these features:
@@ -1020,9 +1022,7 @@ as shown in the diagram.
 
 ### 4.4 Split Expense Feature
 
-### 4.5 Change Currency Feature
-
-### 4.6 Data Visualization Feature
+### 4.5 Data Visualization Feature
 
 The data visualization feature provides users with interactive and informative views of their expense patterns.
 
