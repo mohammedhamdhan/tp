@@ -136,6 +136,8 @@ public class UI {
             friendsCommand.createGroup(command);
         } else if (command.startsWith(Commands.VIEW_GROUP)) {
             friendsCommand.viewGroup(command);
+        } else if (command.startsWith(Commands.VIEW_MEMBER)) {
+            friendsCommand.viewMember(command);
         } else if (command.startsWith(Commands.ADD)) {
             expenseCommand.executeAddExpense(command);
         } else if (command.startsWith(Commands.REMOVE_MEMBER)) {
@@ -143,7 +145,7 @@ public class UI {
         } else if (command.startsWith(Commands.VIEW_ALL_GROUPS)) {
             friendsCommand.viewAllGroups();
         } else if(command.startsWith(Commands.SPLIT)) {
-            splitCommand.executeSplit();
+            splitCommand.executeSplit(command);
         } else if(command.startsWith(Commands.REMOVE_GROUP)) {
             friendsCommand.removeGroup(command);
         } else if(command.startsWith(Commands.CHANGE_CURRENCY)){

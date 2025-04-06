@@ -11,6 +11,8 @@ import java.util.Scanner;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
 
 public class FriendsCommands {
     private GroupManager groupManager;
@@ -88,6 +90,83 @@ public class FriendsCommands {
         System.out.println("Group created successfully!");
     }
 
+    //@@author
+
+    //@@author Ashertan256
+    /**
+ * Displays detailed owed transactions for a specific member in a group.
+ * Command format: view-member/<groupname>/<member name>
+ */
+public void viewMember(String command) {
+    // Validate command input
+    if (command == null || command.trim().isEmpty()) {
+        System.out.println("Error: Command cannot be empty.");
+        return;
+    }
+    // Expected syntax: view-member/<groupname>/<member name>
+    String[] parts = command.trim().split("/");
+    if (parts.length != 3) {
+        System.out.println("Invalid command format. Expected: view-member/<group name>/<member name>");
+        return;
+    }
+    
+    // Validate command keyword
+    String commandWord = parts[0].trim();
+    if (!commandWord.equalsIgnoreCase("view-member")) {
+        System.out.println("Invalid command. Expected command to start with 'view-member'.");
+        return;
+    }
+    
+    // Extract and validate group and member names
+    String groupName = parts[1].trim();
+    String memberName = parts[2].trim();
+    if (groupName.isEmpty() || memberName.isEmpty()) {
+        System.out.println("Error: Group name and member name cannot be empty.");
+        return;
+    }
+    
+    File file = new File("owedAmounts.txt");
+    if (!file.exists()) {
+        System.out.println("Error: Owed transactions file does not exist. No data available.");
+        return;
+    }
+    
+    List<String> allLines;
+    try {
+        allLines = java.nio.file.Files.readAllLines(file.toPath());
+    } catch (IOException e) {
+        System.out.println("Error reading owed transactions file: " + e.getMessage());
+        return;
+    }
+    
+    if (allLines.isEmpty()) {
+        System.out.println("No transactions found in the file.");
+        return;
+    }
+    
+    boolean found = false;
+    System.out.println("Transactions for member '" + memberName + "' in group '" + groupName + "':");
+    for (String line : allLines) {
+        if (line == null || line.trim().isEmpty()) {
+            continue; // skip blank lines
+        }
+        String trimmedLine = line.trim();
+        // Expect detailed transaction records to start with the specific prefix.
+        if (!trimmedLine.startsWith("Transaction: Expense:")) {
+            System.out.println("Warning: Skipping unrecognized record: " + trimmedLine);
+            continue;
+        }
+        // Check if the record contains both the specified group and member.
+        if (trimmedLine.contains("Group: " + groupName) && trimmedLine.contains("Member: " + memberName)) {
+            System.out.println(trimmedLine);
+            found = true;
+        }
+    }
+    if (!found) {
+        System.out.println("No transactions found for member '" + memberName + "' in group '" + groupName + "'.");
+    }
+}
+
     /**
      * Displays the details of a specified group based on the command.
      * Command format: view-group /group name.
@@ -96,61 +175,85 @@ public class FriendsCommands {
      * @param command the command string containing the group name.
      */
     public void viewGroup(String command) {
-        String[] parts = command.trim().split(" */", 2);
+        String[] parts = command.trim().split(" /", 2);
         if (parts.length < 2 || !parts[0].equals("view-group")) {
-            System.out.println("Invalid command. Please use the format: view-group <group-name>");
+            System.out.println("Invalid command. Please use the format: view-group /<group name>");
             return;
         }
-
+    
         String groupName = parts[1].trim();
         if (groupName.isEmpty() || !isValidName(groupName)) {
             System.out.println("Invalid group name. Name cannot be empty or contain special characters.");
             return;
         }
-
+    
         if (!groupManager.groupExists(groupName)) {
             System.out.println("Group not found");
             return;
         }
         System.out.println("Group: " + groupName);
-
-        java.util.Map < String, Double > owedAmounts = new java.util.HashMap < > ();
+    
+        Map<String, Double> owedAmounts = new HashMap<>();
         File file = new File("owedAmounts.txt");
         try (Scanner fileScanner = new Scanner(file)) {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine().trim();
-                if (line.startsWith("- ")) { // Format for data storage, delimiter
+                if (line.isEmpty()) {
+                    continue;
+                }
+                // Handle old format: line starts with "- "
+                if (line.startsWith("- ")) {
                     String[] lineParts = line.split(" owes: ");
                     if (lineParts.length == 2) {
-                        String name = lineParts[0].substring(2).trim(); //remove "- "
-                        double amount = Double.parseDouble(lineParts[1].trim());
-
-                        double existing = owedAmounts.getOrDefault(name, 0.0);
-                        owedAmounts.put(name, existing + amount);
+                        String name = lineParts[0].substring(2).trim();
+                        try {
+                            double amount = Double.parseDouble(lineParts[1].trim());
+                            double existing = owedAmounts.getOrDefault(name, 0.0);
+                            owedAmounts.put(name, existing + amount);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Warning: Unable to parse amount in record: " + line);
+                        }
                     }
+                } 
+                // Handle new format: detailed transaction record
+                else if (line.startsWith("Transaction: Expense:")) {
+                    try {
+                        int memberIdx = line.indexOf("Member: ");
+                        int owesIdx = line.indexOf(" owes:");
+                        if (memberIdx == -1 || owesIdx == -1 || owesIdx <= memberIdx) {
+                            System.out.println("Warning: Skipping incorrectly formatted record: " + line);
+                            continue;
+                        }
+                        String memberName = line.substring(memberIdx + "Member: ".length(), owesIdx).trim();
+                        String amountStr = line.substring(owesIdx + " owes:".length()).trim();
+                        double amount = Double.parseDouble(amountStr);
+                        double existing = owedAmounts.getOrDefault(memberName, 0.0);
+                        owedAmounts.put(memberName, existing + amount);
+                    } catch (Exception e) {
+                        System.out.println("Warning: Skipping incorrectly formatted record: " + line);
+                    }
+                } else {
+                    System.out.println("Warning: Unrecognized record format: " + line);
                 }
             }
         } catch (FileNotFoundException e) {
             System.out.println("Owed amounts file not found. No expense data available.");
-        } catch (NumberFormatException e) {
-            System.out.println("Error parsing expense data.");
         }
-
-        List <Friend> members = groupManager.getGroupMembers(groupName);
+    
+        List<Friend> members = groupManager.getGroupMembers(groupName);
         if (members.isEmpty()) {
             System.out.println("No members in this group.");
         } else {
             System.out.println("Members:");
-            for (Friend friend: members) {
+            for (Friend friend : members) {
                 String friendName = friend.getName();
                 double totalOwed = owedAmounts.getOrDefault(friendName, 0.0);
                 System.out.println(friendName + " - Expense: $" + String.format("%.2f", totalOwed));
             }
         }
     }
-    //@@author
+    
 
-    //@@author Ashertan256
     /**
      * Displays the members and their total owed amounts for a given group.
      * This method is called directly without requiring user input.
@@ -159,38 +262,67 @@ public class FriendsCommands {
      * @param groupName the name of the group to display.
      */
     public void viewGroupDirect(String groupName) {
-        Map < String, Double > owedAmounts = new HashMap < > ();
+        Map<String, Double> owedAmounts = new HashMap<>();
         File file = new File("owedAmounts.txt");
         try (Scanner fileScanner = new Scanner(file)) {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine().trim();
+                if (line.isEmpty()) {
+                    continue;
+                }
+                // Handle the old format (e.g., "- Alice owes: 50.00")
                 if (line.startsWith("- ")) {
-                    String[] parts = line.split(" owes: ");
-                    if (parts.length == 2) {
-                        String name = parts[0].substring(2).trim();
-                        double amount = Double.parseDouble(parts[1].trim());
-                        owedAmounts.put(name, owedAmounts.getOrDefault(name, 0.0) + amount);
+                    String[] lineParts = line.split(" owes: ");
+                    if (lineParts.length == 2) {
+                        String name = lineParts[0].substring(2).trim(); // Remove "- "
+                        try {
+                            double amount = Double.parseDouble(lineParts[1].trim());
+                            double existing = owedAmounts.getOrDefault(name, 0.0);
+                            owedAmounts.put(name, existing + amount);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Warning: Unable to parse amount in record: " + line);
+                        }
                     }
+                }
+                
+                else if (line.startsWith("Transaction: Expense:")) {
+                    try {
+                        int memberIdx = line.indexOf("Member: ");
+                        int owesIdx = line.indexOf(" owes:");
+                        if (memberIdx == -1 || owesIdx == -1 || owesIdx <= memberIdx) {
+                            System.out.println("Warning: Skipping incorrectly formatted record: " + line);
+                            continue;
+                        }
+                        String memberName = line.substring(memberIdx + "Member: ".length(), owesIdx).trim();
+                        String amountStr = line.substring(owesIdx + " owes:".length()).trim();
+                        double amount = Double.parseDouble(amountStr);
+                        double existing = owedAmounts.getOrDefault(memberName, 0.0);
+                        owedAmounts.put(memberName, existing + amount);
+                    } catch (Exception e) {
+                        System.out.println("Warning: Skipping incorrectly formatted record: " + line);
+                    }
+                } else {
+                    System.out.println("Warning: Unrecognized record format: " + line);
                 }
             }
         } catch (FileNotFoundException e) {
             System.out.println("Owed amounts file not found. No expense data available.");
-        } catch (NumberFormatException e) {
-            System.out.println("Error parsing expense data.");
         }
-
-        List < Friend > members = groupManager.getGroupMembers(groupName);
+    
+        // Retrieve group members and display their total owed amounts.
+        List<Friend> members = groupManager.getGroupMembers(groupName);
         if (members.isEmpty()) {
             System.out.println("No members in this group.");
         } else {
             System.out.println("Members:");
-            for (Friend friend: members) {
+            for (Friend friend : members) {
                 String name = friend.getName();
                 double totalOwed = owedAmounts.getOrDefault(name, 0.0);
                 System.out.println(name + " - Expense: $" + String.format("%.2f", totalOwed));
             }
         }
     }
+    
     //@@author
 
     //@@author nandhananm7

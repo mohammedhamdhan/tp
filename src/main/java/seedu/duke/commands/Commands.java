@@ -19,6 +19,7 @@ public class Commands {
     public static final String MARK = "mark";
     public static final String UNMARK = "unmark";
     public static final String CREATE_GROUP = "create-group";
+    public static final String VIEW_MEMBER = "view-member";
     public static final String VIEW_GROUP = "view-group";
     public static final String ADD_MEMBER = "add-member";
     public static final String REMOVE_MEMBER = "remove-member";
