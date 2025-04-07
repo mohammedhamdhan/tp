@@ -89,7 +89,7 @@ Here is the list of features implemented:
 **Relevant Pull Requests:**
     - [PR #82](https://github.com/AY2425S2-CS2113-F11-2/tp/pull/82/files)
     - [PR #72](https://github.com/AY2425S2-CS2113-F11-2/tp/pull/72/files)
-    - [PR #86](https://github.com/AY2425S2-CS2113-F11-2/tp/pull/86/files)
+    - [PR #168](https://github.com/AY2425S2-CS2113-F11-2/tp/pull/168/files)
 
 ---
 
