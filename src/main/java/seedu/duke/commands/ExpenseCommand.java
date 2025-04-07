@@ -460,7 +460,7 @@ public class ExpenseCommand {
      */
     public void executeMarkCommand(String command) {
         try{
-            String[] splitInput = command.split("/");
+            String[] splitInput = command.trim().split(" */");
             if(splitInput.length != 2){
                 System.out.println("Please provide input in correct format");
                 return;
@@ -491,7 +491,7 @@ public class ExpenseCommand {
      */
     public void executeUnmarkCommand(String command) {
         try {
-            String[] splitInput = command.split("/");
+            String[] splitInput = command.trim().split(" */");
             if(splitInput.length != 2){
                 System.out.println("Please provide input in correct format");
                 return;
