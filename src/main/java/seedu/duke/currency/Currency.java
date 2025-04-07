@@ -248,9 +248,9 @@ public class Currency {
      */
     public void changeCurrency(String command) {
         try {
-            String [] splitInput = command.split("/");
-            String method = splitInput[1];
-            String newCurrency = splitInput[2].toUpperCase();
+            String [] splitInput = command.trim().split("\\s*/\\s*");
+            String method = splitInput[1].trim();
+            String newCurrency = splitInput[2].toUpperCase().trim();
             int intMethod = Integer.parseInt(method);
 
             if(intMethod == 1 && splitInput.length != 4){

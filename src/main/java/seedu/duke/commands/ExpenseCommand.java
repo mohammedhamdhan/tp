@@ -469,12 +469,12 @@ public class ExpenseCommand {
      */
     public void executeMarkCommand(String command) {
         try{
-            String[] splitInput = command.trim().split(" */");
+            String[] splitInput = command.trim().split("\\s*/\\s*");
             if(splitInput.length != 2){
                 System.out.println("Please provide input in correct format");
                 return;
             }
-            String expenseNumberToMark = splitInput[1];
+            String expenseNumberToMark = splitInput[1].trim();
             int indexToMark = Integer.parseInt(expenseNumberToMark) - 1;
             if(budgetManager.getExpense(indexToMark).getDone()){
                 System.out.println("Expense was already marked before!");
@@ -500,12 +500,12 @@ public class ExpenseCommand {
      */
     public void executeUnmarkCommand(String command) {
         try {
-            String[] splitInput = command.trim().split(" */");
+            String[] splitInput = command.trim().split("\\s*/\\s*");
             if(splitInput.length != 2){
                 System.out.println("Please provide input in correct format");
                 return;
             }
-            String expenseNumberToUnmark = splitInput[1];
+            String expenseNumberToUnmark = splitInput[1].trim();
             int indexToUnmark = Integer.parseInt(expenseNumberToUnmark) - 1;
             if(!budgetManager.getExpense(indexToUnmark).getDone()){
                 System.out.println("Expense was already unmarked!");
