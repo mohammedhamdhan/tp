@@ -116,18 +116,18 @@ Code Contribution to the project: [Reposense Page](https://nus-cs2113-ay2425s2.g
 
 - **Input Validation Tests**:
 
-  - Implemented tests for empty fields in add expense operations (`testExecuteAddExpenseEmptyCategory`, `testExecuteAddExpenseEmptyDate`)
-  - Developed comprehensive date validation tests for various invalid formats (`testExecuteAddExpenseInvalidDateFormat`, `testExecuteAddExpenseInvalidDate`)
-  - Created amount validation tests for negative, zero, and invalid format amounts (`testExecuteAddExpenseNegativeAmount`, `testExecuteAddExpenseZeroAmount`, `testExecuteAddExpenseInvalidAmountFormat`)
-  - Wrote tests for edit expense validation including handling empty expense IDs (`testExecuteEditExpenseEmptyExpenseId`)
+  - Implemented tests for empty fields in add expense operations 
+  - Developed comprehensive date validation tests for various invalid formats 
+  - Created amount validation tests for negative, zero, and invalid format amounts 
+  - Wrote tests for edit expense validation including handling empty expense IDs 
 
 - **Summary Generation Tests**:
 
-  - Implemented tests for monthly summary generation with multiple months (`testShowMonthlySummaryMultipleMonths`)
-  - Created tests for category summary generation showing correct totals (`testShowCategorySummaryMultipleCategories`)
+  - Implemented tests for monthly summary generation with multiple months 
+  - Created tests for category summary generation showing correct totals (
 
 - **Export Functionality Tests**:
-  - Developed tests for exporting monthly summaries verifying file creation and content (`testExportMonthlySummary`)
+  - Developed tests for exporting monthly summaries verifying file creation and content 
   - Implemented tests validating the export file's formatting and accuracy
 
 ### Contributions to Documentation
