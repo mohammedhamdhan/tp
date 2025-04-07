@@ -38,12 +38,12 @@ public class SplitCommand {
             String[] parts = command.trim().split(" */");
             if (parts.length != 4) {
                 throw new IllegalArgumentException(
-                    "Invalid command format: expected 'split/<equal|assign>/<expense index>/<group name>' but got: " +
-                    command);
+                    "Invalid format. Usage: split/<equal|assign>/<expense index>/<group name>");
             }
             String commandWord = parts[0].trim();
             if (!commandWord.equalsIgnoreCase("split")) {
-                throw new IllegalArgumentException("Invalid command: expected 'split' but got: " + commandWord);
+                throw new IllegalArgumentException("Invalid format." +
+                    " Usage: split/<equal|assign>/<expense index>/<group name>");
             }
             String splitOption = parts[1].trim().toLowerCase();
             if (!splitOption.equals("equal") && !splitOption.equals("assign")) {
@@ -117,7 +117,7 @@ public class SplitCommand {
                     " members of group \"" + groupName + "\":");
                 for (Friend member: members) {
                     String assignment = createTransactionRecord(selectedExpense, groupName, member.getName(), share);
-                    System.out.print(assignment);
+                    System.out.println(assignment);
                     OwesStorage.appendOwes(assignment);
                 }
                 System.out.println("Updated list of transactions!");
@@ -126,12 +126,15 @@ public class SplitCommand {
                 String method = "";
                 while (true) {
                     System.out.print("Type '/a' for absolute amounts OR '/p' for percentages: ");
+                    if (!scanner.hasNextLine()) {
+                        System.out.println("No input available. Exiting split command.");
+                        return;
+                    }
                     method = scanner.nextLine().trim().toLowerCase();
                     if (method.equals("/a") || method.equals("/p")) {
                         break;
                     } else {
-                        System.out.println("Invalid method." +
-                            " Please enter '/a' for absolute amounts or '/p' for percentages.");
+                        System.out.println("Invalid format. Usage: </a|/p>");
                     }
                 }
                 if (method.equals("/a")) {
@@ -162,7 +165,7 @@ public class SplitCommand {
                                 remaining -= assigned;
                                 String assignment = createTransactionRecord(selectedExpense,
                                     groupName, member.getName(), assigned);
-                                System.out.print(assignment);
+                                System.out.println(assignment);
                                 OwesStorage.appendOwes(assignment);
                                 break;
                             }
@@ -197,7 +200,7 @@ public class SplitCommand {
                                 double assignedAmount = totalAmount * (percent / 100.0);
                                 String assignment = createTransactionRecord(selectedExpense,
                                     groupName, member.getName(), assignedAmount);
-                                System.out.print(assignment);
+                                System.out.println(assignment);
                                 OwesStorage.appendOwes(assignment);
                                 remainingPercentage -= percent;
                                 break;
