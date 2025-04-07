@@ -153,9 +153,8 @@ public class Messages {
 
             edit
               Description: Edit an existing expense
-              Usage: edit/<expense number>/<new title>/<new description>/<new date>/<new amount>
-              Note: Use 'x' to keep existing values for title, date, or amount
-              You will then be prompted to change the description (optional)
+              Usage: edit/<expense number>/<new title>/<new category>/<new date>/<new amount>
+              Note: Use 'x' to keep existing values for title, date, amount or category
 
             balance
               Description: Show the balance overview (total expenses and amount owed)
@@ -198,7 +197,7 @@ public class Messages {
 
             summary
               Description: View expense summaries in different formats
-              Usage: summary/[BY-MONTH|BY-CATEGORY]/[Y|N]
+              Usage: summary/<BY-MONTH|BY-CATEGORY>/<Y|N>
               Format:
                 - First parameter must be either BY-MONTH or BY-CATEGORY
                 - Second parameter must be Y or N for visualization

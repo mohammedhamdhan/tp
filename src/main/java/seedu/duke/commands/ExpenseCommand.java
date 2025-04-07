@@ -595,7 +595,7 @@ public class ExpenseCommand {
             String[] parts = userInput.split("/", 3);
             
             if (parts.length < 3 || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
-                System.out.println("Invalid format. Usage: summary/BY-MONTH/N or BY-CATEGORY/Y or N");
+                System.out.println("Invalid format. Usage: summary/<BY-MONTH|BY-CATEGORY>/<Y|N>");
                 return;
             }
 
