@@ -5,12 +5,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Scanner;
 import seedu.duke.friends.Friend;
 import seedu.duke.friends.GroupManager;
 import seedu.duke.expense.Expense;
 import seedu.duke.storage.DataStorage;
+import java.util.Formatter;
+
 
 public class SplitCommand {
     private Scanner scanner;
@@ -238,16 +242,64 @@ public class SplitCommand {
     /**
      * Nested class to handle owes file operations.
      */
-    public static class OwesStorage {
-        public static String owesFile = "owedAmounts.txt";
-        public static void appendOwes(String text) {
-            try (PrintWriter writer = new PrintWriter(new FileWriter(owesFile, true))) {
-                writer.println(text);
-            } catch (IOException e) {
-                System.out.println("Error writing to owes file: " + e.getMessage());
+    public class OwesStorage {
+    public static String owesFile = "owedAmounts.txt";
+    public static String checksumFile = "owedAmounts.chk";
+
+    // Appends a transaction record to the owes file and updates the checksum.
+    public static void appendOwes(String text) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(owesFile, true))) {
+            writer.println(text);
+        } catch (IOException e) {
+            System.out.println("Error writing to owes file: " + e.getMessage());
+        }
+        updateChecksum();
+    }
+
+    // Recalculates and writes the checksum for the owes file.
+    public static void updateChecksum() {
+        try {
+            byte[] fileBytes = Files.readAllBytes(new File(owesFile).toPath());
+            String checksum = getSHA256Checksum(fileBytes);
+            try (PrintWriter writer = new PrintWriter(new FileWriter(checksumFile, false))) {
+                writer.println(checksum);
             }
+        } catch (IOException | NoSuchAlgorithmException e) {
+            System.out.println("Error updating checksum: " + e.getMessage());
         }
     }
+
+    // Verifies the current checksum against the stored checksum.
+    public static boolean verifyChecksum() {
+        try {
+            byte[] fileBytes = Files.readAllBytes(new File(owesFile).toPath());
+            String currentChecksum = getSHA256Checksum(fileBytes);  
+            List<String> lines = Files.readAllLines(new File(checksumFile).toPath());
+            if (lines.isEmpty()) {
+                return false;
+            }
+            String storedChecksum = lines.get(0).trim();
+            return currentChecksum.equals(storedChecksum);
+        } catch (IOException | NoSuchAlgorithmException e) {
+            System.out.println("Error verifying checksum: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Utility method to compute SHA-256 checksum of the given data.
+    private static String getSHA256Checksum(byte[] data)
+            throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = md.digest(data);
+        Formatter formatter = new Formatter();
+        for (byte b : hashBytes) {
+            formatter.format("%02x", b);
+        }
+        String hash = formatter.toString();
+        formatter.close();
+        return hash;
+    }
+}
 
     /**
      * Inner static class that lists owed transactions for a particular member in a group.

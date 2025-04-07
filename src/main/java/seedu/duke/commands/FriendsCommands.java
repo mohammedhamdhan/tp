@@ -2,6 +2,7 @@
 package seedu.duke.commands;
 import seedu.duke.friends.Group;
 import seedu.duke.friends.GroupManager;
+import seedu.duke.commands.SplitCommand.OwesStorage;
 import seedu.duke.friends.Friend;
 
 import java.util.HashMap;
@@ -11,7 +12,9 @@ import java.util.Scanner;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class FriendsCommands {
     private GroupManager groupManager;
@@ -100,6 +103,24 @@ public class FriendsCommands {
             System.out.println("Error: Command cannot be empty.");
             return;
         }
+        if (!OwesStorage.verifyChecksum()) {
+            System.out.println("Error: The owedAmounts file has likely been tampered with."+
+            "Clearing contents of the file");
+            
+            // clear the file
+            try (PrintWriter writer = new PrintWriter("owedAmounts.txt")) {
+            writer.print("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (PrintWriter writer = new PrintWriter("owedAmounts.chk")) {
+            writer.print("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        }
+
         // Expected format: view-member/<groupname>/<member name>
         String[] parts = command.trim().split("/");
         if (parts.length != 3) {
@@ -252,7 +273,7 @@ public class FriendsCommands {
         } else {
             System.out.println("Members:");
             int memberCount = 1;
-            for (Friend friend : members) {
+            for (Friend friend: members) {
                 String friendName = friend.getName();
                 System.out.println(memberCount + ". " + friendName);
                 memberCount++;
