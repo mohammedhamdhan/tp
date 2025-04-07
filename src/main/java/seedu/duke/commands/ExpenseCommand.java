@@ -469,9 +469,9 @@ public class ExpenseCommand {
      */
     public void executeMarkCommand(String command) {
         try{
-            String[] splitInput = command.trim().split("\\s*/\\s*");
+            String[] splitInput = command.trim().split("\\s*/\\s*", 2);
             if(splitInput.length != 2){
-                System.out.println("Please provide input in correct format");
+                System.out.println("Invalid format. Usage: mark/<expense ID>");
                 return;
             }
             String expenseNumberToMark = splitInput[1].trim();
@@ -500,9 +500,9 @@ public class ExpenseCommand {
      */
     public void executeUnmarkCommand(String command) {
         try {
-            String[] splitInput = command.trim().split("\\s*/\\s*");
+            String[] splitInput = command.trim().split("\\s*/\\s*", 2);
             if(splitInput.length != 2){
-                System.out.println("Please provide input in correct format");
+                System.out.println("Invalid format. Usage: unmark/<expense ID>");
                 return;
             }
             String expenseNumberToUnmark = splitInput[1].trim();
