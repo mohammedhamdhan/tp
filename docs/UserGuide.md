@@ -286,8 +286,8 @@ User can unmark an expense that has been marked already.
 
 User can find expenses that contain this keyword in the expense description
 
-- **Format:** `find /<keyword>`
-- **Usage:** `find /taxi`
+- **Format:** `find/<keyword>`
+- **Usage:** `find/taxi`
 - **Example:**
   ```
   Found 1 matching expense(s):
@@ -346,8 +346,8 @@ Shows total money the user needs to pay.
 Create a new group to split expenses with.
 If you would like to include yourself in the group, please add your name as well explicitly when the application asks to enter name.
 
-- **Format** `create-group /<group-name>`
-- **Usage** `create-group /test`
+- **Format** `create-group/<group-name>`
+- **Usage** `create-group/test`
 
 - **Output:**
   ```
@@ -364,8 +364,8 @@ If you would like to include yourself in the group, please add your name as well
 
 View a specific group and see how much each member owes.
 
-- **Format:** `view-group /<group-name>`
-- **Usage:** `view-group /test`
+- **Format:** `view-group/<group-name>`
+- **Usage:** `view-group/test`
 
 - **Output:**
 
@@ -383,8 +383,8 @@ View a specific group and see how much each member owes.
 
 Adds a user to a group.
 
-- **Format:** `add-member /<member-name> /<group-name>`
-- **Usage:** `add-member /hij /test`
+- **Format:** `add-member/<member-name>/<group-name>`
+- **Usage:** `add-member/hij/test`
 
 - **Output:**
   If the group exists, then adds to the existing group.
@@ -403,8 +403,8 @@ Adds a user to a group.
 
 Removes a member from a group
 
-- **Format:** `remove-member /<member name> /<group-name>`
-- **Usage:** `remove-member /hij /test`
+- **Format:** `remove-member/<member name>/<group-name>`
+- **Usage:** `remove-member/hij/test`
 
 - **Output:**
 
@@ -445,8 +445,8 @@ Shows all the groups that the user has created.
 
 Removes an entire group.
 
-- **Format:** `remove-group /<group-name>`
-- **Usage:** `remove-group /test1`
+- **Format:** `remove-group/<group-name>`
+- **Usage:** `remove-group/test1`
 
 - **Output:**
   ```
@@ -566,7 +566,7 @@ Allows an expense to be split among a certain group, either equally or via manua
 
 Displays comprehensive analytics of your expenses through different visualization options. This command helps you track and analyze your spending patterns.
 
-- **Format:** `summary/[BY-MONTH|BY-CATEGORY]/[Y|N]`
+- **Format:** `summary/<BY-MONTH|BY-CATEGORY>/<Y|N>`
 
   - First parameter must be either `BY-MONTH` or `BY-CATEGORY`
   - Second parameter must be `Y` or `N` for visualization
