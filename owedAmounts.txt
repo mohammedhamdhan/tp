@@ -1,3 +1,0 @@
-Transaction: Expense: breakfast, Date: 10-10-2024, Group: null, Member: me owes: 16.67
-Transaction: Expense: breakfast, Date: 10-10-2024, Group: null, Member: alice owes: 16.67
-Transaction: Expense: breakfast, Date: 10-10-2024, Group: null, Member: bob owes: 16.67
