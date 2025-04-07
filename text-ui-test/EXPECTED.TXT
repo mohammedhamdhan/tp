@@ -1,5 +1,5 @@
 Created a new file!
-file not found...
+File not found...
 A new file to load your current currency will be created for you!
 
 ________________________________________________________________________________
