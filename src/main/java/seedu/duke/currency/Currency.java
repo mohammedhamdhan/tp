@@ -273,7 +273,7 @@ public class Currency {
         } catch (NumberFormatException e) {
             System.out.println("Please input a valid number");
         } catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Invalid format. Usage: change-currency/1/<currency to change to>/<exchange rate> \nOR "
+            System.out.println("Invalid format. Usage: change-currency/1/<currency to change to>/<exchange rate>\nOR "
                     + "change-currency/2/<currency to change to>");
         }
     }
