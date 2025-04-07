@@ -45,7 +45,7 @@ public class ExpenseCommand {
 
     private BudgetManager budgetManager;
     private Scanner scanner;
-    private GroupManager groupManager;
+    private GroupManager groupManager = new GroupManager();
     private Currency currency;
 
     /**
@@ -60,6 +60,7 @@ public class ExpenseCommand {
         this.budgetManager = budgetManager;
         this.scanner = scanner;
         this.currency = currency;
+
         initializeVisualizationCleanup();
     }
 
