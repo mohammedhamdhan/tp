@@ -671,7 +671,7 @@ Saves all expenses to persistent storage.
 
 - Calls `DataStorage.saveExpenses(expenses)`.
 
-### 3.1.9 Expense Class
+### 3.1.8 Expense Class
 
 The `Expense` class in the `seedu.duke.expense` package represents an individual expense with attributes such as title, description, date, amount, completion status, and associated group name. It encapsulates all necessary details for managing and tracking expenses.
 
