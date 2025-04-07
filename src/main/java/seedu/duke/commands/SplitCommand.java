@@ -287,8 +287,7 @@ public class SplitCommand {
         }
 
         // Utility method to compute SHA-256 checksum of the given data.
-        private static String getSHA256Checksum(byte[] data)
-        throws NoSuchAlgorithmException {
+        private static String getSHA256Checksum(byte[] data) throws NoSuchAlgorithmException {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] hashBytes = md.digest(data);
             Formatter formatter = new Formatter();
