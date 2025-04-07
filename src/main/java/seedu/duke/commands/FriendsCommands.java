@@ -243,12 +243,14 @@ public class FriendsCommands {
             System.out.println("No members in this group.");
         } else {
             System.out.println("Members:");
-            for (Friend friend: members) {
+            int memberCount = 1;
+            for (Friend friend : members) {
                 String friendName = friend.getName();
-                double totalOwed = owedAmounts.getOrDefault(friendName, 0.0);
-                System.out.println(friendName + " - Expense: $" + String.format("%.2f", totalOwed));
+                System.out.println(memberCount + ". " + friendName);
+                memberCount++;
             }
         }
+
     }
 
 
