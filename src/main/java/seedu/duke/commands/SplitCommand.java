@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,6 +14,8 @@ import seedu.duke.expense.Expense;
 import seedu.duke.friends.Friend;
 import seedu.duke.friends.GroupManager;
 import seedu.duke.storage.DataStorage;
+import java.util.Formatter;
+
 
 public class SplitCommand {
     private Scanner scanner;
@@ -36,15 +40,15 @@ public class SplitCommand {
                 throw new IllegalArgumentException("Command cannot be empty.");
             }
             // Split command using "/" as delimiter.
-            String[] parts = command.trim().split("/");
+            String[] parts = command.trim().split(" */");
             if (parts.length != 4) {
                 throw new IllegalArgumentException(
-                    "Invalid command format: expected 'split /<equal|assign>/<expense index>/<group name>' but got: " +
-                    command);
+                    "Invalid format. Usage: split/<equal|assign>/<expense index>/<group name>");
             }
             String commandWord = parts[0].trim();
             if (!commandWord.equalsIgnoreCase("split")) {
-                throw new IllegalArgumentException("Invalid command: expected 'split' but got: " + commandWord);
+                throw new IllegalArgumentException("Invalid format." +
+                    " Usage: split/<equal|assign>/<expense index>/<group name>");
             }
             String splitOption = parts[1].trim().toLowerCase();
             if (!splitOption.equals("equal") && !splitOption.equals("assign")) {
@@ -112,9 +116,106 @@ public class SplitCommand {
             }
 
             if (splitOption.equals("equal")) {
-                handleEqualSplit(selectedExpense, members);
+                int numMembers = members.size();
+                double share = totalAmount / numMembers;
+                System.out.println("Splitting " + totalAmount + " equally among " + numMembers +
+                    " members of group \"" + groupName + "\":");
+                for (Friend member: members) {
+                    String assignment = createTransactionRecord(selectedExpense, groupName, member.getName(), share);
+                    System.out.println(assignment);
+                    OwesStorage.appendOwes(assignment);
+                }
+                System.out.println("Updated list of transactions!");
+                friendsCommands.viewGroupDirect(groupName);
             } else { // "assign" option for manual split
-                handleManualSplit(selectedExpense, members, scanner);
+                String method = "";
+                while (true) {
+                    System.out.print("Type '/a' for absolute amounts OR '/p' for percentages: ");
+                    if (!scanner.hasNextLine()) {
+                        System.out.println("No input available. Exiting split command.");
+                        return;
+                    }
+                    method = scanner.nextLine().trim().toLowerCase();
+                    if (method.equals("/a") || method.equals("/p")) {
+                        break;
+                    } else {
+                        System.out.println("Invalid format. Usage: </a|/p>");
+                    }
+                }
+                if (method.equals("/a")) {
+                    double remaining = totalAmount;
+                    System.out.println("Total expense amount to split: " + totalAmount);
+                    System.out.println("You can assign up to " + remaining + " in total.");
+                    for (Friend member: members) {
+                        while (true) {
+                            System.out.println("Remaining expense: " + String.format("%.2f", remaining));
+                            System.out.print("Enter amount for " + member.getName() + ": ");
+                            String amtStr = scanner.nextLine().trim();
+                            double assigned;
+                            try {
+                                assigned = Double.parseDouble(amtStr);
+                            } catch (NumberFormatException e) {
+                                System.out.println("Invalid amount format for " + member.getName() +
+                                    ". Please enter a numeric value.");
+                                continue;
+                            }
+                            if (assigned < 0) {
+                                System.out.println("Assigned amount for " + member.getName() +
+                                    " cannot be negative. Try again.");
+                            } else if (assigned > remaining) {
+                                System.out.println("Assigned amount for " + member.getName() +
+                                    " exceeds remaining amount of " + String.format("%.2f", remaining) +
+                                    ". Try again.");
+                            } else {
+                                remaining -= assigned;
+                                String assignment = createTransactionRecord(selectedExpense,
+                                    groupName, member.getName(), assigned);
+                                System.out.println(assignment);
+                                OwesStorage.appendOwes(assignment);
+                                break;
+                            }
+                        }
+                    }
+                    System.out.println("Updated list of transactions!");
+                    // Call viewGroupDirect after manual absolute splitting.
+                    friendsCommands.viewGroupDirect(groupName);
+                } else { // method equals "/p" for percentage splitting
+                    double remainingPercentage = 100.0;
+                    System.out.println("Total expense is " + totalAmount +
+                        ". You can assign up to 100% in total.");
+                    for (Friend member: members) {
+                        while (true) {
+                            System.out.println("Remaining percentage: " +
+                                String.format("%.2f", remainingPercentage) + "%");
+                            System.out.print("Enter percentage for " + member.getName() + ": ");
+                            String percStr = scanner.nextLine().trim();
+                            double percent;
+                            try {
+                                percent = Double.parseDouble(percStr);
+                            } catch (NumberFormatException e) {
+                                System.out.println("Invalid percentage format for " + member.getName() +
+                                    ". Please enter a numeric value.");
+                                continue;
+                            }
+                            if (percent < 0 || percent > remainingPercentage) {
+                                System.out.println("Percentage for " + member.getName() +
+                                    " must be between 0 and " + String.format("%.2f", remainingPercentage) +
+                                    ". Try again.");
+                            } else {
+                                double assignedAmount = totalAmount * (percent / 100.0);
+                                String assignment = createTransactionRecord(selectedExpense,
+                                    groupName, member.getName(), assignedAmount);
+                                System.out.println(assignment);
+                                OwesStorage.appendOwes(assignment);
+                                remainingPercentage -= percent;
+                                break;
+                            }
+                        }
+                    }
+                    System.out.println("Updated list of transactions!");
+                    // Call viewGroupDirect after manual percentage splitting.
+                    friendsCommands.viewGroupDirect(groupName);
+                }
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
@@ -243,14 +344,61 @@ public class SplitCommand {
     /**
      * Nested class to handle owes file operations.
      */
-    public static class OwesStorage {
+    public class OwesStorage {
         public static String owesFile = "owedAmounts.txt";
+        public static String checksumFile = "owedAmounts.chk";
+
+        // Appends a transaction record to the owes file and updates the checksum.
         public static void appendOwes(String text) {
             try (PrintWriter writer = new PrintWriter(new FileWriter(owesFile, true))) {
                 writer.println(text);
             } catch (IOException e) {
                 System.out.println("Error writing to owes file: " + e.getMessage());
             }
+            updateChecksum();
+        }
+
+        // Recalculates and writes the checksum for the owes file.
+        public static void updateChecksum() {
+            try {
+                byte[] fileBytes = Files.readAllBytes(new File(owesFile).toPath());
+                String checksum = getSHA256Checksum(fileBytes);
+                try (PrintWriter writer = new PrintWriter(new FileWriter(checksumFile, false))) {
+                    writer.println(checksum);
+                }
+            } catch (IOException | NoSuchAlgorithmException e) {
+                System.out.println("Error updating checksum: " + e.getMessage());
+            }
+        }
+
+        // Verifies the current checksum against the stored checksum.
+        public static boolean verifyChecksum() {
+            try {
+                byte[] fileBytes = Files.readAllBytes(new File(owesFile).toPath());
+                String currentChecksum = getSHA256Checksum(fileBytes);
+                List < String > lines = Files.readAllLines(new File(checksumFile).toPath());
+                if (lines.isEmpty()) {
+                    return false;
+                }
+                String storedChecksum = lines.get(0).trim();
+                return currentChecksum.equals(storedChecksum);
+            } catch (IOException | NoSuchAlgorithmException e) {
+                System.out.println("Error verifying checksum: " + e.getMessage());
+                return false;
+            }
+        }
+
+        // Utility method to compute SHA-256 checksum of the given data.
+        private static String getSHA256Checksum(byte[] data) throws NoSuchAlgorithmException {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = md.digest(data);
+            Formatter formatter = new Formatter();
+            for (byte b: hashBytes) {
+                formatter.format("%02x", b);
+            }
+            String hash = formatter.toString();
+            formatter.close();
+            return hash;
         }
 
         public static void saveTransaction(String transaction) {

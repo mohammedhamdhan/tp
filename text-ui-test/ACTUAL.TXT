@@ -280,7 +280,7 @@ ________________________________________________________________________________
 Enter command: Balance Overview
 ----------------
 Total number of unsettled expenses: 2
-Total amount owed: 170.00
+Total unsettled amount: 170.00
 
 ________________________________________________________________________________
 
@@ -288,7 +288,8 @@ Enter command: Invalid command.
 
 ________________________________________________________________________________
 
-Enter command: Please give input in correct format
+Enter command: Invalid format. Usage: change-currency/1/<currency to change to>/<exchange rate>
+OR change-currency/2/<currency to change to>
 
 ________________________________________________________________________________
 
