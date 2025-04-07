@@ -394,6 +394,25 @@ The `removeGroup()` is used to delete an entire group from the group management 
   - If confirmed, the method calls `groupManager.removeGroup(groupName)` to remove the group from the group management system.
   - The updated group list is saved using `groupManager.saveGroups()`.
 
+#### Viewing the Transactions of a Member in a Group
+
+The `viewMember()` method is responsible for displaying the transactions of a particular member in a group. It lists all the expenses owed/attributed to the particular user. It is useful to track and log the expenses.
+
+- **Input:**
+
+  - Prompts user to enter the member name and group name.
+  - Trims any extra whitespaces from the input.
+
+- **Group Existence Check:**
+  - Checks whether the group exists, and whether the entered member name is part of the mentioned group.
+
+- **Loading Expense Data:**
+
+  - The method reads from the `owedAmounts.txt` file, which contains expense data.
+    -For each transaction, it will print out the relevant transaction.
+  - It also processes malformed data and skips it.
+
+
 #### Viewing an existing group
 
 The `viewGroup()` method is responsible for displaying the details of a specific group, it includes its members and associated expenses.
@@ -507,16 +526,26 @@ The `removeMember()` method allows the user to add a new member to an existing g
 
 ### 3.1.6 SplitCommand Class
 
-The `SplitCommand` class handles the logic for dividing an expense among members of a user-defined group. It supports equal splits and manual splits using either absolute amounts or percentages. Results are saved to the transaction log and reflected in the group balances.
+The SplitCommand class is responsible for splitting a selected expense among members of a specified group. 
+It accepts a unified command in the following format:
 
-#### Split Management
+```split/<equal or assign>/<expense index>/<group name>```
 
-- **Group Integration:** Uses `GroupManager` to retrieve group and member data.
-- **Expense Selection:** Allows the user to select an existing expense for splitting.
-- **Transaction Logging:** Uses `OwesStorage` to persist the results of each split.
-- **User Flow:** Offers a command-line guided interaction with validation at each step.
+- **Equal Split:**  
+  Divides the total expense amount equally among all group members.
 
-- **Assertions:** Used to verify that splitting operations are valid
+- **Manual Split:**  
+  Allows the user to specify individual shares using either absolute amounts or percentages. After entering the command, the user is prompted to choose a method (`/a` for absolute amounts or `/p` for percentages) and to input the share for each member. The system validates the input and ensures that the full expense is allocated.
+
+- **Duplicate Prevention:**  
+  Before proceeding, the class checks the transaction log to ensure that the same expense has not already been split for the specified group. If a duplicate is detected, the split is aborted and an error message is displayed.
+
+- **Error and Exception Handling:**  
+  Before proceeding, the parser also checks to ensure that all the input is valid and raises the appropriate exceptions. This check is done for negative index, NULL, and other invalid inputs and parameters.
+
+- **Transaction Logging:**  
+  For every split operation, detailed transaction records are created in the format:  
+  ```Transaction: Expense: <title>, Date: <date>, Group: <group>, Member: <member> owes: <amount>```
 
 #### Methods
 
@@ -529,44 +558,25 @@ Initializes the `SplitCommand` instance with the provided dependencies.
 
 #### `executeSplit()`
 
-Executes the flow for splitting an expense.
+Executes the flow for splitting an expense. Follows the format as required above:
 
-- Prompts the user to choose:
-  - `[1]` Equal Split
-  - `[2]` Manual Split
-  - `[x]` Cancel
-- Displays available expenses and validates the selected index.
-- Retrieves group and validates its existence and membership.
-- Delegates to the chosen split method:
+```split/<equal or assign>/<expense index>/<group name>```
+
   - **Equal Split:** 
-    - Divides total amount equally among all members.
-    - Appends individual owed shares to the transaction log.
+    - Computes `share = totalAmount / numMembers`.
+    - Loops through group members and logs each person's owed amount.
+    - Writes each owed entry to `OwesStorage`.
   - **Manual Split:**
     - Prompts user to choose between absolute amounts (`/a`) or percentages (`/p`).
-    - Accepts user-defined shares for each member.
-    - Validates that total amount or percentage is fully allocated.
+    - **Manual Split – Absolute:**
+      - Prompts for each member’s assigned amount.
+      - Tracks remaining amount and prevents over-allocation.
+      - Logs each owed amount to storage.
+    - **Manual Split – Percentage:**
+      - Prompts for each member’s share percentage.
+      - Computes owed amount as `totalAmount * (percentage / 100)`.
+      - Validates total assigned percentages.
 - Calls `friendsCommands.viewGroupDirect()` to update group display after split.
-
-#### Internal Logic (within `executeSplit()`)
-
-- **Equal Split:**
-  - Computes `share = totalAmount / numMembers`.
-  - Loops through group members and logs each person's owed amount.
-  - Writes each owed entry to `OwesStorage`.
-
-- **Manual Split – Absolute:**
-  - Prompts for each member’s assigned amount.
-  - Tracks remaining amount and prevents over-allocation.
-  - Logs each owed amount to storage.
-
-- **Manual Split – Percentage:**
-  - Prompts for each member’s share percentage.
-  - Computes owed amount as `totalAmount * (percentage / 100)`.
-  - Validates total assigned percentages.
-
-Below is the UML sequence diagram for the `SplitCommand` class.
-
-![SplitClassSequenceDiagram.png](diagrams/SplitClassSequenceDiagram.png)
 
 ### 3.1.7 BudgetManager Class
 

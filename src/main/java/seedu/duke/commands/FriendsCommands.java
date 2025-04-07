@@ -102,7 +102,7 @@ public class FriendsCommands {
             return;
         }
         // Expected syntax: view-member/<groupname>/<member name>
-        String[] parts = command.trim().split("/");
+        String[] parts = command.trim().split(" */");
         if (parts.length != 3) {
             System.out.println("Invalid command format. Expected: view-member/<group name>/<member name>");
             return;
@@ -173,7 +173,7 @@ public class FriendsCommands {
      * @param command the command string containing the group name.
      */
     public void viewGroup(String command) {
-        String[] parts = command.trim().split(" /", 2);
+        String[] parts = command.trim().split(" */", 2);
         if (parts.length < 2 || !parts[0].equals("view-group")) {
             System.out.println("Invalid command. Please use the format: view-group /<group name>");
             return;
