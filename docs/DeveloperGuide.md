@@ -1102,6 +1102,13 @@ The `writeToFile()` method handles writing the new currency to a file with these
 
 ### 4.1 Application Class Diagram
 
+![ApplicationFlowChart.drawio.png](diagrams/ApplicationFlowChart.drawio.png)
+
+O\$P\$ is the main class of application which the user can interact with directly. The command input from the user is processed by the UI class which validates and parses the command.
+This class will check for any valid keywords in the input. Once the keywords are present, it will pass the input to its respective classes that the command is related to (see above diagram) 
+to validate the format and details of the command. Upon successful validation and execution of the command, the new data is written to the .txt files within the program directory and saved
+after the command duration has ended and upon exiting the program, handled by the DataStorage class.
+
 ### 4.2 Expense CRUD Feature
 
 Below is the UML sequence diagram for the classes involved in the CRUD operations regarding user-created expenses. The main application class calls the constructor
