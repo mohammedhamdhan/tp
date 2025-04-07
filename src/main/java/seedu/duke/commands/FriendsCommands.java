@@ -40,7 +40,7 @@ public class FriendsCommands {
     public void createGroup(String command) {
         String[] parts = command.trim().split(" */", 2);
         if (parts.length < 2 || !parts[0].equals("create-group")) {
-            System.out.println("Invalid command. Please use the format: create-group /<group-name>");
+            System.out.println("Invalid format. Usage: create-group/<group-name>");
             return;
         }
 
@@ -104,18 +104,16 @@ public class FriendsCommands {
         // Expected syntax: view-member/<groupname>/<member name>
         String[] parts = command.trim().split(" */");
         if (parts.length != 3) {
-            System.out.println("Invalid command format. Expected: view-member/<group name>/<member name>");
+            System.out.println("Invalid format. Usage: view-member/<group name>/<member name>");
             return;
         }
 
-        // Validate command keyword
         String commandWord = parts[0].trim();
         if (!commandWord.equalsIgnoreCase("view-member")) {
             System.out.println("Invalid command. Expected command to start with 'view-member'.");
             return;
         }
 
-        // Extract and validate group and member names
         String groupName = parts[1].trim();
         String memberName = parts[2].trim();
         if (groupName.isEmpty() || memberName.isEmpty()) {
@@ -175,7 +173,7 @@ public class FriendsCommands {
     public void viewGroup(String command) {
         String[] parts = command.trim().split(" */", 2);
         if (parts.length < 2 || !parts[0].equals("view-group")) {
-            System.out.println("Invalid command. Please use the format: view-group/<group name>");
+            System.out.println("Invalid format. Usage: view-group/<group name>");
             return;
         }
 
@@ -348,7 +346,7 @@ public class FriendsCommands {
     public void addMember(String command) {
         String[] parts = command.trim().split(" */", 3);
         if (parts.length < 3 || !parts[0].equals("add-member")) {
-            System.out.println("Invalid command. Please use the format: add-member /<member name> /<group-name>");
+            System.out.println("Invalid fromat. Usage: add-member/<member name>/<group-name>");
             return;
         }
 
@@ -397,7 +395,7 @@ public class FriendsCommands {
     public void removeMember(String command) {
         String[] parts = command.trim().split(" */", 3);
         if (parts.length < 3 || !parts[0].equals("remove-member")) {
-            System.out.println("Invalid command. Please use the format: remove-member/<member name>/<group-name>");
+            System.out.println("Invalid format. Usage: remove-member/<member name>/<group-name>");
             return;
         }
 
@@ -416,7 +414,7 @@ public class FriendsCommands {
 
         boolean memberExists = false;
         for (Group group: groupManager.getGroups()) {
-            if (group.getName().equals(groupName) && group.hasFriend(memberName)) {
+            if (group.getName().equals(groupName) && group.isMemberInGroup(memberName)) {
                 memberExists = true;
                 break;
             }
@@ -460,7 +458,7 @@ public class FriendsCommands {
     public void removeGroup(String command) {
         String[] parts = command.trim().split(" */", 2);
         if (parts.length < 2 || !parts[0].equals("remove-group")) {
-            System.out.println("Invalid command. Please use the format: remove-group/<group-name>");
+            System.out.println("Invalid format. Usage: remove-group/<group-name>");
             return;
         }
 

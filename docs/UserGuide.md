@@ -286,8 +286,8 @@ User can unmark an expense that has been marked already.
 
 User can find expenses that contain this keyword in the expense description
 
-- **Format:** `find /<keyword>`
-- **Usage:** `find /taxi`
+- **Format:** `find/<keyword>`
+- **Usage:** `find/taxi`
 - **Example:**
   ```
   Found 1 matching expense(s):
@@ -346,8 +346,8 @@ Shows total money the user needs to pay.
 Create a new group to split expenses with.
 If you would like to include yourself in the group, please add your name as well explicitly when the application asks to enter name.
 
-- **Format** `create-group /<group-name>`
-- **Usage** `create-group /test`
+- **Format** `create-group/<group-name>`
+- **Usage** `create-group/test`
 
 - **Output:**
   ```
@@ -364,8 +364,8 @@ If you would like to include yourself in the group, please add your name as well
 
 View a specific group and see how much each member owes.
 
-- **Format:** `view-group /<group-name>`
-- **Usage:** `view-group /test`
+- **Format:** `view-group/<group-name>`
+- **Usage:** `view-group/test`
 
 - **Output:**
 
@@ -383,8 +383,8 @@ View a specific group and see how much each member owes.
 
 Adds a user to a group.
 
-- **Format:** `add-member /<member-name> /<group-name>`
-- **Usage:** `add-member /hij /test`
+- **Format:** `add-member/<member-name>/<group-name>`
+- **Usage:** `add-member/hij/test`
 
 - **Output:**
   If the group exists, then adds to the existing group.
@@ -403,8 +403,8 @@ Adds a user to a group.
 
 Removes a member from a group
 
-- **Format:** `remove-member /<member name> /<group-name>`
-- **Usage:** `remove-member /hij /test`
+- **Format:** `remove-member/<member name>/<group-name>`
+- **Usage:** `remove-member/hij/test`
 
 - **Output:**
 
@@ -445,8 +445,8 @@ Shows all the groups that the user has created.
 
 Removes an entire group.
 
-- **Format:** `remove-group /<group-name>`
-- **Usage:** `remove-group /test1`
+- **Format:** `remove-group/<group-name>`
+- **Usage:** `remove-group/test1`
 
 - **Output:**
   ```
@@ -746,27 +746,27 @@ Amount: 10.00
 
 Here's a quick reference for all available commands:
 
-| Command         | Format                                                  | Example Usage                          |
-| --------------- | ------------------------------------------------------- | -------------------------------------- |
-| Help            | `help`                                                  | `help`                                 |
-| Exit            | `exit`                                                  | `exit`                                 |
-| Add Expense     | `add/<title>/<date>/<amount>`                           | `add/lunch/01-01-2024/15.50`           |
-| Edit Expense    | `edit/<expense ID>/<new title>/<new date>/<new amount>` | `edit/1/dinner/x/20.00`                |
-| Delete Expense  | `delete/<expense ID>`                                   | `delete/1`                             |
-| List All        | `list`                                                  | `list`                                 |
-| List Unsettled  | `list-unsettled`                                        | `list-unsettled`                       |
-| List Settled    | `list-settled`                                          | `list-settled`                         |
-| Mark Settled    | `mark/<expense ID>`                                     | `mark/1`                               |
-| Unmark Settled  | `unmark/<expense ID>`                                   | `unmark/1`                             |
-| Find Expense    | `find`                                                  | `find` (then enter keyword)            |
-| Change Currency | `change-currency/<method>/<currency>[/<rate>]`          | `change-currency/1/USD/0.75`           |
-| View Balance    | `balance`                                               | `balance`                              |
-| Create Group    | `create-group`                                          | `create-group` (then follow prompts)   |
-| View Group      | `view-group`                                            | `view-group` (then enter group name)   |
-| Add Member      | `add-member/<member name>/<group-name>`                 | `add-member/John/Friends`              |
-| Remove Member   | `remove-member`                                         | `remove-member` (then follow prompts)  |
-| View All Groups | `my-groups`                                             | `my-groups`                            |
-| Remove Group    | `remove-group`                                          | `remove-group` (then enter group name) |
-| Split Expense   | `split`                                                 | `split` (then follow prompts)          |
-| View Summary    | `summary/[BY-MONTH\|BY-CATEGORY]/[Y\|N]`                | `summary/BY-CATEGORY/Y`                |
-| Sort List       | `sort-list/<option>`                                    | `sort-list/1`                          |
+| Command         | Format                                                  | Example Usage                 |
+| --------------- |---------------------------------------------------------|-------------------------------|
+| Help            | `help`                                                  | `help`                        |
+| Exit            | `exit`                                                  | `exit`                        |
+| Add Expense     | `add/<title>/<date>/<amount>`                           | `add/lunch/01-01-2024/15.50`  |
+| Edit Expense    | `edit/<expense ID>/<new title>/<new date>/<new amount>` | `edit/1/dinner/x/20.00`       |
+| Delete Expense  | `delete/<expense ID>`                                   | `delete/1`                    |
+| List All        | `list`                                                  | `list`                        |
+| List Unsettled  | `list-unsettled`                                        | `list-unsettled`              |
+| List Settled    | `list-settled`                                          | `list-settled`                |
+| Mark Settled    | `mark/<expense ID>`                                     | `mark/1`                      |
+| Unmark Settled  | `unmark/<expense ID>`                                   | `unmark/1`                    |
+| Find Expense    | `find/<keyword>`                                        | `find/taxi`                   |
+| Change Currency | `change-currency/<method>/<currency>[/<rate>]`          | `change-currency/1/USD/0.75`  |
+| View Balance    | `balance`                                               | `balance`                     |
+| Create Group    | `create-group/<group-name>`                             | `create-group/test`           |
+| View Group      | `view-group/<group-name>`                               | `view-group/test`             |
+| Add Member      | `add-member/<member name>/<group-name>`                 | `add-member/John/Friends`     |
+| Remove Member   | `remove-member/<member-name>/<group-name>`              | `remove-member/John/Friends`  |
+| View All Groups | `my-groups`                                             | `my-groups`                   |
+| Remove Group    | `remove-group/<group-name>`                             | `remove-group/test`           |
+| Split Expense   | `split`                                                 | `split` (then follow prompts) |
+| View Summary    | `summary/[BY-MONTH\|BY-CATEGORY]/[Y\|N]`                | `summary/BY-CATEGORY/Y`       |
+| Sort List       | `sort-list/<option>`                                    | `sort-list/1`                 |

@@ -29,10 +29,9 @@
 [4. Overall Application Architecture](#4-overall-application-architecture) <br>
 &nbsp;&nbsp;[4.1 Application Class Diagram](#41-application-class-diagram) <br>
 &nbsp;&nbsp;[4.2 Expense CRUD Feature](#42-expense-crud-feature) <br>
-&nbsp;&nbsp;[4.3 Create Group Feature](#43-create-group-feature) <br>
-&nbsp;&nbsp;[4.4 Split Expense Feature](#44-split-expense-feature) <br>
-&nbsp;&nbsp;[4.5 Change Currency Feature](#45-change-currency-feature) <br>
-&nbsp;&nbsp;[4.6 Data Visualization Feature](#46-data-visualization-feature) <br>
+&nbsp;&nbsp;[4.3 Split Expense Feature](#44-split-expense-feature) <br>
+&nbsp;&nbsp;[4.4 Change Currency Feature](#45-change-currency-feature) <br>
+&nbsp;&nbsp;[4.5 Data Visualization Feature](#46-data-visualization-feature) <br>
 [5. Appendix](#5-appendix) <br>
 &nbsp;&nbsp;[5.1 Product Scope](#51-product-scope) <br>
 &nbsp;&nbsp;&nbsp;&nbsp;[5.1.1 Target User Profile](#511-target-user-profile) <br>
@@ -159,7 +158,39 @@ Clears all data in `expenses.txt`. Used mainly for testing.
 
 ### 3.1.2 GroupStorage Class
 
-User-created groups are stored here, each containing the names of the members to be assigned an expense.
+The GroupStorage class is responsible for managing the storage of user-created groups and their associated members. 
+The group data is saved in a text file named groups.txt, and it is loaded whenever the application starts.
+
+### File Handling
+
+- **Data File:** The expense data is stored in `groups.txt`.
+- **Separator:** Each entry in the file is delimited using `|`.
+- **Group Header:** Each group entry starts with `[GROUP]` followed by the group name.
+- **Assertions:** Used to ensure correct program behavior, such as non-null lists and group objects.
+
+### Methods
+
+#### `saveGroups(List<Group> groups)`
+
+Saves a list of groups and their members to the data file.
+
+- Iterates through the `groups` list and writes each group to `groups.txt`
+- Each group is stored with the following format:
+  - Group header: `[GROUP]|<group_name>`
+  - Friend entries: `<group_name>|<friend_name>`
+- Uses `FileWriter` for file operations. 
+- Handles `IOException` to manage file writing errors.
+
+#### `loadGroups()`
+
+Loads groups and their members from the data file.
+
+- Reads each line from the file and splits it using the `|` separator. 
+- Identifies group headers `([GROUP]|<group_name>)` and creates a new `Group` object. 
+- For each friend entry, associates the friend with the current group. 
+- Returns a list of `Group` objects. 
+- Uses `Scanner` for file reading. 
+- Handles `FileNotFoundException` when the file does not exist.
 
 ### 3.1.3 Commands Class
 
@@ -280,7 +311,7 @@ The `executeUnmarkCommand(String command)` method manages unmarking an expense a
 
 #### Finding specific Expenses
 
-The `findExpense()` method in the `seedu.duke.budget` package is responsible for searching and displaying expenses that match a given keyword. It helps users efficiently locate expenses by title or description.
+The `findExpense(String command)` method in the `seedu.duke.commands` package is responsible for searching and displaying expenses that match a given keyword. It helps users efficiently locate expenses by title or description.
 
 - Prompts the user to enter a keyword to search for expenses.
 - Validates that the keyword is not empty.
@@ -336,7 +367,7 @@ The FriendsCommands class handles all friends and groups related operations in t
 
 #### Checking if a group/member name is valid
 
-The `isValidName()` method is a utility function used to validate input strings for group names and member names. It ensures that the input follows specific naming conventions and helps maintain data integrity.
+The `isValidName(String name)` method is a utility function used to validate input strings for group names and member names. It ensures that the input follows specific naming conventions and helps maintain data integrity.
 
 - **Input validation:**
 
@@ -354,20 +385,19 @@ The `isValidName()` method is a utility function used to validate input strings 
 
 #### Creating a new group
 
-The `createGroup()` method is responsible for creating a new group within the application. It follows a user-driven input process to define the group name and add members.
+The `createGroup(String command)` method is responsible for creating a new group within the application.
 
 - **Group name Input:**
 
-  - The method prompts the user to enter a group name.
-  - The input is validated using the `isValidName()` method.
-  - If name is invalid, the user is prompted to enter a name again.
+  - The method takes in the `command` and is parsed.
+  - The parsed input is then validated using the `isValidName(String name)` method.
 
 - **Adding Group Members:**
 
-  - Once a valid group name is added, user is prompted to add members.
-  - User can continue to input multiple member names, each name is validated by the `isValidName()` method.
+  - Once a valid group is created, user is prompted to add members.
+  - User can continue to input multiple member names, each name is validated by the `isValidName(String name)` method.
   - Process continues until user types 'done'.
-  - Each valid member name is used to create a new `Friend` object, which is then added to the group using `groupManager.addFriendToGroup()`.
+  - Each valid member name is used to create a new `Friend` object, which is then added to the group using `groupManager.addFriendToGroup(String groupName, new Friend(name, groupName))`.
 
 - **Saving the Group:**
   - Once the group creation is complete, the method saves the group using `groupManager.saveGroups()`
@@ -375,11 +405,11 @@ The `createGroup()` method is responsible for creating a new group within the ap
 
 #### Remove a Group
 
-The `removeGroup()` is used to delete an entire group from the group management system.
+The `removeGroup(String command)` is used to delete an entire group from the group management system.
 
 - **Input:**
 
-  - Prompts the user to enter the name of the group they want to remove.
+  - Parses the input command to retrieve the group name.
   - Trims any leading or trailing whitespaces from the input.
 
 - **Group Existence Check:**
@@ -398,11 +428,11 @@ The `removeGroup()` is used to delete an entire group from the group management 
 
 #### Viewing the Transactions of a Member in a Group
 
-The `viewMember()` method is responsible for displaying the transactions of a particular member in a group. It lists all the expenses owed/attributed to the particular user. It is useful to track and log the expenses.
+The `viewMember(String command)` method is responsible for displaying the transactions of a particular member in a group. It lists all the expenses owed/attributed to the particular user. It is useful to track and log the expenses.
 
 - **Input:**
 
-  - Prompts user to enter the member name and group name.
+  - Parses user input to retrieve the group name and member name.
   - Trims any extra whitespaces from the input.
 
 - **Group Existence Check:**
@@ -417,17 +447,16 @@ The `viewMember()` method is responsible for displaying the transactions of a pa
 
 #### Viewing an existing group
 
-The `viewGroup()` method is responsible for displaying the details of a specific group, it includes its members and associated expenses.
-This method is essential for users who wish to view group details and any expenses related to group members.
+The `viewGroup(String command)` method is responsible for displaying the details of a specific group.
 
 - **Input:**
 
-  - Prompts user to enter the group name that they want to view.
-  - Trims any extra whitespaces from the input.
+  - Parses user input to retrieve the group name.
+  - Trims any extra whitespaces from the input and converts input to lower case.
 
 - **Group Existence Check:**
 
-  - Uses the `groupManager.groupExists()` method to check whether the specified group exists.
+  - Uses the `groupManager.groupExists(String groupName)` method to check whether the specified group exists.
   - If the group does not exist, the method prints a "Group not found" message and terminates.
 
 - **Loading Expense Data:**
@@ -464,16 +493,16 @@ The `viewAllGroups()` method is designed to display a list of all the groups tha
 
 #### Add a member
 
-The `addMember()` method allows the user to add a new member to an existing group. If the specified group does not exist, the method offers the option to create the group and add the member simultaneously.
+The `addMember(String command)` method allows the user to add a new member to an existing group. If the specified group does not exist, the method offers the option to create the group and add the member simultaneously.
 
 - **Input:**
 
   - Member name:
-    - Prompts the user to enter the name of the member they want to add.
-    - Uses isValidName() to validate the input, ensuring it does not contain special characters or empty spaces.
+    - Parses the user input `command` to retrieve the name of new member to be added.
+    - Uses `isValidName(String name)` to validate the input, ensuring it does not contain special characters or empty spaces.
     - Repeats the prompt until a valid name is entered.
   - Group name:
-    - Prompts the user to enter the group name to which the member should be added.
+    - Parses user input `command` to retrieve group name to which the member should be added.
     - Similarly, the name is validated to avoid empty or invalid names.
 
 - **Group Existence Check:**
@@ -499,15 +528,15 @@ The `addMember()` method allows the user to add a new member to an existing grou
 
 #### Remove a member
 
-The `removeMember()` method allows the user to add a new member to an existing group. If the specified group does not exist, the method offers the option to create the group and add the member simultaneously.
+The `removeMember(String command)` method allows the user to add a new member to an existing group. If the specified group does not exist, the method offers the option to create the group and add the member simultaneously.
 
 - **Input:**
 
   - Member name:
-    - Prompts the user to enter the name of the member they want to remove.
+    - Parses the input `command` to retrieve the name of new member to be removed.
     - Trims any leading or trailing whitespaces from the input.
   - Group name:
-    - Prompts the user to enter the group name to which the member should be removed.
+    - Parses the input `command` to retrieve the group name to which the member should be removed.
     - Trims whitespace for the input.
 
 - **Group Existence Check:**
@@ -523,7 +552,7 @@ The `removeMember()` method allows the user to add a new member to an existing g
 - **Member Removal:**
   - If confirmed, the method iterates through the list of groups returned by `groupManager.getGroups()`.
   - Locates the specified group by comparing the group name.
-  - Uses the `removeFriend()` method to attempt to remove the specified member from the group.
+  - Uses the `removeFriend(String friendName)` method to attempt to remove the specified member from the group.
   - If successful, it sets the removed flag to true and breaks out of the loop.
 
 ### 3.1.6 SplitCommand Class
@@ -824,6 +853,12 @@ The `Group` class in the `seedu.duke.friends` package manages a collection of `F
   - Returns `true` if removal is successful; otherwise returns `false`.
   - Note: Uses a for-each loop for removal, which may require caution regarding concurrent modifications.
 
+#### Checking for friends in group
+
+- **Method:** `isMemberInGroup(String friendName)`
+- **Features:**
+  - Returns `true` if the friend exists in the friend group.
+
 #### Retrieving Friends
 
 - **Method:** `getFriends()`
@@ -846,7 +881,7 @@ The `Group` class in the `seedu.duke.friends` package manages a collection of `F
 
 ### 3.2.1 GroupManager Class
 
-The `GroupManager` class in the `seedu.duke.friends` package is responsible for managing groups and their members. It provides methods to add members, check group existence, retrieve group members, remove groups, and persist group data.
+The `GroupManager` class in the `seedu.duke.friends` package is responsible for managing groups and their members.
 
 #### GroupManager Initialization
 
@@ -895,6 +930,12 @@ The `GroupManager` class in the `seedu.duke.friends` package is responsible for 
   - If the group is successfully removed, it calls `saveGroups()` to persist changes.
   - Displays a success message if the group is deleted, otherwise uses `messages.displayMissingGroupMessage()` to indicate that the group was not found.
 
+---
+#### Checking for member in a group
+
+- **Method:** `isMemberInGroup(String groupName, String memberName)`
+- **Features:**
+  - Checks if the member exists in the specific group.
 ---
 
 #### Saving Groups
@@ -1129,11 +1170,9 @@ as shown in the diagram.
 
 ![ExpenseCRUDFeatureSequenceDiagram.drawio.png](diagrams/ExpenseCRUDFeatureSequenceDiagram.drawio.png)
 
-### 4.3 Create Group Feature
+### 4.3 Split Expense Feature
 
-### 4.4 Split Expense Feature
-
-### 4.5 Change Currency Feature
+### 4.4 Change Currency Feature
 
 Below is the UML sequence diagram for the classes involved in the "Change Currency" operation.
 ![CurrencySequenceDiagram.png](diagrams/CurrencySequenceDiagram.png "Currency Sequence Diagram")
@@ -1142,7 +1181,7 @@ Below is the UML Object diagram illustrating the state of a Currency object afte
  
 <img alt="ChangeCurrencyObjectDiagram.png" height="400" src="diagrams/ChangeCurrencyObjectDiagram.png" title="Object Diagram" width="270"/>
 
-### 4.6 Data Visualization Feature
+### 4.5 Data Visualization Feature
 
 The data visualization feature provides users with interactive and informative views of their expense patterns.
 
