@@ -42,7 +42,8 @@ public class SplitCommand {
             }
             String commandWord = parts[0].trim();
             if (!commandWord.equalsIgnoreCase("split")) {
-                throw new IllegalArgumentException("Invalid format. Usage: split/<equal|assign>/<expense index>/<group name>");
+                throw new IllegalArgumentException("Invalid format." +
+                    " Usage: split/<equal|assign>/<expense index>/<group name>");
             }
             String splitOption = parts[1].trim().toLowerCase();
             if (!splitOption.equals("equal") && !splitOption.equals("assign")) {
