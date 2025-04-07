@@ -48,7 +48,8 @@ the `add` keyword, followed by the `title`, `date` and `amount`, each separated 
 After that, you will be prompted to optionally add a `description` of maximum 200 characters.
 Please ensure the description is accurate and simple, because the summary analytics by category uses description to classify expenses.
 Please ensure the description is not wordy and it is to the point, to ensure your expenses are accurately classified. 
-Please also ensure that the description does not contain conflicting catego 
+Please also ensure that the description does not contain conflicting categories. 
+
 - **Example Usage:**
 
 ```
