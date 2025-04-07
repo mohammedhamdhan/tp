@@ -40,27 +40,10 @@ Terminates the program and saves the user's data, such as their payee list, grou
 
 #### Add an expense: `add`
 
-- **Format:** `add/<title>/<date>/<amount>`
+- **Format:** `add/<title>/<category>/<date>/<amount>`
 
 Add an expense with a title, description, date, amount. You have to first enter
-the `add` keyword, followed by the `title`, `date` and `amount`, each separated by a `/`.
-
-After that, you will be prompted to optionally add a `description` of maximum 200 characters.
-Please ensure the description is accurate and simple, because the summary analytics by category uses description to classify expenses.
-Please ensure the description is not wordy and it is to the point, to ensure your expenses are accurately classified. 
-Please also ensure that the description does not contain conflicting categories. 
-
-- **Example Usage:**
-
-```
-Had lunch with friends
-```
-
-- **Example Usage:**
-
-```
-Went to the movies with friends
-```
+the `add` keyword, followed by the `title`,`category`, `date`, `amount`, each separated by a `/`.
 
 The `date` field has to follow the DD-MM-YYYY format. You can choose the date to be in the past (earliest 2000),
 present and future, as long as it is a legitimate date (e.g. NOT 99-99-9999).
@@ -74,33 +57,14 @@ places. The `amount` is capped at 50,000SGD or its equivalent if your expenses a
 - **Example Usage:**
 
 ```
-add/breakfast/23-08-2002/10.00
+add/Chicken Rice/Food/25-12-2025/100
 ```
-
-- **Output:**
-
-```
-Enter the description (press Enter to skip):
-```
-
-If you choose to add a description within 200 characters:
-
 ```
 Expense added successfully:
-Title: breakfast
-Description: McDonald's
-Date: 23-08-2002
-Amount: 10.00
-```
-
-If you skip the description part, the description field will be replaced with 'nil':
-
-```
-Expense added successfully:
-Title: breakfast
-Description: nil
-Date: 23-08-2002
-Amount: 10.00
+Title: chicken rice
+Category: Food
+Date: 25-12-2025
+Amount: 100.00
 ```
 
 The entry will automatically be tagged with a unique expense ID.
@@ -111,43 +75,45 @@ You are not allowed to add an expense containing a `title` of an expense that al
 
 #### Edit an expense: `edit`
 
-Edit an existing expense. Follows the same constraints and parameter-filling procedure as the `add` command.
+Edit an existing expense. Follows the same constraints and parameter-filling procedure as the `add` command. 'X' can be used to keep existing values.
 
-- **Format:** `edit/<expense ID>/<new title>/<new date>/<new amount>`
-
-If you do not wish to change the `title`, `date` or/and `amount`, type `X` (both lowercase and uppercase accepted)
-in the respective fields. Suppose you only want to change the `amount`:
+- **Format:** `edit/<expense ID>/<new title>/<new category>/<new date>/<new amount>`
 
 - **Example Usage:**
 
 ```
-edit/1/x/X/10
+edit/1/chicken rice/food/20-08-2004/20
 ```
 
 - **Output:**
-
-```
-Enter the description (press Enter to skip):
-```
-
-If you choose to change the description within 200 characters:
+  If you choose to change the amount:
 
 ```
 Expense edited successfully:
-Title: breakfast
-Description: Technoedge Canteen
-Date: 23-08-2002
-Amount: 10.00
+Title: chicken rice
+Category: Food
+Date: 20-08-2004
+Amount: 20.00
 ```
 
-If you choose to keep the current description:
+If you choose to change the category within 200 characters:
 
 ```
-Expense added successfully:
-Title: breakfast
-Description: McDonald's
-Date: 23-08-2002
-Amount: 10.00
+Expense edited successfully:
+Title: chicken rice
+Category: Micellaneous
+Date: 20-08-2004
+Amount: 100.00
+```
+
+If you choose to keep the current category:
+
+```
+Expense edited successfully:
+Title: chicken rice
+Category: Food
+Date: 20-08-2004
+Amount: 100.00
 ```
 
 ---
@@ -328,13 +294,13 @@ After exchange, the amount will be rounded off to 2dp.
 Shows total money the user needs to pay.
 
 - **Format and Usage:** `balance`
-- 
+-
 - **Output:**
   ```
   Balance Overview
   ----------------
   Total number of unsettled expenses: <total number of unsettled expenses user has>
-  Total amount owed: <total amount user owes>
+  Total unsettled amount: <total unsettled amount>
   ```
 
 ---
@@ -354,7 +320,7 @@ If you would like to include yourself in the group, please add your name as well
   Who would you like to add to the group? (Type 'done' to finish)
   Enter name: name1
   Enter name: name2
-  Enter name: done 
+  Enter name: done
   Group created successfully!
   ```
 
@@ -388,15 +354,18 @@ Adds a user to a group.
 
 - **Output:**
   If the group exists, then adds to the existing group.
+
   ```
   hij has been added to test
   ```
-  
+
   If the group does not exist, the user is prompted to create the group first.
+
   ```
   Group does not exist. Would you like to create this group first? (y/n): y
   Group test1 has been created and hij has been added.
   ```
+
 ---
 
 #### Remove Friend from a group: `remove-member`
@@ -412,6 +381,7 @@ Removes a member from a group
   Are you sure you want to remove hij from test1? (y/n): y
   hij has been removed from test1
   ```
+
 ---
 
 #### View all groups created by user: `my-groups`
@@ -439,6 +409,7 @@ Shows all the groups that the user has created.
   - mango
   - carrot
   ```
+
 ---
 
 #### Removes an existing group: `remove-group`
@@ -453,6 +424,7 @@ Removes an entire group.
   Are you sure you want to remove the group test1? (y/n): y
   Group test1 has been removed.
   ```
+
 ---
 
 ### Manage Payments:
@@ -566,7 +538,7 @@ Allows an expense to be split among a certain group, either equally or via manua
 
 Displays comprehensive analytics of your expenses through different visualization options. This command helps you track and analyze your spending patterns.
 
-- **Format:** `summary/[BY-MONTH|BY-CATEGORY]/[Y|N]`
+- **Format:** `summary/<BY-MONTH|BY-CATEGORY>/<Y|N>`
 
   - First parameter must be either `BY-MONTH` or `BY-CATEGORY`
   - Second parameter must be `Y` or `N` for visualization
@@ -576,16 +548,16 @@ Displays comprehensive analytics of your expenses through different visualizatio
 
   1. **Monthly Summary (`summary/BY-MONTH/N`)**
 
-     - Shows total expenses for each month
-     - Lists all expenses within each month
-     - Displays expense count per month
-     - No visualization available for monthly view
+    - Shows total expenses for each month
+    - Lists all expenses within each month
+    - Displays expense count per month
+    - No visualization available for monthly view
 
   2. **Category-wise Summary (`summary/BY-CATEGORY/Y` or `summary/BY-CATEGORY/N`)**
-     - Breaks down expenses into categories (Food, Travel, Entertainment, Shopping, Miscellaneous)
-     - Shows total amount and count for each category
-     - Optional pie chart visualization (Y/N)
-     - Displays percentage distribution across categories
+    - Breaks down expenses into categories (Food, Travel, Entertainment, Shopping, Miscellaneous)
+    - Shows total amount and count for each category
+    - Optional pie chart visualization (Y/N)
+    - Displays percentage distribution across categories
 
 - **Example Usage:**
 
@@ -606,8 +578,8 @@ Displays comprehensive analytics of your expenses through different visualizatio
 
   [Pie chart visualization will appear in a separate window]
   ```
-  ![image](https://github.com/user-attachments/assets/5eb6f031-9924-43d2-ab6b-3540e15fcefb)
 
+  ![image](https://github.com/user-attachments/assets/5eb6f031-9924-43d2-ab6b-3540e15fcefb)
 
 - **Notes about Pie Chart Visualization:**
   - Only available for category-wise summary
@@ -616,6 +588,7 @@ Displays comprehensive analytics of your expenses through different visualizatio
     - Very small expenses may not be clearly visible on the chart
     - Hover over segments to see exact values
     - Legend shows both amount and percentage for each category
+  - **IMPORTANT**: You must close the pie chart window before exiting the program. Due to a limitation in the visualization API, if you do not close the window, the program will not terminate properly.
   - Chart window will automatically close when program exits
   - Close the chart window to return to the application
 
