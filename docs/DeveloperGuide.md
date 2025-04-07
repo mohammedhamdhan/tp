@@ -43,6 +43,8 @@
 
 ## Acknowledgements
 
+All our UML diagrams are created using draw.io. 
+
 ---
 
 ## 1. Introduction
@@ -394,6 +396,25 @@ The `removeGroup()` is used to delete an entire group from the group management 
   - If confirmed, the method calls `groupManager.removeGroup(groupName)` to remove the group from the group management system.
   - The updated group list is saved using `groupManager.saveGroups()`.
 
+#### Viewing the Transactions of a Member in a Group
+
+The `viewMember()` method is responsible for displaying the transactions of a particular member in a group. It lists all the expenses owed/attributed to the particular user. It is useful to track and log the expenses.
+
+- **Input:**
+
+  - Prompts user to enter the member name and group name.
+  - Trims any extra whitespaces from the input.
+
+- **Group Existence Check:**
+  - Checks whether the group exists, and whether the entered member name is part of the mentioned group.
+
+- **Loading Expense Data:**
+
+  - The method reads from the `owedAmounts.txt` file, which contains expense data.
+    -For each transaction, it will print out the relevant transaction.
+  - It also processes malformed data and skips it.
+
+
 #### Viewing an existing group
 
 The `viewGroup()` method is responsible for displaying the details of a specific group, it includes its members and associated expenses.
@@ -507,16 +528,26 @@ The `removeMember()` method allows the user to add a new member to an existing g
 
 ### 3.1.6 SplitCommand Class
 
-The `SplitCommand` class handles the logic for dividing an expense among members of a user-defined group. It supports equal splits and manual splits using either absolute amounts or percentages. Results are saved to the transaction log and reflected in the group balances.
+The SplitCommand class is responsible for splitting a selected expense among members of a specified group. 
+It accepts a unified command in the following format:
 
-#### Split Management
+```split/<equal or assign>/<expense index>/<group name>```
 
-- **Group Integration:** Uses `GroupManager` to retrieve group and member data.
-- **Expense Selection:** Allows the user to select an existing expense for splitting.
-- **Transaction Logging:** Uses `OwesStorage` to persist the results of each split.
-- **User Flow:** Offers a command-line guided interaction with validation at each step.
+- **Equal Split:**  
+  Divides the total expense amount equally among all group members.
 
-- **Assertions:** Used to verify that splitting operations are valid
+- **Manual Split:**  
+  Allows the user to specify individual shares using either absolute amounts or percentages. After entering the command, the user is prompted to choose a method (`/a` for absolute amounts or `/p` for percentages) and to input the share for each member. The system validates the input and ensures that the full expense is allocated.
+
+- **Duplicate Prevention:**  
+  Before proceeding, the class checks the transaction log to ensure that the same expense has not already been split for the specified group. If a duplicate is detected, the split is aborted and an error message is displayed.
+
+- **Error and Exception Handling:**  
+  Before proceeding, the parser also checks to ensure that all the input is valid and raises the appropriate exceptions. This check is done for negative index, NULL, and other invalid inputs and parameters.
+
+- **Transaction Logging:**  
+  For every split operation, detailed transaction records are created in the format:  
+  ```Transaction: Expense: <title>, Date: <date>, Group: <group>, Member: <member> owes: <amount>```
 
 #### Methods
 
@@ -529,44 +560,25 @@ Initializes the `SplitCommand` instance with the provided dependencies.
 
 #### `executeSplit()`
 
-Executes the flow for splitting an expense.
+Executes the flow for splitting an expense. Follows the format as required above:
 
-- Prompts the user to choose:
-  - `[1]` Equal Split
-  - `[2]` Manual Split
-  - `[x]` Cancel
-- Displays available expenses and validates the selected index.
-- Retrieves group and validates its existence and membership.
-- Delegates to the chosen split method:
+```split/<equal or assign>/<expense index>/<group name>```
+
   - **Equal Split:** 
-    - Divides total amount equally among all members.
-    - Appends individual owed shares to the transaction log.
+    - Computes `share = totalAmount / numMembers`.
+    - Loops through group members and logs each person's owed amount.
+    - Writes each owed entry to `OwesStorage`.
   - **Manual Split:**
     - Prompts user to choose between absolute amounts (`/a`) or percentages (`/p`).
-    - Accepts user-defined shares for each member.
-    - Validates that total amount or percentage is fully allocated.
+    - **Manual Split – Absolute:**
+      - Prompts for each member’s assigned amount.
+      - Tracks remaining amount and prevents over-allocation.
+      - Logs each owed amount to storage.
+    - **Manual Split – Percentage:**
+      - Prompts for each member’s share percentage.
+      - Computes owed amount as `totalAmount * (percentage / 100)`.
+      - Validates total assigned percentages.
 - Calls `friendsCommands.viewGroupDirect()` to update group display after split.
-
-#### Internal Logic (within `executeSplit()`)
-
-- **Equal Split:**
-  - Computes `share = totalAmount / numMembers`.
-  - Loops through group members and logs each person's owed amount.
-  - Writes each owed entry to `OwesStorage`.
-
-- **Manual Split – Absolute:**
-  - Prompts for each member’s assigned amount.
-  - Tracks remaining amount and prevents over-allocation.
-  - Logs each owed amount to storage.
-
-- **Manual Split – Percentage:**
-  - Prompts for each member’s share percentage.
-  - Computes owed amount as `totalAmount * (percentage / 100)`.
-  - Validates total assigned percentages.
-
-Below is the UML sequence diagram for the `SplitCommand` class.
-
-![SplitClassSequenceDiagram.png](diagrams/SplitClassSequenceDiagram.png)
 
 ### 3.1.7 BudgetManager Class
 
@@ -671,7 +683,7 @@ Saves all expenses to persistent storage.
 
 - Calls `DataStorage.saveExpenses(expenses)`.
 
-### 3.1.9 Expense Class
+### 3.1.8 Expense Class
 
 The `Expense` class in the `seedu.duke.expense` package represents an individual expense with attributes such as title, description, date, amount, completion status, and associated group name. It encapsulates all necessary details for managing and tracking expenses.
 
@@ -1102,6 +1114,13 @@ The `writeToFile()` method handles writing the new currency to a file with these
 
 ### 4.1 Application Class Diagram
 
+![ApplicationFlowChart.drawio.png](diagrams/ApplicationFlowChart.drawio.png)
+
+O\$P\$ is the main class of application which the user can interact with directly. The command input from the user is processed by the UI class which validates and parses the command.
+This class will check for any valid keywords in the input. Once the keywords are present, it will pass the input to its respective classes that the command is related to (see above diagram) 
+to validate the format and details of the command. Upon successful validation and execution of the command, the new data is written to the .txt files within the program directory and saved
+after the command duration has ended and upon exiting the program, handled by the DataStorage class.
+
 ### 4.2 Expense CRUD Feature
 
 Below is the UML sequence diagram for the classes involved in the CRUD operations regarding user-created expenses. The main application class calls the constructor
@@ -1177,62 +1196,69 @@ solution that accurately records costs, updates balances in real time, and keeps
 
 ## 5.2 User Stories
 
-| As a...                                       | I want...                                                                                                     | So that I can...                                                             |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| traveler                                      | add expenses easily with categories                                                                           | keep track of spending                                                       |
-| traveler                                      | enter expenses in different currencies                                                                        | accurately track international transactions                                  |
-| traveler                                      | see a summary of all expenses                                                                                 | understand the total trip cost at a glance                                   |
-| attendee of a social gathering                | know how much I owe people                                                                                    | pay them the correct amount                                                  |
-| user                                          | set a daily or overall trip budget                                                                            | track spending in real time and avoid overshooting financial limits          |
-| traveler                                      | split expenses among group members                                                                            | fairly distribute costs                                                      |
-| traveler                                      | see how much each person owes or is owed                                                                      | settle payments easily                                                       |
-| traveler                                      | the system to automatically calculate balances after each expense                                             | not have to do the math myself                                               |
-| traveler                                      | enter expenses in multiple currencies                                                                         | track spending across different countries                                    |
-| traveler                                      | the system to convert expenses to a base currency                                                             | see all amounts in a consistent format                                       |
-| traveler                                      | manually update exchange rates                                                                                | adjust based on real-time rates when needed                                  |
-| traveler                                      | save all my expenses to a .txt file                                                                           | keep a record of my trip's finances                                          |
-| traveler                                      | reload past trips from a .txt file                                                                            | review old expenses                                                          |
-| traveler                                      | export a final balance report                                                                                 | share it with my group members                                               |
-| traveler                                      | a simple and intuitive interface                                                                              | quickly add and manage expenses                                              |
-| traveler                                      | filter expenses by category or person                                                                         | analyze spending patterns                                                    |
-| traveler                                      | add an expense with a title, description, date and amount                                                     | track my spending                                                            |
-| traveler                                      | assign an expense to a specific group member                                                                  | know who paid for what                                                       |
-| traveler                                      | delete an expense                                                                                             | remove incorrect entries                                                     |
-| traveler                                      | edit an existing expense                                                                                      | rectify mistakes                                                             |
-| traveler                                      | list all expenses in chronological order                                                                      | review my spending history                                                   |
-| traveler                                      | filter expenses by category (e.g., food, transport)                                                           | analyze specific spending habits in these categories                         |
-| traveler                                      | filter expenses by payer                                                                                      | see who has spent the most                                                   |
-| traveler                                      | filter expenses by a specific date range                                                                      | track spending over time                                                     |
-| traveler                                      | view a summary of total expenses                                                                              | see my trip's overall cost                                                   |
-| student traveler                              | label expenses under custom categories like "museum tickets," "school supplies," or "night out"               | see where I'm spending the most and adjust my budget accordingly             |
-| traveler                                      | the system to calculate how much each person owes after an expense is added                                   | not have to do the math myself                                               |
-| traveler                                      | see an individual balance for each person                                                                     | check who owes whom                                                          |
-| traveler                                      | manually mark/unmark an amount as settled                                                                     | keep track of paid debts                                                     |
-| traveler                                      | the app to suggest the simplest way to settle debts                                                           | minimize transactions                                                        |
-| traveler                                      | see a list of all unsettled expenses                                                                          | know what still needs to be paid                                             |
-| traveler                                      | an option to divide expenses equally among all members                                                        | ensure everyone pays the same share                                          |
-| traveler                                      | an option to enter custom split percentages                                                                   | allocate costs based on individual contributions                             |
-| traveler who might explore multiple countries | the option to enter expenses in different currencies                                                          | track international spending                                                 |
-| traveler                                      | the system to store exchange rates                                                                            | convert expenses accurately and do not need to enter exchange rates manually |
-| traveler                                      | see all expenses converted to a single base currency                                                          | compare costs consistently                                                   |
-| traveler                                      | export my trip's expense data to a .txt file                                                                  | keep a record                                                                |
-| traveler                                      | import a .txt file to reload past trips                                                                       | review previous expenses                                                     |
-| traveler                                      | save my progress automatically                                                                                | not lose my data when I close the app                                        |
-| traveler                                      | view a summary report of all expenses in multiple views (monthly, category-wise) before exporting             | review it first                                                              |
-| traveler                                      | the summary report categorize my expenses into categories automatically without needing to input the category | simplify expense management                                                  |
-| traveler                                      | add friend(s) to my list                                                                                      | settle my debts with them                                                    |
-| traveler                                      | see a clear menu of commands                                                                                  | know how to use the app                                                      |
-| traveler                                      | use a simple command-line interface to interact with the app                                                  | efficiently manage my data                                                   |
-| traveler                                      | receive error messages if I enter an invalid command                                                          | fix mistakes                                                                 |
-| traveler                                      | confirm before deleting an expense                                                                            | not accidentally lose data                                                   |
-| traveler                                      | a search function to find expenses based on keywords                                                          | quickly locate past transactions                                             |
-| traveler                                      | shortcut commands for frequent actions                                                                        | use the app more efficiently                                                 |
-| traveler                                      | view my balance at any time with a single command                                                             | check how much I owe                                                         |
-| traveler                                      | the app to have an easy to understand UI                                                                      | easily navigate my data                                                      |
-| traveler                                      | start a new trip                                                                                              | track expenses separately for different trips                                |
-| traveler                                      | view a list of past trips                                                                                     | revisit my previous expenses                                                 |
-| traveler                                      | delete a trip along with its expenses                                                                         | remove old or test data                                                      |
+Certainly! Below is the reformatted table with more unique traveler personas, such as "Lazy Traveler," "Savvy Traveler," and others. Each persona has been tailored to reflect their distinct characteristics while maintaining the original intent of the requirements.
 
+---
+
+| **As a...**                                   | **I want...**                                                                                                     | **So that I can...**                                                             |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Lazy Traveler**                             | Add expenses easily with categories                                                                               | Keep track of spending without much effort                                       |
+| **Global Explorer**                           | Enter expenses in different currencies                                                                            | Accurately track international transactions                                      |
+| **Budget-Conscious Traveler**                 | See a summary of all expenses                                                                                     | Understand the total trip cost at a glance                                       |
+| **Social Butterfly**                          | Know how much I owe people                                                                                        | Pay them the correct amount                                                      |
+| **Financial Planner**                         | Set a daily or overall trip budget                                                                                | Track spending in real time and avoid overshooting financial limits              |
+| **Group Leader**                              | Split expenses among group members                                                                                | Fairly distribute costs                                                          |
+| **Debt Tracker**                              | See how much each person owes or is owed                                                                          | Settle payments easily                                                           |
+| **Math-Averse Traveler**                      | The system to automatically calculate balances after each expense                                                 | Not have to do the math myself                                                   |
+| **Currency Converter Enthusiast**             | Enter expenses in multiple currencies                                                                             | Track spending across different countries                                        |
+| **Exchange Rate Guru**                        | The system to convert expenses to a base currency                                                                 | See all amounts in a consistent format                                           |
+| **Real-Time Rate Adjuster**                   | Manually update exchange rates                                                                                    | Adjust based on real-time rates when needed                                      |
+| **Record Keeper**                             | Save all my expenses to a .txt file                                                                               | Keep a record of my trip's finances                                              |
+| **Nostalgic Traveler**                        | Reload past trips from a .txt file                                                                                | Review old expenses                                                              |
+| **Report Generator**                          | Export a final balance report                                                                                     | Share it with my group members                                                   |
+| **Efficiency Seeker**                         | A simple and intuitive interface                                                                                  | Quickly add and manage expenses                                                  |
+| **Data Analyst Traveler**                     | Filter expenses by category or person                                                                             | Analyze spending patterns                                                        |
+| **Detail-Oriented Traveler**                  | Add an expense with a title, description, date, and amount                                                        | Track my spending                                                                |
+| **Generous Payer**                            | Assign an expense to a specific group member                                                                      | Know who paid for what                                                           |
+| **Mistake Fixer**                             | Delete an expense                                                                                                 | Remove incorrect entries                                                         |
+| **Editor-in-Chief Traveler**                  | Edit an existing expense                                                                                          | Rectify mistakes                                                                 |
+| **Chronological Organizer**                   | List all expenses in chronological order                                                                          | Review my spending history                                                       |
+| **Category Analyzer**                         | Filter expenses by category (e.g., food, transport)                                                               | Analyze specific spending habits in these categories                             |
+| **Payer Watcher**                             | Filter expenses by payer                                                                                          | See who has spent the most                                                       |
+| **Time Tracker**                              | Filter expenses by a specific date range                                                                          | Track spending over time                                                         |
+| **Big Picture Traveler**                      | View a summary of total expenses                                                                                  | See my trip's overall cost                                                       |
+| **Student Explorer**                          | Label expenses under custom categories like "museum tickets," "school supplies," or "night out"                   | See where I'm spending the most and adjust my budget accordingly                 |
+| **Balance Tracker**                           | The system to calculate how much each person owes after an expense is added                                       | Not have to do the math myself                                                   |
+| **Individual Balance Monitor**                | See an individual balance for each person                                                                         | Check who owes whom                                                              |
+| **Settlement Marker**                         | Manually mark/unmark an amount as settled                                                                         | Keep track of paid debts                                                         |
+| **Debt Minimizer**                            | The app to suggest the simplest way to settle debts                                                               | Minimize transactions                                                            |
+| **Unsettled Expense Viewer**                  | See a list of all unsettled expenses                                                                              | Know what still needs to be paid                                                 |
+| **Equalizer Traveler**                        | An option to divide expenses equally among all members                                                            | Ensure everyone pays the same share                                              |
+| **Custom Splitter**                           | An option to enter custom split percentages                                                                       | Allocate costs based on individual contributions                                 |
+| **Multi-Country Hopper**                      | The option to enter expenses in different currencies                                                              | Track international spending                                                    |
+| **Rate Saver**                                | The system to store exchange rates                                                                                | Convert expenses accurately and not need to enter exchange rates manually        |
+| **Consistency Seeker**                        | See all expenses converted to a single base currency                                                              | Compare costs consistently                                                       |
+| **File Exporter**                             | Export my trip's expense data to a .txt file                                                                      | Keep a record                                                                    |
+| **Past Trip Reloader**                        | Import a .txt file to reload past trips                                                                           | Review previous expenses                                                         |
+| **Auto-Saver**                                | Save my progress automatically                                                                                    | Not lose my data when I close the app                                            |
+| **Summary Report Fanatic**                    | View a summary report of all expenses in multiple views (monthly, category-wise) before exporting                 | Review it first                                                                  |
+| **Category Automator**                        | The summary report categorize my expenses into categories automatically without needing to input the category     | Simplify expense management                                                      |
+| **Friend Tracker**                            | Add friend(s) to my list                                                                                          | Settle my debts with them                                                        |
+| **Command-Line Enthusiast**                   | See a clear menu of commands                                                                                      | Know how to use the app                                                          |
+| **CLI Power User**                            | Use a simple command-line interface to interact with the app                                                      | Efficiently manage my data                                                       |
+| **Error Hunter**                              | Receive error messages if I enter an invalid command                                                              | Fix mistakes                                                                     |
+| **Confirmation Seeker**                       | Confirm before deleting an expense                                                                                | Not accidentally lose data                                                       |
+| **Search Wizard**                             | A search function to find expenses based on keywords                                                              | Quickly locate past transactions                                                 |
+| **Shortcut Lover**                            | Shortcut commands for frequent actions                                                                            | Use the app more efficiently                                                     |
+| **Instant Balance Checker**                   | View my balance at any time with a single command                                                                 | Check how much I owe                                                             |
+| **UI Perfectionist**                          | The app to have an easy-to-understand UI                                                                          | Easily navigate my data                                                          |
+| **New Adventure Starter**                     | Start a new trip                                                                                                  | Track expenses separately for different trips                                    |
+| **Past Trip Reviewer**                        | View a list of past trips                                                                                         | Revisit my previous expenses                                                     |
+| **Data Cleaner**                              | Delete a trip along with its expenses                                                                             | Remove old or test data                                                          |
+
+---
+
+Let me know if you'd like further adjustments!
 ## 5.3 Non-Functional Requirements
 
 This application can be run on any _mainstream OS_ as long as it has java`17` or above installed.
