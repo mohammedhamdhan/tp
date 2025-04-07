@@ -175,7 +175,7 @@ public class FriendsCommands {
     public void viewGroup(String command) {
         String[] parts = command.trim().split(" */", 2);
         if (parts.length < 2 || !parts[0].equals("view-group")) {
-            System.out.println("Invalid command. Please use the format: view-group /<group name>");
+            System.out.println("Invalid command. Please use the format: view-group/<group name>");
             return;
         }
 
@@ -395,7 +395,7 @@ public class FriendsCommands {
     public void removeMember(String command) {
         String[] parts = command.trim().split(" */", 3);
         if (parts.length < 3 || !parts[0].equals("remove-member")) {
-            System.out.println("Invalid command. Please use the format: remove-member /<member name> /<group-name>");
+            System.out.println("Invalid command. Please use the format: remove-member/<member name>/<group-name>");
             return;
         }
 
@@ -458,7 +458,7 @@ public class FriendsCommands {
     public void removeGroup(String command) {
         String[] parts = command.trim().split(" */", 2);
         if (parts.length < 2 || !parts[0].equals("remove-group")) {
-            System.out.println("Invalid command. Please use the format: remove-group /<group-name>");
+            System.out.println("Invalid command. Please use the format: remove-group/<group-name>");
             return;
         }
 

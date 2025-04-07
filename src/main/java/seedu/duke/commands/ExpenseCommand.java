@@ -323,6 +323,7 @@ public class ExpenseCommand {
                 if (amount < 0) {
                     System.out.println("Amount cannot be negative. Keeping current amount.");
                     amount = -1;
+                    return;
                 }
                 assert amount >= 0 || amount == -1 : "Amount should be non-negative or -1 for no change";
 

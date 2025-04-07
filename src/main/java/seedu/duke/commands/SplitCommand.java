@@ -38,7 +38,7 @@ public class SplitCommand {
             String[] parts = command.trim().split(" */");
             if (parts.length != 4) {
                 throw new IllegalArgumentException(
-                    "Invalid command format: expected 'split /<equal|assign>/<expense index>/<group name>' but got: " +
+                    "Invalid command format: expected 'split/<equal|assign>/<expense index>/<group name>' but got: " +
                     command);
             }
             String commandWord = parts[0].trim();
