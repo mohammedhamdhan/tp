@@ -113,7 +113,7 @@ class SplitCommandTest {
         provideInput("");
         splitCommand.executeSplit("splitassign/1/testgroup");
         String output = outContent.toString();
-        assertTrue(output.contains("Invalid command format"),
+        assertTrue(output.contains("Invalid format"),
             "Expected invalid command format error.");
     }
 
