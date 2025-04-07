@@ -104,20 +104,20 @@ public class FriendsCommands {
             return;
         }
         if (!OwesStorage.verifyChecksum()) {
-            System.out.println("Error: The owedAmounts file has likely been tampered with."+
-            "Clearing contents of the file");
-            
+            System.out.println("Error: The owedAmounts file has likely been tampered with." +
+                "Clearing contents of the file");
+
             // clear the file
             try (PrintWriter writer = new PrintWriter("owedAmounts.txt")) {
-            writer.print("");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try (PrintWriter writer = new PrintWriter("owedAmounts.chk")) {
-            writer.print("");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                writer.print("");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try (PrintWriter writer = new PrintWriter("owedAmounts.chk")) {
+                writer.print("");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
 
