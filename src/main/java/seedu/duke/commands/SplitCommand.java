@@ -35,7 +35,7 @@ public class SplitCommand {
                 throw new IllegalArgumentException("Command cannot be empty.");
             }
             // Split command using "/" as delimiter.
-            String[] parts = command.trim().split("/");
+            String[] parts = command.trim().split(" */");
             if (parts.length != 4) {
                 throw new IllegalArgumentException(
                     "Invalid command format: expected 'split /<equal|assign>/<expense index>/<group name>' but got: " +
