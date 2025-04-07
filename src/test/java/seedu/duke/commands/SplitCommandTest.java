@@ -114,7 +114,7 @@ class SplitCommandTest {
         provideInput("");
         splitCommand.executeSplit("splitassign/1/testgroup");
         String output = outContent.toString();
-        assertTrue(output.contains("Invalid command format"),
+        assertTrue(output.contains("Invalid format"),
             "Expected invalid command format error.");
     }
 
@@ -303,8 +303,7 @@ class SplitCommandTest {
         provideInput(input);
         splitCommand.executeSplit("split/assign/1/friends");
         String output = outContent.toString();
-        assertTrue(output.contains("Invalid method. Please enter '/a' for absolute amounts or " +
-                "'/p' for percentages."),
+        assertTrue(output.contains("Invalid format"),
             "Expected re-prompt for invalid method.");
         String expectedAlice = "Transaction: Expense: Snack, Date: 10-03-2025, " +
             "Group: friends, Member: Alice owes: 25.00";

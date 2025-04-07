@@ -96,39 +96,34 @@ public class FriendsCommands {
      * Displays detailed owed transactions for a specific member in a group.
      */
     public void viewMember(String command) {
-        // Validate command input
         if (command == null || command.trim().isEmpty()) {
             System.out.println("Error: Command cannot be empty.");
             return;
         }
-        // Expected syntax: view-member/<groupname>/<member name>
-        String[] parts = command.trim().split(" */");
+        // Expected format: view-member/<groupname>/<member name>
+        String[] parts = command.trim().split("/");
         if (parts.length != 3) {
-            System.out.println("Invalid command format. Expected: view-member/<group name>/<member name>");
+            System.out.println("Invalid command format. Expected: " +
+                "view-member/<groupname>/<member name>");
             return;
         }
-
-        // Validate command keyword
         String commandWord = parts[0].trim();
         if (!commandWord.equalsIgnoreCase("view-member")) {
-            System.out.println("Invalid command. Expected command to start with 'view-member'.");
+            System.out.println("Invalid command. Expected command to start with " +
+                "'view-member'.");
             return;
         }
-
-        // Extract and validate group and member names
         String groupName = parts[1].trim();
         String memberName = parts[2].trim();
         if (groupName.isEmpty() || memberName.isEmpty()) {
             System.out.println("Error: Group name and member name cannot be empty.");
             return;
         }
-
         File file = new File("owedAmounts.txt");
         if (!file.exists()) {
             System.out.println("Error: Owed transactions file does not exist. No data available.");
             return;
         }
-
         List < String > allLines;
         try {
             allLines = java.nio.file.Files.readAllLines(file.toPath());
@@ -136,32 +131,46 @@ public class FriendsCommands {
             System.out.println("Error reading owed transactions file: " + e.getMessage());
             return;
         }
-
         if (allLines.isEmpty()) {
             System.out.println("No transactions found in the file.");
             return;
         }
-
         boolean found = false;
-        System.out.println("Transactions for member '" + memberName + "' in group '" + groupName + "':");
+        double totalAmount = 0.0;
+        System.out.println("Transactions for member '" + memberName +
+            "' in group '" + groupName + "':");
         for (String line: allLines) {
             if (line == null || line.trim().isEmpty()) {
-                continue; // skip blank lines
+                continue; // Skip blank lines
             }
             String trimmedLine = line.trim();
-            // Expect detailed transaction records to start with the specific prefix.
             if (!trimmedLine.startsWith("Transaction: Expense:")) {
                 System.out.println("Warning: Skipping unrecognized record: " + trimmedLine);
                 continue;
             }
-            // Check if the record contains both the specified group and member.
-            if (trimmedLine.contains("Group: " + groupName) && trimmedLine.contains("Member: " + memberName)) {
+            if (trimmedLine.contains("Group: " + groupName) &&
+                trimmedLine.contains("Member: " + memberName)) {
                 System.out.println(trimmedLine);
                 found = true;
+                int owesIndex = trimmedLine.lastIndexOf(" owes:");
+                if (owesIndex != -1) {
+                    String amountStr = trimmedLine.substring(owesIndex + " owes:".length())
+                        .trim();
+                    try {
+                        double amount = Double.parseDouble(amountStr);
+                        totalAmount += amount;
+                    } catch (NumberFormatException nfe) {
+                        System.out.println("Warning: Unable to parse amount in record: " +
+                            trimmedLine);
+                    }
+                }
             }
         }
-        if (!found) {
-            System.out.println("No transactions found for member '" + memberName + "' in group '" + groupName + "'.");
+        if (found) {
+            System.out.println("Total Amount: " + String.format("%.2f", totalAmount));
+        } else {
+            System.out.println("No transactions found for member '" + memberName +
+                "' in group '" + groupName + "'.");
         }
     }
 
@@ -199,7 +208,6 @@ public class FriendsCommands {
                 if (line.isEmpty()) {
                     continue;
                 }
-                // Handle old format: line starts with "- "
                 if (line.startsWith("- ")) {
                     String[] lineParts = line.split(" owes: ");
                     if (lineParts.length == 2) {
