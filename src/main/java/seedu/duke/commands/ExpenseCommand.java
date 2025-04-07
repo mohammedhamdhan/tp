@@ -456,7 +456,7 @@ public class ExpenseCommand {
         System.out.println("Balance Overview");
         System.out.println("----------------");
         System.out.println("Total number of unsettled expenses: " + budgetManager.getUnsettledExpenseCount());
-        System.out.println("Total amount owed: " + String.format("%.2f", totalBalance));
+        System.out.println("Total unsettled amount: " + String.format("%.2f", totalBalance));
     }
     //@@author
 

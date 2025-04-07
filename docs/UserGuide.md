@@ -329,7 +329,7 @@ Shows total money to be paid and total money to pay.
   Balance Overview
   ----------------
   Total number of unsettled expenses: <total number of unsettled expenses user has>
-  Total amount owed: <total amount user owes>
+  Total unsettled amount: <total unsettled amount>
   ```
 
 ---
