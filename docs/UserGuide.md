@@ -769,5 +769,5 @@ Here's a quick reference for all available commands:
 | Remove Group    | `remove-group`                                          | `remove-group` (then enter group name) |
 | Split Expense   | `split`                                                 | `split` (then follow prompts)          |
 | View Summary    | `summary/<BY-MONTH\|BY-CATEGORY>/<Y\|N>`                | `summary/BY-CATEGORY/Y`                |
-| Export Summary  | `export/<monthly|category wise>`                        | `export/monthly`                       |
+| Export Summary  | `export/<monthly\|category wise>`                       | `export/monthly`                       |
 | Sort List       | `sort-list/<option>`                                    | `sort-list/1`                          |
