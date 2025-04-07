@@ -145,6 +145,15 @@ public class ExpenseCommand {
         return true;
     }
 
+    public static boolean isUniqueDate(String date, List<Expense> expenses) {
+        for (Expense expense : expenses) {
+            if (expense.getDate().equals(date)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static boolean isAmountBelowCap(Double amount, Currency currency) {
         double maxSGDAmount = 50000.0;
         double sgdEquivalentAmount;
@@ -189,8 +198,8 @@ public class ExpenseCommand {
 
             // Validate title uniqueness
             List<Expense> expenses = budgetManager.getAllExpenses();
-            if (!isUniqueTitle(title, expenses)) {
-                System.out.println("Expense with the same title already exists.");
+            if (!isUniqueTitle(title, expenses) && !isUniqueDate(date, expenses)) {
+                System.out.println("Expense with the same title and date already exists.");
                 return;
             }
 
