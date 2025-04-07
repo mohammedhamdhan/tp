@@ -75,7 +75,7 @@ You are not allowed to add an expense containing a `title` of an expense that al
 
 #### Edit an expense: `edit`
 
-Edit an existing expense. Follows the same constraints and parameter-filling procedure as the `add` command.
+Edit an existing expense. Follows the same constraints and parameter-filling procedure as the `add` command. 'X' can be used to keep existing values.
 
 - **Format:** `edit/<expense ID>/<new title>/<new category>/<new date>/<new amount>`
 
