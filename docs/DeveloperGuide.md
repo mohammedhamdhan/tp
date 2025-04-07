@@ -278,7 +278,7 @@ The `executeUnmarkCommand(String command)` method manages unmarking an expense a
 - Handles non-numeric input with a NumberFormatException
 - Provides clear error messages to guide the user toward valid input
 
-#### Finding specific Expenses
+#### Finding Specific Expenses
 
 The `findExpense()` method in the `seedu.duke.budget` package is responsible for searching and displaying expenses that match a given keyword. It helps users efficiently locate expenses by title or description.
 
@@ -1124,7 +1124,7 @@ after the command duration has ended and upon exiting the program, handled by th
 ### 4.2 Expense CRUD Feature
 
 Below is the UML sequence diagram for the classes involved in the CRUD operations regarding user-created expenses. The main application class calls the constructor
-for the UI class, which calls its own method `processCommand()` that processes the addition, editing, deletion and saving of expenses depending on specific user inputs
+for the UI class, which calls its own method `processCommand()` that takes in the user input as a parameter and processes the addition, editing, deletion and saving of expenses depending on specific user inputs
 as shown in the diagram.
 
 ![ExpenseCRUDFeatureSequenceDiagram.drawio.png](diagrams/ExpenseCRUDFeatureSequenceDiagram.drawio.png)
@@ -1196,10 +1196,6 @@ solution that accurately records costs, updates balances in real time, and keeps
 
 ## 5.2 User Stories
 
-Certainly! Below is the reformatted table with more unique traveler personas, such as "Lazy Traveler," "Savvy Traveler," and others. Each persona has been tailored to reflect their distinct characteristics while maintaining the original intent of the requirements.
-
----
-
 | **As a...**                                   | **I want...**                                                                                                     | **So that I can...**                                                             |
 | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | **Lazy Traveler**                             | Add expenses easily with categories                                                                               | Keep track of spending without much effort                                       |
@@ -1256,9 +1252,6 @@ Certainly! Below is the reformatted table with more unique traveler personas, su
 | **Past Trip Reviewer**                        | View a list of past trips                                                                                         | Revisit my previous expenses                                                     |
 | **Data Cleaner**                              | Delete a trip along with its expenses                                                                             | Remove old or test data                                                          |
 
----
-
-Let me know if you'd like further adjustments!
 ## 5.3 Non-Functional Requirements
 
 This application can be run on any _mainstream OS_ as long as it has java`17` or above installed.
