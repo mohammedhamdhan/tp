@@ -84,12 +84,14 @@ class ExpenseCommandTest {
 
     @Test
     void testExecuteAddExpenseValidInput() {
-        assertEquals(1, budgetManager.getExpenseCount());
+        String input = "add/Lunch/Food/01-01-2025/10.50";
+        expenseCommand.executeAddExpense(input);
         Expense addedExpense = budgetManager.getExpense(0);
         assertEquals("Lunch", addedExpense.getTitle());
         assertEquals(Categories.Food, addedExpense.getCategory());
         assertEquals("01-01-2025", addedExpense.getDate());
         assertEquals(10.50, addedExpense.getAmount());
+        assertEquals(1, budgetManager.getExpenseCount());
     }
 
     @Test

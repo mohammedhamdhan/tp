@@ -222,6 +222,15 @@ public class SplitCommand {
         }
     }
 
+    private String createTransactionRecord(Expense expense,
+                                           String groupName, String memberName, double amount) {
+        return "Transaction: Expense: " + expense.getTitle() +
+                ", Date: " + expense.getDate() +
+                ", Group: " + groupName +
+                ", Member: " + memberName +
+                " owes: " + String.format("%.2f", amount);
+    }
+
     private void handleEqualSplit(Expense expense, List<Friend> members) {
         double totalAmount = expense.getAmount();
         double share = totalAmount / members.size();
