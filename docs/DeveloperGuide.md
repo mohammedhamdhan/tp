@@ -43,6 +43,8 @@
 
 ## Acknowledgements
 
+All our UML diagrams are created using draw.io. 
+
 ---
 
 ## 1. Introduction

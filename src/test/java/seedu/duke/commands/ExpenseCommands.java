@@ -133,7 +133,7 @@ class ExpenseCommandTest {
         expenseCommand.executeAddExpense(userInput);
 
         assertEquals(1, budgetManager.getExpenseCount()); // No new expense should be added
-        assertTrue(outContent.toString().contains("Expense with the same title already exists."));
+        assertTrue(outContent.toString().contains("Expense with the same title and date already exists."));
     }
 
     @Test
