@@ -248,16 +248,16 @@ public class Currency {
      */
     public void changeCurrency(String command) {
         try {
-            String [] splitInput = command.split("/");
-            String method = splitInput[1];
-            String newCurrency = splitInput[2].toUpperCase();
+            String [] splitInput = command.trim().split("\\s*/\\s*");
+            String method = splitInput[1].trim();
+            String newCurrency = splitInput[2].toUpperCase().trim();
             int intMethod = Integer.parseInt(method);
 
             if(intMethod == 1 && splitInput.length != 4){
-                System.out.println("Please give input in correct format");
+                System.out.println("Invalid format. Usage: change-currency/1/<currency to change to>/<exchange rate>");
                 return;
             } else if(intMethod == 2 && splitInput.length != 3){
-                System.out.println("Please give input in correct format");
+                System.out.println("Invalid format. Usage: change-currency/2/<currency to change to>");
                 return;
             }
 
@@ -273,7 +273,8 @@ public class Currency {
         } catch (NumberFormatException e) {
             System.out.println("Please input a valid number");
         } catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Please give input in correct format");
+            System.out.println("Invalid format. Usage: change-currency/1/<currency to change to>/<exchange rate>\nOR "
+                    + "change-currency/2/<currency to change to>");
         }
     }
 

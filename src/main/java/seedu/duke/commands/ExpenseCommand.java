@@ -145,6 +145,15 @@ public class ExpenseCommand {
         return true;
     }
 
+    public static boolean isUniqueDate(String date, List<Expense> expenses) {
+        for (Expense expense : expenses) {
+            if (expense.getDate().equals(date)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static boolean isAmountBelowCap(Double amount, Currency currency) {
         double maxSGDAmount = 50000.0;
         double sgdEquivalentAmount;
@@ -189,8 +198,8 @@ public class ExpenseCommand {
 
             // Validate title uniqueness
             List<Expense> expenses = budgetManager.getAllExpenses();
-            if (!isUniqueTitle(title, expenses)) {
-                System.out.println("Expense with the same title already exists.");
+            if (!isUniqueTitle(title, expenses) && !isUniqueDate(date, expenses)) {
+                System.out.println("Expense with the same title and date already exists.");
                 return;
             }
 
@@ -314,6 +323,7 @@ public class ExpenseCommand {
                 if (amount < 0) {
                     System.out.println("Amount cannot be negative. Keeping current amount.");
                     amount = -1;
+                    return;
                 }
                 assert amount >= 0 || amount == -1 : "Amount should be non-negative or -1 for no change";
 
@@ -447,7 +457,7 @@ public class ExpenseCommand {
         System.out.println("Balance Overview");
         System.out.println("----------------");
         System.out.println("Total number of unsettled expenses: " + budgetManager.getUnsettledExpenseCount());
-        System.out.println("Total amount owed: " + String.format("%.2f", totalBalance));
+        System.out.println("Total unsettled amount: " + String.format("%.2f", totalBalance));
     }
     //@@author
 
@@ -460,12 +470,12 @@ public class ExpenseCommand {
      */
     public void executeMarkCommand(String command) {
         try{
-            String[] splitInput = command.split("/");
+            String[] splitInput = command.trim().split("\\s*/\\s*", 2);
             if(splitInput.length != 2){
-                System.out.println("Please provide input in correct format");
+                System.out.println("Invalid format. Usage: mark/<expense ID>");
                 return;
             }
-            String expenseNumberToMark = splitInput[1];
+            String expenseNumberToMark = splitInput[1].trim();
             int indexToMark = Integer.parseInt(expenseNumberToMark) - 1;
             if(budgetManager.getExpense(indexToMark).getDone()){
                 System.out.println("Expense was already marked before!");
@@ -491,12 +501,12 @@ public class ExpenseCommand {
      */
     public void executeUnmarkCommand(String command) {
         try {
-            String[] splitInput = command.split("/");
+            String[] splitInput = command.trim().split("\\s*/\\s*", 2);
             if(splitInput.length != 2){
-                System.out.println("Please provide input in correct format");
+                System.out.println("Invalid format. Usage: unmark/<expense ID>");
                 return;
             }
-            String expenseNumberToUnmark = splitInput[1];
+            String expenseNumberToUnmark = splitInput[1].trim();
             int indexToUnmark = Integer.parseInt(expenseNumberToUnmark) - 1;
             if(!budgetManager.getExpense(indexToUnmark).getDone()){
                 System.out.println("Expense was already unmarked!");
