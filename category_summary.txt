@@ -1,0 +1,3 @@
+Category-wise Expense Summary
+----------------------------
+Food: $200.00 (1 expenses)
